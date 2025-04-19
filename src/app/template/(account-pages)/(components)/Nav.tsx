@@ -8,17 +8,17 @@ import React from "react";
 export const Nav = () => {
   const pathname = usePathname();
 
-  const listNav: Route[] = [
+/*   const listNav: Route[] = [
     "/account",
     "/account-savelists",
     "/account-password",
     "/account-billing",
-  ];
+  ]; */
 
   return (
     <div className="container">
       <div className="flex space-x-8 md:space-x-14 overflow-x-auto hiddenScrollbar">
-        {listNav.map((item) => {
+       {/*  {listNav.map((item) => {
           const isActive = pathname === item;
           return (
             <Link
@@ -33,7 +33,7 @@ export const Nav = () => {
               {item.replace("-", " ").replace("/", " ")}
             </Link>
           );
-        })}
+        })} */}
       </div>
     </div>
   );
