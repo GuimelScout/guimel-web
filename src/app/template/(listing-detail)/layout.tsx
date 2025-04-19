@@ -1,7 +1,6 @@
 "use client";
 
 import BackgroundSection from "@/components/BackgroundSection";
-import ListingImageGallery from "@/components/listing-image-gallery/ListingImageGallery";
 import SectionSliderNewCategories from "@/components/SectionSliderNewCategories";
 import SectionSubscribe2 from "@/components/SectionSubscribe2";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -40,11 +39,11 @@ const DetailtLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="ListingDetailPage">
-      <ListingImageGallery
+      {/* <ListingImageGallery
         isShowModal={modal === "PHOTO_TOUR_SCROLLABLE"}
         onClose={handleCloseModalImageGallery}
         images={getImageGalleryListing()}
-      />
+      /> */}
 
       <div className="container ListingDetailPage__content">{children}</div>
 
