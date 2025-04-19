@@ -5,9 +5,9 @@ import BgGlassmorphism from "@/components/BgGlassmorphism";
 import { TaxonomyType } from "@/data/types";
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox";
 import SectionGridCategoryBox from "@/components/SectionGridCategoryBox";
-import SectionHero3 from "@/app/template/(server-components)/SectionHero3";
 import CardCategory6 from "@/components/CardCategory6";
 import SectionGridFeaturePlaces from "@/components/SectionGridFeaturePlaces";
+import SectionHero3 from "@/app/(server-components)/SectionHero3";
 
 const DEMO_CATS_2: TaxonomyType[] = [
   {
