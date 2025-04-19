@@ -88,15 +88,14 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
       .string({ message: "El correo es requerido" })
       .email({ message: "El correo es inválido" }),
 
+    countryCode: z
+      .string()
+      .optional(),
+
     phone: z
       .string()
-      .optional()
-      .refine(
-        (val) => !val || /^[0-9]{10}$/.test(val),
-        {
-          message: "El número debe tener 10 dígitos",
-        }
-      ),
+      .optional(),
+
     notes: z.string().optional(),
   });
 
@@ -106,6 +105,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
       nameCard: "",
       lastName: "",
       email: "",
+      countryCode: "",
       phone: "",
       notes: "",
     },
@@ -490,6 +490,40 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                         {...register("phone")}
                         placeholder="Tu número de teléfono (10 dígitos)" />
                         {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+                      </div>
+                      <div className="space-y-1">
+                        <Label>Teléfono*</Label>
+                        <div className="flex gap-4">
+                          <select
+                            {...register("countryCode")}
+                            className="border rounded-md px-2 py-2 bg-white"
+                            defaultValue="+52"
+                          >
+                            <option value="+52">🇲🇽 +52</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+57">🇨🇴 +57</option>
+                            <option value="+34">🇪🇸 +34</option>
+                            <option value="+44">🇬🇧 +44</option>
+                          </select>
+                          <Input
+                            {...register("phone", {
+                              required: "El número es obligatorio",
+                              validate: (value) => {
+                                const fullPhone = `${value}`;
+                                const pattern = /^\+\d{10,}$/;
+                                if (!pattern.test(fullPhone)) {
+                                  return "El teléfono debe tener formato +52XXXXXXXXXX y al menos 10 dígitos";
+                                }
+                                return true;
+                              },
+                            })}
+                            placeholder="Tu número de teléfono"
+                            className="flex-1"
+                          />
+                        </div>
+                        {errors.phone && (
+                          <p className="text-red-500 text-sm">{errors.phone.message}</p>
+                        )}
                       </div>
                       <div className="space-y-1">
                       <Label>Datos de la tarjeta </Label>
