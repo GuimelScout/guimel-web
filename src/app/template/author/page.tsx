@@ -160,11 +160,11 @@ const AuthorPage: FC<AuthorPageProps> = ({}) => {
               </Tab.Panel>
               <Tab.Panel className="">
                 <div className="mt-8 grid grid-cols-1 gap-6 md:gap-7 sm:grid-cols-2">
-                  {DEMO_EXPERIENCES_LISTINGS.filter((_, i) => i < 4).map(
+                 {/*  {DEMO_EXPERIENCES_LISTINGS.filter((_, i) => i < 4).map(
                     (stay) => (
                       <ExperiencesCard key={stay.id} data={stay} />
                     )
-                  )}
+                  )} */}
                 </div>
                 <div className="flex mt-11 justify-center items-center">
                   <ButtonSecondary>Show me more</ButtonSecondary>
@@ -196,10 +196,10 @@ const AuthorPage: FC<AuthorPageProps> = ({}) => {
 
         {/* comment */}
         <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-          <CommentListing hasListingTitle className="pb-8" />
+         {/*  <CommentListing hasListingTitle className="pb-8" />
           <CommentListing hasListingTitle className="py-8" />
           <CommentListing hasListingTitle className="py-8" />
-          <CommentListing hasListingTitle className="py-8" />
+          <CommentListing hasListingTitle className="py-8" /> */}
           <div className="pt-8">
             <ButtonSecondary>View more 20 reviews</ButtonSecondary>
           </div>
