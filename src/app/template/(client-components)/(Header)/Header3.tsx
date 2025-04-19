@@ -181,12 +181,12 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
             {/* NAV */}
             <div className="hidden md:flex relative z-10 flex-1 justify-end text-neutral-700 dark:text-neutral-100">
               <div className=" flex space-x-1">
-                <Link
+                {/* <Link
                   href={"/add-listing/1"}
                   className="self-center hidden xl:inline-flex px-4 py-2 border border-neutral-300 hover:border-neutral-400 dark:border-neutral-700 rounded-full items-center text-sm text-gray-700 dark:text-neutral-300 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 >
                   List your property
-                </Link>
+                </Link> */}
 
                 <NotifyDropdown />
                 <AvatarDropdown />
