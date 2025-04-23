@@ -2,7 +2,7 @@
 
 import React, { FC, useState } from "react";
 import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
-import CommentListing from "@/components/CommentListing";
+import CommentListing from "@/components/Guimel/CommentListing";
 import FiveStartIconForRate from "@/components/FiveStartIconForRate";
 import StartRating from "@/components/StartRating";
 import Avatar from "@/shared/Avatar";

@@ -32,7 +32,7 @@ const CommentListing: FC<CommentListingProps> = ({
           sizeClass="h-10 w-10 text-lg"
           radius="rounded-full"
           userName={data?.user?.name ?? 'Invitado'}
-          imgUrl={data?.user?.image.url}
+          imgUrl={data?.user?.image?.url ?? undefined}
         />
       </div>
       <div className="flex-grow">

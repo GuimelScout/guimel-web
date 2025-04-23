@@ -20,7 +20,7 @@ import renderers from "@/utils/renderes";
 import FiveStartIconForRate from "@/components/FiveStartIconForRate";
 import Input from "@/shared/Input";
 import ButtonCircle from "@/shared/ButtonCircle";
-import CommentListing from "@/components/CommentListing";
+import CommentListing from "@/components/Guimel/CommentListing";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -171,11 +171,11 @@ const Location = ({ params }: { params: { link: string } }) => {
         </div>
 
         <div className="flex items-center">
-          <Avatar hasChecked sizeClass="h-10 w-10" radius="rounded-full" />
+          <Avatar hasChecked={data?.activity.hostBy?.verified} sizeClass="h-10 w-10" radius="rounded-full" imgUrl={data?.activity.hostBy?.image?.url ?? undefined} />
           <span className="ml-2.5 text-neutral-500 dark:text-neutral-400">
             Organizado por {" "}
             <span className="text-neutral-900 dark:text-neutral-200 font-medium">
-              Guimel Community
+              {data?.activity.hostBy?.name} {data?.activity.hostBy?.lastName}
             </span>
           </span>
         </div>
@@ -295,7 +295,7 @@ const Location = ({ params }: { params: { link: string } }) => {
             hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
             sizeClass="h-14 w-14"
             radius="rounded-full"
-            imgUrl={data?.activity.hostBy?.image.url}
+            imgUrl={data?.activity.hostBy?.image?.url ?? undefined}
             
           />
           <div>

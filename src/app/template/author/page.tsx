@@ -2,7 +2,7 @@
 
 import { Tab } from "@headlessui/react";
 import CarCard from "@/components/CarCard";
-import CommentListing from "@/components/CommentListing";
+import CommentListing from "@/components/Guimel/CommentListing";
 import ExperiencesCard from "@/components/Guimel/ActivityCard";
 import StartRating from "@/components/StartRating";
 import StayCard from "@/components/StayCard2";

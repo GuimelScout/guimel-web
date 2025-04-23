@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import FiveStartIconForRate from "@/components/FiveStartIconForRate";
 import Input from "@/shared/Input";
 import ButtonCircle from "@/shared/ButtonCircle";
-import CommentListing from "@/components/CommentListing";
+import CommentListing from "@/components/Guimel/CommentListing";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -168,11 +168,11 @@ const Location = ({ params }: { params: { link: string } }) => {
         </div>
 
         <div className="flex items-center">
-          <Avatar hasChecked sizeClass="h-10 w-10" radius="rounded-full" />
+        <Avatar hasChecked={data?.lodging.hostBy?.verified} sizeClass="h-10 w-10" radius="rounded-full" imgUrl={data?.lodging.hostBy?.image?.url ?? undefined}  />
           <span className="ml-2.5 text-neutral-500 dark:text-neutral-400">
             Organizado por {" "}
             <span className="text-neutral-900 dark:text-neutral-200 font-medium">
-              Guimel Community
+            {data?.lodging.hostBy?.name} {data?.lodging.hostBy?.lastName}
             </span>
           </span>
         </div>

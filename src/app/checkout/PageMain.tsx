@@ -22,11 +22,12 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { CREATE_PAYMENT_METHOD, CREATE_USER, GET_PAYMENT_METHOD, GET_SETUP_INTENT, GET_STRIPE_PAYMENT_METHODS, GET_USER, MAKE_PAYMENT } from "@/components/Guimel/checkout/QueryCheckOut.queries";
+import { CREATE_PAYMENT_METHOD, CREATE_USER, GET_PAYMENT_METHOD, GET_STRIPE_PAYMENT_METHODS, GET_USER, MAKE_PAYMENT } from "@/components/Guimel/checkout/QueryCheckOut.queries";
 import {useStripe, useElements, CardElement} from "@stripe/react-stripe-js";
 import { Toaster, toast } from 'sonner'
 import { useRouter } from "next/navigation";
 import Route from "@/routers/routes";
+import Select from "@/shared/Select";
 
 export interface CheckOutPagePageMainProps {
   className?: string;
@@ -86,15 +87,19 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
 
     email: z
       .string({ message: "El correo es requerido" })
+      
       .email({ message: "El correo es inválido" }),
 
     countryCode: z
       .string()
-      .optional(),
+      .min(1, { message: "El código del país es requerido." }),
 
-    phone: z
+      phone: z
       .string()
-      .optional(),
+      .min(1, { message: "El número de teléfono es requerido." })
+      .refine((val) => !val || /^\d{10}$/.test(val), {
+        message: "El teléfono debe tener exactamente 10 dígitos numéricos",
+      }),
 
     notes: z.string().optional(),
   });
@@ -105,7 +110,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
       nameCard: "",
       lastName: "",
       email: "",
-      countryCode: "",
+      countryCode: "+52",
       phone: "",
       notes: "",
     },
@@ -149,7 +154,8 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
               lastName: dataForm.lastName,
               phone: dataForm.phone,
               email: dataForm.email,
-              password: `${dataForm.nameCard}12345`
+              password: `${dataForm.nameCard}12345`,
+              countryCode: dataForm.countryCode
             }
           }
         });
@@ -157,123 +163,121 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
         stripeCustomerId = resUser.data.createUser.stripeCustomerId;
       }
 
-      if (/* getSetUpIntent.SetUpIntentStripe?.success */true) {
 
-        const {error, paymentMethod} = await stripe.createPaymentMethod({
-          type: "card",
-          card: cardElement!,
-          billing_details: {
-            name: userName,
-            email: dataForm.email,
-            phone: dataForm.phone,
+      const {error, paymentMethod} = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement!,
+        billing_details: {
+          name: userName,
+          email: dataForm.email,
+          phone: dataForm.phone,
+        },
+      });
+
+      
+      if (!error){
+
+        const { data: getStripePaymentMethods } = await client.query({
+          query: GET_STRIPE_PAYMENT_METHODS,
+          variables: {
+              email: dataForm.email,
           },
-        });
+          fetchPolicy: 'network-only',
+        }); 
 
-        
-        if (!error){
+        let paymentMethodID: string;
+        let noDuplicatePaymentMethod: boolean;
 
-          const { data: getStripePaymentMethods } = await client.query({
-            query: GET_STRIPE_PAYMENT_METHODS,
+        const methodsList = getStripePaymentMethods?.StripePaymentMethods?.data.data;
+
+        const stripePaymentMethodDuplicate = Array.isArray(methodsList)
+        ? methodsList.find((method: any) => (
+            method.card?.last4 === paymentMethod.card?.last4 &&
+            method.card?.exp_month === paymentMethod.card?.exp_month &&
+            method.card?.exp_year === paymentMethod.card?.exp_year &&
+            method.card?.brand === paymentMethod.card?.brand
+          ))
+        : undefined;
+
+        if(!stripePaymentMethodDuplicate){
+
+          res = await createPaymentMethod({
+            variables:{
+              data: {
+                user: { connect: { id: userID} },
+                cardType: paymentMethod.type,
+                lastFourDigits: paymentMethod.card?.last4.toString(),
+                expMonth: paymentMethod.card?.exp_month.toString(),
+                expYear: paymentMethod.card?.exp_year.toString(),
+                stripeProcessorId: "result.setupIntent?.id",
+                stripePaymentMethodId: paymentMethod.id,
+                address: "",
+                postalCode: paymentMethod.billing_details.address?.postal_code?.toString(),
+                ownerName: userName,
+                country: paymentMethod.card?.country,
+              }
+            }
+          });
+
+          paymentMethodID = res.data.createPaymentMethod.id
+          noDuplicatePaymentMethod = true;
+
+        }else{
+
+          const { data: getPaymentMethod } = await client.query({
+            query: GET_PAYMENT_METHOD,
             variables: {
-                email: dataForm.email,
+              where: {
+                stripePaymentMethodId: stripePaymentMethodDuplicate.id,
+              }
             },
             fetchPolicy: 'network-only',
           }); 
 
-          let paymentMethodID: string;
-          let noDuplicatePaymentMethod: boolean;
+          paymentMethodID = getPaymentMethod.paymentMethod.id;
+          noDuplicatePaymentMethod = false;
 
-          const methodsList = getStripePaymentMethods?.StripePaymentMethods?.data.data;
+        }
 
-          const stripePaymentMethodDuplicate = Array.isArray(methodsList)
-          ? methodsList.find((method: any) => (
-              method.card?.last4 === paymentMethod.card?.last4 &&
-              method.card?.exp_month === paymentMethod.card?.exp_month &&
-              method.card?.exp_year === paymentMethod.card?.exp_year &&
-              method.card?.brand === paymentMethod.card?.brand
-            ))
-          : undefined;
-
-          if(!stripePaymentMethodDuplicate){
-
-            res = await createPaymentMethod({
-              variables:{
-                data: {
-                  user: { connect: { id: userID} },
-                  cardType: paymentMethod.type,
-                  lastFourDigits: paymentMethod.card?.last4.toString(),
-                  expMonth: paymentMethod.card?.exp_month.toString(),
-                  expYear: paymentMethod.card?.exp_year.toString(),
-                  stripeProcessorId: "result.setupIntent?.id",
-                  stripePaymentMethodId: paymentMethod.id,
-                  address: "",
-                  postalCode: paymentMethod.billing_details.address?.postal_code?.toString(),
-                  ownerName: userName,
-                  country: paymentMethod.card?.country,
-                }
-              }
-            });
-
-            paymentMethodID = res.data.createPaymentMethod.id
-            noDuplicatePaymentMethod = true;
-
-          }else{
-
-            const { data: getPaymentMethod } = await client.query({
-              query: GET_PAYMENT_METHOD,
-              variables: {
-                where: {
-                  stripePaymentMethodId: stripePaymentMethodDuplicate.id,
-                }
-              },
-              fetchPolicy: 'network-only',
-            }); 
-
-            paymentMethodID = getPaymentMethod.paymentMethod.id;
-            noDuplicatePaymentMethod = false;
-
-          }
-
-          const newPayment = {
-            activityId:  data?.activity.id,
-            lodgingId: lodginSelected?.id ?? undefined,
-            startDate: dateFormat(startDate),
-            endDate: dateFormat(endDate),
-            guestss: (guestAdultsInputValue + guestChildrenInputValue).toString(),
-            nameCard: userName,
-            email: dataForm.email,
-            notes: dataForm.notes,
-            paymentMethodId: paymentMethodID,
-            total: getTotal(),
-            noDuplicatePaymentMethod
-          };
-          
+        const newPayment = {
+          activityId:  data?.activity.id,
+          lodgingId: lodginSelected?.id ?? undefined,
+          startDate: dateFormat(startDate),
+          endDate: dateFormat(endDate),
+          guestss: (guestAdultsInputValue + guestChildrenInputValue).toString(),
+          nameCard: userName,
+          email: dataForm.email,
+          notes: dataForm.notes,
+          paymentMethodId: paymentMethodID,
+          total: getTotal(),
+          noDuplicatePaymentMethod
+        };
+        
+        try {
           response = await makePayment({
             variables: { 
               ...newPayment
             },
           }); 
-          
-          try {
-            if (response.data && response.data.makePayment.success) {
-              setLoadingPayment(false);
-              toast.success(response.data.makePayment.message);
-              //@ts-ignore
-              router.push(`${Route.payDone}?booking=${response.data.makePayment.data.booking}`);
-            } else {
-              setLoadingPayment(false);
-              toast.error(response.data.makePayment.message, {
-                duration: Infinity
-              });
-            }
-          } catch (error) {
-            toast.error("Tuvimos un problema de comunicación, intente de nuevo más tarde.", {
+        
+          if (response.data && response.data.makePayment.success) {
+            setLoadingPayment(false);
+            toast.success(response.data.makePayment.message);
+            //@ts-ignore
+            router.push(`${Route.payDone}?booking=${response.data.makePayment.data.booking}`);
+          } else {
+            setLoadingPayment(false);
+            toast.error(response.data.makePayment.message, {
               duration: Infinity
             });
-            setLoadingPayment(false);
-            
-          } 
-        }
+          }
+        } catch (error) {
+          toast.error("Tuvimos un problema de comunicación, intente de nuevo más tarde.", {
+            duration: Infinity
+          });
+          setLoadingPayment(false);
+          
+        } 
       }
       
   }; 
@@ -466,7 +470,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                       
                       <div className="space-y-1">
                         <Label>Nombre en la tarjeta* </Label>
-                        <div className="flex flex-row gap-5">
+                        <div className="flex flex-row gap-4">
                           <Input 
                           {...register("nameCard")}
                           placeholder="Tu nombre" />
@@ -485,44 +489,31 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                       </div>
                       <div className="space-y-1">
-                        <Label>Teléfono* </Label>
-                        <Input 
-                        {...register("phone")}
-                        placeholder="Tu número de teléfono (10 dígitos)" />
-                        {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
-                      </div>
-                      <div className="space-y-1">
                         <Label>Teléfono*</Label>
-                        <div className="flex gap-4">
-                          <select
-                            {...register("countryCode")}
-                            className="border rounded-md px-2 py-2 bg-white"
-                            defaultValue="+52"
+                        <div className="flex flex-row gap-4">
+                        <Select 
+                          className="flex-[2]"
+                          {...register("countryCode")}
+                          defaultValue="+52"
                           >
                             <option value="+52">🇲🇽 +52</option>
                             <option value="+1">🇺🇸 +1</option>
                             <option value="+57">🇨🇴 +57</option>
                             <option value="+34">🇪🇸 +34</option>
                             <option value="+44">🇬🇧 +44</option>
-                          </select>
-                          <Input
-                            {...register("phone", {
-                              required: "El número es obligatorio",
-                              validate: (value) => {
-                                const fullPhone = `${value}`;
-                                const pattern = /^\+\d{10,}$/;
-                                if (!pattern.test(fullPhone)) {
-                                  return "El teléfono debe tener formato +52XXXXXXXXXX y al menos 10 dígitos";
-                                }
-                                return true;
-                              },
-                            })}
+                        </Select>
+
+                        <Input
+                            {...register("phone")}
                             placeholder="Tu número de teléfono"
-                            className="flex-1"
+                            className="flex-[10]"
                           />
                         </div>
                         {errors.phone && (
                           <p className="text-red-500 text-sm">{errors.phone.message}</p>
+                        )}
+                        {errors.countryCode && (
+                          <p className="text-red-500 text-sm">{errors.countryCode.message}</p>
                         )}
                       </div>
                       <div className="space-y-1">
