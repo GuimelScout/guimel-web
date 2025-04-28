@@ -248,7 +248,7 @@ const Location = ({ params }: { params: { link: string } }) => {
       <div className="listingSection__wrap">
         <h2 className="text-2xl font-semibold">Descripción de actividades</h2>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
-          <DocumentRenderer document={data?.activity?.descriptionActivities?.document ?? []} renderers={renderers} />;
+          <DocumentRenderer document={data?.activity?.descriptionActivities?.document ?? []} renderers={renderers} />
       </div>
     );
   };

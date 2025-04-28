@@ -1,7 +1,7 @@
 "use client";
 
 import { Tab } from "@headlessui/react";
-import React, { FC, Fragment, useState } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
 import visaPng from "@/images/vis.png";
 import mastercardPng from "@/images/mastercard.svg";
 import Input from "@/shared/Input";
@@ -28,6 +28,7 @@ import { Toaster, toast } from 'sonner'
 import { useRouter } from "next/navigation";
 import Route from "@/routers/routes";
 import Select from "@/shared/Select";
+import { useUser } from "context/UserContext";
 
 export interface CheckOutPagePageMainProps {
   className?: string;
@@ -42,6 +43,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter();
+  const { user, loading } = useUser();
 
   const { startD, endD, guestss, activity } = params;
 
@@ -107,14 +109,27 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      nameCard: "",
-      lastName: "",
-      email: "",
+      nameCard: user?.name ?? "",
+      lastName: user?.lastName ?? "",
+      email: user?.email ?? "",
       countryCode: "+52",
-      phone: "",
+      phone: user?.phone ?? "",
       notes: "",
     },
   });
+
+  useEffect(() => {
+    if (user) {
+      reset({
+        nameCard: user.name ?? "",
+        lastName: user.lastName ?? "",
+        email: user.email ?? "",
+        countryCode: "+52",
+        phone: user.phone ?? "",
+        notes: "",
+      });
+    }
+  }, [user, reset]);
 
 
   const onSubmit = async (dataForm:any) => {
@@ -394,6 +409,8 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
   };
 
   const renderMain = () => {
+  
+ 
     return (
       <div className="w-full flex flex-col sm:rounded-2xl sm:border border-neutral-200 dark:border-neutral-700 space-y-8 px-0 sm:p-6 xl:p-8">
         <h2 className="text-3xl lg:text-4xl font-semibold">

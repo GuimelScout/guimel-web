@@ -8,12 +8,19 @@ import "rc-slider/assets/index.css";
 import Footer from "@/components/Footer";
 import FooterNav from "@/components/FooterNav";
 import ApolloWrapper from "@/utils/apolloWrapper";
+import { UserProvider } from "context/UserContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",
   weight: ["300", "400", "500", "600", "700"],
 });
+
+export const metadata = {
+  title: "Guimel Community",
+  description: "Sitio oficial de Guimel para reservas, actividades y más",
+  keywords: ["Guimel", "Reservas", "Servicios"],
+};
 
 export default function RootLayout({
   children,
@@ -25,16 +32,15 @@ export default function RootLayout({
 
   return (
     <html lang="es" className={poppins.className}>
-      <head>
-        <meta title="Guimel" />
-      </head>
         <body className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
           <ApolloWrapper>
+            <UserProvider>
               <ClientCommons />
               <SiteHeader />
               {children}
               <FooterNav />
               <Footer />
+            </UserProvider>
           </ApolloWrapper>
         </body>
     </html>

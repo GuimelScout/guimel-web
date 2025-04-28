@@ -1,6 +1,8 @@
+"use client"
+
 import React, { FC } from "react";
 import MainNav1 from "./MainNav1";
-import MainNav2 from "./MainNav2";
+import { useUser } from "context/UserContext";
 
 export interface HeaderProps {
   navType?: "MainNav1" | "MainNav2";

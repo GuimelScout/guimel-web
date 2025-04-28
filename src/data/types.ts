@@ -83,6 +83,8 @@ export interface Host {
   secondLastName: string; 
   lastName: string;
   description: string;
+  email: string; 
+  phone:string;
   activityCount: number;
   lodgingCount: number;
   reviewsCount: number;
@@ -91,6 +93,8 @@ export interface Host {
   verified: boolean;
   createdAt: Date;
 }
+
+export type AuthenticatedItem = Host;
 
 export interface Include {
   name: string;

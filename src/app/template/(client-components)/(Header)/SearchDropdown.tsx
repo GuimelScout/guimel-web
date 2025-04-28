@@ -46,7 +46,7 @@ const SearchDropdown: FC<Props> = ({ className = "" }) => {
                       ref={inputRef}
                       rounded="rounded-full"
                       type="search"
-                      placeholder="Type and press enter"
+                      placeholder="Buscar..."
                     />
                     <input type="submit" hidden value="" />
                   </form>

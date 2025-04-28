@@ -165,7 +165,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
           <div className="flex-1 flex justify-between">
             {/* Logo (lg+) */}
             <div className="relative z-10 hidden md:flex flex-1 items-center">
-              <Logo />
+            <Logo imgLight={{src:"/logo-light.svg",height:280, width:280}} img={{src:"/logo-dark.svg",height:280, width:280}} />
             </div>
 
             <div className="flex flex-[2] lg:flex-none mx-auto">
@@ -189,7 +189,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
                 </Link> */}
 
                 <NotifyDropdown />
-                <AvatarDropdown />
+                {/* <AvatarDropdown user={null} /> */}
                 <MenuBar />
               </div>
             </div>

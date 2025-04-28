@@ -1,23 +1,51 @@
-import React, { FC } from "react";
+"use client"
+
+import React from "react";
 import Label from "@/components/Label";
 import Avatar from "@/shared/Avatar";
-import ButtonPrimary from "@/shared/ButtonPrimary";
 import Input from "@/shared/Input";
-import Select from "@/shared/Select";
-import Textarea from "@/shared/Textarea";
+import { Toaster } from "sonner";
+import { useUser } from "context/UserContext";
+import SkeletonLoader from "@/shared/Guimel/SkeletonLoader";
 
-export interface AccountPageProps {}
+export interface AccountPageProps {
+}
 
-const AccountPage = () => {
+export default function AccountPage ({}: AccountPageProps) {
+
+  const { user, loading } = useUser();
+
+  if (loading) {
+    return (
+      <div className="space-y-6 sm:space-y-8">
+        <h2 className="text-3xl font-semibold">Información de tu cuenta</h2>
+        <div className="flex flex-col md:flex-row">
+        <div className="flex-shrink-0 flex items-start">
+          <SkeletonLoader width="w-32" height="h-32" rounded="rounded-full" className="mx-auto" />
+        </div>
+        <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
+          <div className="space-y-8">
+            <SkeletonLoader height="h-10" />
+            <SkeletonLoader height="h-10" />
+            <SkeletonLoader height="h-10" />
+            <SkeletonLoader height="h-10" />
+            <SkeletonLoader height="h-10" />
+          </div>
+        </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* HEADING */}
-      <h2 className="text-3xl font-semibold">Account infomation</h2>
+      <h2 className="text-3xl font-semibold">Información de tu cuenta</h2>
       <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
       <div className="flex flex-col md:flex-row">
         <div className="flex-shrink-0 flex items-start">
           <div className="relative rounded-full overflow-hidden flex">
-            <Avatar sizeClass="w-32 h-32" />
+            <Avatar sizeClass="w-32 h-32" imgUrl={user!.image?.url ?? undefined}/>
             <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
               <svg
                 width="30"
@@ -35,7 +63,7 @@ const AccountPage = () => {
                 />
               </svg>
 
-              <span className="mt-1 text-xs">Change Image</span>
+              <span className="mt-1 text-xs">Cambiar</span>
             </div>
             <input
               type="file"
@@ -45,55 +73,44 @@ const AccountPage = () => {
         </div>
         <div className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6">
           <div>
-            <Label>Name</Label>
-            <Input className="mt-1.5" defaultValue="Eden Tuan" />
+            <Label>Nombre</Label>
+            <Input className="mt-1.5" defaultValue={user?.name} />
           </div>
-          {/* ---- */}
           <div>
-            <Label>Gender</Label>
-            <Select className="mt-1.5">
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </Select>
+            <Label>Apellido Materno</Label>
+            <Input className="mt-1.5" defaultValue={user?.lastName} />
           </div>
-          {/* ---- */}
           <div>
-            <Label>Username</Label>
-            <Input className="mt-1.5" defaultValue="@eden_tuan" />
+            <Label>Apellido Paterno</Label>
+            <Input className="mt-1.5" defaultValue={user?.secondLastName} />
           </div>
-          {/* ---- */}
           <div>
             <Label>Email</Label>
-            <Input className="mt-1.5" defaultValue="example@email.com" />
+            <Input className="mt-1.5" defaultValue={user?.email} />
           </div>
-          {/* ---- */}
-          <div className="max-w-lg">
+          {/* <div className="max-w-lg">
             <Label>Date of birth</Label>
             <Input className="mt-1.5" type="date" defaultValue="1990-07-22" />
-          </div>
-          {/* ---- */}
-          <div>
+          </div> */}
+          {/* <div>
             <Label>Addess</Label>
             <Input className="mt-1.5" defaultValue="New york, USA" />
+          </div> */}
+          <div>
+            <Label>Teléfono</Label>
+            <Input className="mt-1.5" defaultValue={user?.phone} />
           </div>
           {/* ---- */}
-          <div>
-            <Label>Phone number</Label>
-            <Input className="mt-1.5" defaultValue="003 888 232" />
-          </div>
-          {/* ---- */}
-          <div>
+          {/* <div>
             <Label>About you</Label>
             <Textarea className="mt-1.5" defaultValue="..." />
-          </div>
-          <div className="pt-2">
-            <ButtonPrimary>Update info</ButtonPrimary>
-          </div>
+          </div> */}
+          {/* <div className="pt-2">
+            <ButtonPrimary>Actualizar Información</ButtonPrimary>
+          </div> */}
         </div>
       </div>
+      <Toaster position="top-right" closeButton richColors/>
     </div>
   );
 };
-
-export default AccountPage;

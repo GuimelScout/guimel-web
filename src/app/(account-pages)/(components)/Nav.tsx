@@ -1,28 +1,26 @@
 "use client";
 
-import { Route } from "@/routers/types";
+import { Route } from "@/routers/routes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-
 export const Nav = () => {
   const pathname = usePathname();
 
-/*   const listNav: Route[] = [
-    "/account",
-    "/account-savelists",
-    "/account-password",
-    "/account-billing",
-  ]; */
+  const listNav: any[] = [
+    Route.account,
+    Route.bookings,
+    Route.payments,
+  ] 
 
   return (
     <div className="container">
       <div className="flex space-x-8 md:space-x-14 overflow-x-auto hiddenScrollbar">
-       {/*  {listNav.map((item) => {
+       {listNav.map((item,i) => {
           const isActive = pathname === item;
           return (
             <Link
-              key={item}
+              key={i}
               href={item}
               className={`block py-5 md:py-8 border-b-2 flex-shrink-0 capitalize ${
                 isActive
@@ -30,10 +28,10 @@ export const Nav = () => {
                   : "border-transparent"
               }`}
             >
-              {item.replace("-", " ").replace("/", " ")}
+              {item.toString().replace("-", " ").replace("/", " ")}
             </Link>
           );
-        })} */}
+        })} 
       </div>
     </div>
   );

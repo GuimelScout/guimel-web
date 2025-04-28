@@ -1,3 +1,5 @@
+"use client"
+
 import React, { FC } from "react";
 import Logo from "@/shared/Logo";
 import Navigation from "@/shared/Navigation/Navigation";
@@ -6,18 +8,20 @@ import ButtonPrimary from "@/shared/ButtonPrimary";
 import MenuBar from "@/shared/MenuBar";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
 import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
-import LangDropdown from "./LangDropdown";
+import { useUser } from "context/UserContext";
+import AvatarDropdown from "./AvatarDropdown";
 
 export interface MainNav1Props {
   className?: string;
 }
 
-const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
+const MainNav1: FC<MainNav1Props> = ({ className = ""}) => {
+  const { user, loading } = useUser();
   return (
     <div className={`nc-MainNav1 relative z-10 ${className}`}>
       <div className="px-4 lg:container h-20 relative flex justify-between">
         <div className="hidden md:flex justify-start flex-1 space-x-4 sm:space-x-10">
-          <Logo className="w-24 self-center" />
+          <Logo className="w-24 self-center" imgLight={{src:"/logo-light.svg",height:280, width:280}} img={{src:"/logo-dark.svg",height:280, width:280}} />
           <Navigation />
         </div>
 
@@ -32,9 +36,17 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
             <SwitchDarkMode />
             <SearchDropdown className="flex items-center" />
             <div className="px-1" />
-            <ButtonPrimary className="self-center" href="/login">
-              Iniciar Sesión
-            </ButtonPrimary>
+            {
+              (user && !loading) 
+              ?
+              <>
+                <AvatarDropdown user={user} />
+              </>
+              :
+              <ButtonPrimary className="self-center" href="/login">
+                Iniciar Sesión
+              </ButtonPrimary>
+            }
           </div>
 
           <div className="flex xl:hidden items-center">

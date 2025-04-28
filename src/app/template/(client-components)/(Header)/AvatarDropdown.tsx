@@ -3,11 +3,14 @@ import { Fragment } from "react";
 import Avatar from "@/shared/Avatar";
 import SwitchDarkMode2 from "@/shared/SwitchDarkMode2";
 import Link from "next/link";
+import { AuthenticatedItem } from "@/data/types";
+import { Route } from "@/routers/routes";
 interface Props {
   className?: string;
+  user?: AuthenticatedItem
 }
 
-export default function AvatarDropdown({ className = "" }: Props) {
+export default function AvatarDropdown({ className = "", user }: Props) {
   return (
     <>
       <Popover className={`AvatarDropdown relative flex ${className}`}>
@@ -16,7 +19,7 @@ export default function AvatarDropdown({ className = "" }: Props) {
             <Popover.Button
               className={`self-center w-10 h-10 sm:w-12 sm:h-12 rounded-full text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none flex items-center justify-center`}
             >
-              <Avatar sizeClass="w-8 h-8 sm:w-9 sm:h-9" />
+              <Avatar hasChecked={user!.verified} sizeClass="h-10 w-10" radius="rounded-full" imgUrl={user!.image?.url ?? undefined} />
             </Popover.Button>
             <Transition
               as={Fragment}
@@ -31,19 +34,23 @@ export default function AvatarDropdown({ className = "" }: Props) {
                 <div className="overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6">
                     <div className="flex items-center space-x-3">
-                      <Avatar sizeClass="w-12 h-12" />
-
+                      <Avatar hasChecked={user!.verified} sizeClass="h-10 w-10" radius="rounded-full" imgUrl={user!.image?.url ?? undefined} />
                       <div className="flex-grow">
-                        <h4 className="font-semibold">Eden Smith</h4>
-                        <p className="text-xs mt-0.5">Los Angeles, CA</p>
+                        <h4 className="font-semibold">{user?.name} {user?.lastName}</h4>
+                        <p className="text-xs mt-0.5">
+                          Te uniste el {user!.createdAt 
+                          ? new Date(user!.createdAt).toLocaleDateString("es-ES", { year: "numeric", month: "long" }) 
+                          : "Fecha desconocida"}
+                          </p>
+                        
                       </div>
                     </div>
 
                     <div className="w-full border-b border-neutral-200 dark:border-neutral-700" />
 
                     {/* ------------------ 1 --------------------- */}
-                   {/*  <Link
-                      href={"/account"}
+                   <Link
+                      href={Route.account}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                       onClick={() => close()}
                     >
@@ -72,13 +79,12 @@ export default function AvatarDropdown({ className = "" }: Props) {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"My Account"}</p>
+                        <p className="text-sm font-medium ">Mi Cuenta</p>
                       </div>
-                    </Link> */}
+                    </Link> 
 
-                    {/* ------------------ 2 --------------------- */}
-                    {/* <Link
-                      href={"/author"}
+                    <Link
+                      href={Route.bookings}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                       onClick={() => close()}
                     >
@@ -124,9 +130,64 @@ export default function AvatarDropdown({ className = "" }: Props) {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"My bookings"}</p>
+                        <p className="text-sm font-medium ">Mis Reservas</p>
                       </div>
-                    </Link> */}
+                    </Link>
+
+                    <Link
+                      href={Route.payments}
+                      className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                      onClick={() => close()}
+                    >
+                      <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <rect
+                          x="3"
+                          y="5"
+                          width="18"
+                          height="14"
+                          rx="2"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M3 10H21"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M7 15H9"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M11 15H13"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium ">Pagos</p>
+                      </div>
+                    </Link>
 
                     {/* ------------------ 2 --------------------- */}
                     {/* <Link
