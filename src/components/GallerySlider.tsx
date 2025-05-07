@@ -29,7 +29,7 @@ export default function GallerySlider({
   uniqueID = "uniqueID",
   galleryClass = "rounded-xl",
   //@ts-ignore
-  href = "/listing-stay-detail",
+  href,
   navigation = true,
 }: GallerySliderProps) {
   const [loaded, setLoaded] = useState(false);
@@ -75,31 +75,58 @@ export default function GallerySlider({
       >
         {/* Main image */}
         <div className={`w-full overflow-hidden ${galleryClass}`}>
-          <Link
+          {
+            href ? 
+            <Link
             href={href}
             className={`relative flex items-center justify-center ${ratioClass}`}
-          >
-            <AnimatePresence initial={false} custom={direction}>
-              <motion.div
-                key={index}
-                custom={direction}
-                variants={variants(340, 1)}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="absolute inset-0"
-              >
-                <Image
-                  src={currentImage?.image?.url ?? ""}
-                  fill
-                  alt={currentImage?.description}
-                  className={`object-cover ${imageClass}`}
-                  onLoadingComplete={() => setLoaded(true)}
-                  sizes="(max-width: 1025px) 100vw, 300px"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </Link>
+            >
+              <AnimatePresence initial={false} custom={direction}>
+                <motion.div
+                  key={index}
+                  custom={direction}
+                  variants={variants(340, 1)}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={currentImage?.image?.url ?? ""}
+                    fill
+                    alt={currentImage?.description}
+                    className={`object-cover ${imageClass}`}
+                    onLoadingComplete={() => setLoaded(true)}
+                    sizes="(max-width: 1025px) 100vw, 300px"
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </Link>
+            : 
+            <div className={`relative flex items-center justify-center ${ratioClass}`}>
+              <AnimatePresence initial={false} custom={direction}>
+                <motion.div
+                  key={index}
+                  custom={direction}
+                  variants={variants(340, 1)}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={currentImage?.image?.url ?? ""}
+                    fill
+                    alt={currentImage?.description}
+                    className={`object-cover ${imageClass}`}
+                    onLoadingComplete={() => setLoaded(true)}
+                    sizes="(max-width: 1025px) 100vw, 300px"
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          }
+          
         </div>
 
         {/* Buttons + bottom nav bar */}

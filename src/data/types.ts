@@ -1,3 +1,4 @@
+import { BookingType } from "@/components/Guimel/account/types";
 import { Route } from "@/routers/types";
 import { StaticImageData } from "next/image";
 
@@ -33,27 +34,20 @@ export interface ActivityType {
   lodgingCount?: number;
 }
 
-export interface BookingType {
-  id:string;
-  guestss:number;
-  start_date: string;
-  end_date: string;
-  code: string;
-  status: string;
-  createdAt: Date;
-  activity: ActivityType;
-  lodging?: LodgingType;
-  payment: PaymentType;
-}
+
 
 export interface PaymentType{
   id: string;
   amount: string;
   notes: string;
+  status: string;
   paymentMethod: PaymentMethodType;
+  booking: BookingType;
+  createdAt: Date;
 }
 
 export interface PaymentMethodType{
+  id: string;
   lastFourDigits: number;
   cardType: string;
 }
@@ -79,6 +73,7 @@ export interface LodgingType {
 }
 
 export interface Host {
+  id: string;
   name: string; 
   secondLastName: string; 
   lastName: string;
@@ -140,10 +135,6 @@ export interface LocationDataType {
 
 export interface ActivityDataType {
   activity: ActivityType;
-}
-
-export interface BookingDataType {
-  booking: BookingType;
 }
 
 export interface LodgingDataType {

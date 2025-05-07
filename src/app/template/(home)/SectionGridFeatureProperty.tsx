@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from "react";
 import { DEMO_STAY_LISTINGS } from "@/data/listings";
 import { StayDataType } from "@/data/types";
 import ButtonPrimary from "@/shared/ButtonPrimary";
-import PropertyCardH from "@/components/PropertyCardH";
+import PropertyCardH from "@/components/Guimel/account/BookinCard";
 import HeaderFilter from "@/components/HeaderFilter";
 
 // OTHER DEMO WILL PASS PROPS

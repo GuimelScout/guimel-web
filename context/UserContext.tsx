@@ -1,4 +1,3 @@
-// context/UserContext.tsx
 "use client";
 
 import { AuthenticatedItem } from "@/data/types";
@@ -8,13 +7,15 @@ import { createContext, useContext, useState, useEffect } from "react";
 interface UserContextType {
   user: AuthenticatedItem | undefined;
   loading: boolean;
-  refreshUser: () => Promise<void>; // para poder forzar actualización manual
+  refreshUser: () => Promise<void>;
+  setUser: React.Dispatch<React.SetStateAction<AuthenticatedItem | undefined>>;
 }
 
 const UserContext = createContext<UserContextType>({
   user: undefined,
   loading: true,
   refreshUser: async () => {},
+  setUser: async () => {},
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -62,7 +63,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, loading, refreshUser }}>
+    <UserContext.Provider value={{ user, loading, refreshUser, setUser }}>
       {children}
     </UserContext.Provider>
   );

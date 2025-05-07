@@ -51,7 +51,7 @@ const CommentListing: FC<CommentListingProps> = ({
             </div>
             <span className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">
             {data?.createdAt
-              ? new Date(data.createdAt).toLocaleDateString("en-US", { 
+              ? new Date(data.createdAt).toLocaleDateString("es-MX", { 
                   month: "short",
                   day: "2-digit",
                   year: "numeric",

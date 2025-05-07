@@ -11,9 +11,6 @@ import StartRating from "@/components/StartRating";
 import Badge from "@/shared/Badge";
 import LikeSaveBtns from "@/components/LikeSaveBtns";
 import Avatar from "@/shared/Avatar";
-import StayDatesRangeInput from "../../../components/Guimel/activity/StayDatesRangeInput";
-import GuestsInput from "../../../components/Guimel/activity/GuestsInput";
-import ButtonPrimary from "@/shared/ButtonPrimary";
 import { useEffect, useState } from "react";
 import FiveStartIconForRate from "@/components/FiveStartIconForRate";
 import Input from "@/shared/Input";
@@ -23,7 +20,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CREATE_REVIEW, GET_REVIEWS } from "@/components/Guimel/review/QueryReview.queries";
-import dateFormat from "@/utils/date-format-helper";
 import { LODGING_QUERY } from "@/components/Guimel/hospedaje/QueryHospedaje.queries";
 
 const Location = ({ params }: { params: { link: string } }) => {

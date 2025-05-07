@@ -5,9 +5,10 @@ import React, { FC } from "react";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import Image from "next/image";
 import { useQuery } from "@apollo/client";
-import { ActivityDataType, BookingDataType, CARD_TYPE } from "@/data/types";
+import { ActivityDataType, CARD_TYPE } from "@/data/types";
 import { ACTIVITY_QUERY, BOOKING_QUERY } from "@/components/Guimel/activity/QueryActivity.queries";
 import dateFormat, { formatDateSpanish, parseLocalDateString } from "@/utils/date-format-helper";
+import { BookingDataType } from "@/components/Guimel/account/types";
 
 export interface PayPageProps {
   searchParams: { [key: string]: string | undefined };
@@ -46,24 +47,24 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
                   fill
                   className="object-cover"
                   alt={data?.booking?.activity?.name || searchParams.activity || "-"}
-                  src={data?.booking?.activity.image.url!}
+                  src={data?.booking?.activity?.image.url!}
                 />
               </div>
             </div>
             <div className="pt-5  sm:pb-5 sm:px-5 space-y-3">
               <div>
                 <span className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-1">
-                  {data?.booking.activity.address}
+                  {data?.booking.activity?.address}
                 </span>
                 <span className="text-base sm:text-lg font-medium mt-1 block">
-                  {data?.booking.activity.name}
+                  {data?.booking.activity?.name}
                 </span>
               </div>
               {/* <span className="block  text-sm text-neutral-500 dark:text-neutral-400">
                 2 beds · 2 baths
               </span> */}
               <div className="w-10 border-b border-neutral-200  dark:border-neutral-700"></div>
-              <StartRating point={data?.booking.activity.reviewStar} reviewCount={data?.booking.activity.reviewCount} />
+              <StartRating point={data?.booking.activity?.reviewStar} reviewCount={data?.booking.activity?.reviewCount} />
             </div>
           </div>
 

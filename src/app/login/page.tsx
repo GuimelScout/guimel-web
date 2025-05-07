@@ -16,8 +16,8 @@ import { AUTHENTICATE_WITH_PASSWORD } from "@/components/Guimel/login/QueryLogin
 import { Toaster } from "sonner";
 import { handleGqlError } from "@/utils/error-handling";
 import { useRouter } from "next/navigation";
-import Route from "@/routers/routes";
 import { useUser } from "context/UserContext";
+import { RouteGuimel } from "@/routers/routes";
 
 export interface PageLoginProps {}
 
@@ -31,7 +31,7 @@ const schema = z.object({
 
 const PageLogin: FC<PageLoginProps> = ({}) => {
   const router = useRouter();
-  const { refreshUser } = useUser();
+  const { refreshUser, user } = useUser();
 
   const [authenticateWithPassword, { loading }] = useMutation(
     AUTHENTICATE_WITH_PASSWORD,
@@ -58,8 +58,7 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
         "UserAuthenticationWithPasswordSuccess"
       ) {
         refreshUser();
-        //@ts-ignore
-        router.push(Route.account);
+        router.push(RouteGuimel.account);
       } else {
         throw new Error("Autenticación fallida. Comprueba tus credenciales.");
       }
@@ -67,6 +66,10 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
       handleGqlError(error);
     }
   };
+
+  if(user){
+    router.push(RouteGuimel.account);
+  }
 
 
   return (
@@ -95,7 +98,7 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
               <span className="flex justify-between items-center text-neutral-800 dark:text-neutral-200">
                 Contraseña
                 {/* @ts-ignore */}
-               <Link href={Route.login} className="text-sm underline font-medium">
+               <Link href={RouteGuimel.login} className="text-sm underline font-medium">
                   ¿Olvidaste la contraseña?
                 </Link> 
               </span>
@@ -111,13 +114,13 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
           <span className="block text-center text-neutral-700 dark:text-neutral-300">
            ¿Eres nuevo? {` `}
             {/* @ts-ignore */}
-            <Link href="/signup" className="font-semibold underline">
+            <Link href={RouteGuimel.signup}className="font-semibold underline">
               Registrate aquí
             </Link> 
           </span>
         </div>
       </div>
-      {/* <Toaster position="top-right" closeButton richColors/> */}
+      <Toaster position="top-right" closeButton richColors/>
     </div>
   );
 };

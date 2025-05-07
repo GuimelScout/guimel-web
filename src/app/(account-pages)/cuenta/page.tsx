@@ -7,12 +7,12 @@ import Input from "@/shared/Input";
 import { Toaster } from "sonner";
 import { useUser } from "context/UserContext";
 import SkeletonLoader from "@/shared/Guimel/SkeletonLoader";
+import { withAuth } from "hooks/withAuth";
 
 export interface AccountPageProps {
 }
 
-export default function AccountPage ({}: AccountPageProps) {
-
+ function AccountPage ({}: AccountPageProps) {
   const { user, loading } = useUser();
 
   if (loading) {
@@ -40,12 +40,34 @@ export default function AccountPage ({}: AccountPageProps) {
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* HEADING */}
-      <h2 className="text-3xl font-semibold">Información de tu cuenta</h2>
+      <h2 className="text-3xl font-semibold flex flex-row gap-4 items-center">
+      <svg
+          width="50"
+          height="50"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>Información de tu cuenta</h2>
       <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
       <div className="flex flex-col md:flex-row">
         <div className="flex-shrink-0 flex items-start">
           <div className="relative rounded-full overflow-hidden flex">
-            <Avatar sizeClass="w-32 h-32" imgUrl={user!.image?.url ?? undefined}/>
+            <Avatar sizeClass="w-32 h-32" imgUrl={user?.image?.url ?? undefined}/>
             <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
               <svg
                 width="30"
@@ -114,3 +136,6 @@ export default function AccountPage ({}: AccountPageProps) {
     </div>
   );
 };
+
+
+export default withAuth(AccountPage);

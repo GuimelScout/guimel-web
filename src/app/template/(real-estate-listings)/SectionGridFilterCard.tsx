@@ -4,7 +4,7 @@ import { StayDataType } from "@/data/types";
 import Pagination from "@/shared/Pagination";
 import TabFilters from "./TabFilters";
 import Heading2 from "@/shared/Heading2";
-import PropertyCardH from "@/components/PropertyCardH";
+import PropertyCardH from "@/components/Guimel/account/BookinCard";
 
 export interface SectionGridFilterCardProps {
   className?: string;

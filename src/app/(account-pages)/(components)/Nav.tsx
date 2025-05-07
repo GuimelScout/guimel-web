@@ -1,6 +1,6 @@
 "use client";
 
-import { Route } from "@/routers/routes";
+import { RouteGuimel } from "@/routers/routes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -8,9 +8,9 @@ export const Nav = () => {
   const pathname = usePathname();
 
   const listNav: any[] = [
-    Route.account,
-    Route.bookings,
-    Route.payments,
+    RouteGuimel.account,
+    RouteGuimel.bookings,
+    RouteGuimel.payments,
   ] 
 
   return (

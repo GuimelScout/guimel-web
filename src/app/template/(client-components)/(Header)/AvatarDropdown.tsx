@@ -1,16 +1,27 @@
+"use client"
+
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Avatar from "@/shared/Avatar";
 import SwitchDarkMode2 from "@/shared/SwitchDarkMode2";
 import Link from "next/link";
 import { AuthenticatedItem } from "@/data/types";
-import { Route } from "@/routers/routes";
+import { RouteGuimel } from "@/routers/routes";
+import { useUser } from "context/UserContext";
+import { logOut } from "@/utils/logOut";
+import { useRouter } from "next/navigation";
+import { LOG_OUT_MUTATION } from "@/components/Guimel/login/QueryLogin.queries";
+import { useMutation } from "@apollo/client";
 interface Props {
   className?: string;
-  user?: AuthenticatedItem
+  user?: AuthenticatedItem;
 }
 
 export default function AvatarDropdown({ className = "", user }: Props) {
+  const { setUser, refreshUser } = useUser();
+  const router = useRouter();
+  const [logout] = useMutation(LOG_OUT_MUTATION);
+
   return (
     <>
       <Popover className={`AvatarDropdown relative flex ${className}`}>
@@ -50,7 +61,7 @@ export default function AvatarDropdown({ className = "", user }: Props) {
 
                     {/* ------------------ 1 --------------------- */}
                    <Link
-                      href={Route.account}
+                      href={RouteGuimel.account}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                       onClick={() => close()}
                     >
@@ -84,7 +95,7 @@ export default function AvatarDropdown({ className = "", user }: Props) {
                     </Link> 
 
                     <Link
-                      href={Route.bookings}
+                      href={RouteGuimel.bookings}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                       onClick={() => close()}
                     >
@@ -135,7 +146,7 @@ export default function AvatarDropdown({ className = "", user }: Props) {
                     </Link>
 
                     <Link
-                      href={Route.payments}
+                      href={RouteGuimel.payments}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                       onClick={() => close()}
                     >
@@ -253,7 +264,7 @@ export default function AvatarDropdown({ className = "", user }: Props) {
                           </svg>
                         </div>
                         <div className="ml-4">
-                          <p className="text-sm font-medium ">{"Dark theme"}</p>
+                          <p className="text-sm font-medium ">Tema oscuro</p>
                         </div>
                       </div>
                       <SwitchDarkMode2 />
@@ -318,15 +329,20 @@ export default function AvatarDropdown({ className = "", user }: Props) {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Help"}</p>
+                        <p className="text-sm font-medium ">Ayuda</p>
                       </div>
                     </Link>
 
                     {/* ------------------ 2 --------------------- */}
-                    <Link
-                      href={"/#"}
+                    <div
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                      onClick={() => close()}
+                      onClick={async () => {
+                        close();
+                        await logout();
+                        setUser(undefined);
+                        refreshUser();
+                        router.push(RouteGuimel.home);
+                      }}
                     >
                       <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
                         <svg
@@ -360,9 +376,9 @@ export default function AvatarDropdown({ className = "", user }: Props) {
                         </svg>
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm font-medium ">{"Log out"}</p>
+                        <p className="text-sm font-medium ">Cerrar sesión</p>
                       </div>
-                    </Link>
+                    </div>
                   </div>
                 </div>
               </Popover.Panel>

@@ -9,7 +9,7 @@ import Checkbox from "@/shared/Checkbox";
 import Pagination from "@/shared/Pagination";
 import TabFilters from "./TabFilters";
 import Heading2 from "@/shared/Heading2";
-import PropertyCardH from "@/components/PropertyCardH";
+import PropertyCardH from "@/components/Guimel/account/BookinCard";
 
 const DEMO_EXPERIENCES = DEMO_STAY_LISTINGS.filter((_, i) => i < 12);
 

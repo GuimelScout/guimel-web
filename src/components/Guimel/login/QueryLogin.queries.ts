@@ -16,3 +16,9 @@ export const AUTHENTICATE_WITH_PASSWORD = gql`
     }
   }
 `;
+
+export const LOG_OUT_MUTATION = gql`
+  mutation LogOut {
+    endSession
+  }
+`;

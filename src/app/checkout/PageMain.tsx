@@ -26,7 +26,6 @@ import { CREATE_PAYMENT_METHOD, CREATE_USER, GET_PAYMENT_METHOD, GET_STRIPE_PAYM
 import {useStripe, useElements, CardElement} from "@stripe/react-stripe-js";
 import { Toaster, toast } from 'sonner'
 import { useRouter } from "next/navigation";
-import Route from "@/routers/routes";
 import Select from "@/shared/Select";
 import { useUser } from "context/UserContext";
 
@@ -224,7 +223,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                 lastFourDigits: paymentMethod.card?.last4.toString(),
                 expMonth: paymentMethod.card?.exp_month.toString(),
                 expYear: paymentMethod.card?.exp_year.toString(),
-                stripeProcessorId: "result.setupIntent?.id",
+                stripeProcessorId: "-",
                 stripePaymentMethodId: paymentMethod.id,
                 address: "",
                 postalCode: paymentMethod.billing_details.address?.postal_code?.toString(),
@@ -279,7 +278,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
             setLoadingPayment(false);
             toast.success(response.data.makePayment.message);
             //@ts-ignore
-            router.push(`${Route.payDone}?booking=${response.data.makePayment.data.booking}`);
+            router.push(`${RouteGuimel.payDone}?booking=${response.data.makePayment.data.booking}`);
           } else {
             setLoadingPayment(false);
             toast.error(response.data.makePayment.message, {
