@@ -1,15 +1,17 @@
 "use client"
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useUser } from "context/UserContext";
 import SkeletonLoader from "@/shared/Guimel/SkeletonLoader";
 import { PAYMENTS_QUERY } from "@/components/Guimel/account/QueryAccount.queries";
 import { PaymentsDataType, STATUS_PAYMENTS, STATUS_PAYMENTS_COLORS } from "@/components/Guimel/account/types";
 import { useQuery } from "@apollo/client";
 import { PaymentType } from "@/data/types";
-import { withAuth } from "hooks/withAuth";
+import { useRouter } from "next/navigation";
+import { RouteGuimel } from "@/routers/routes";
 
 const AccountBilling = () => {
+  const router = useRouter();
   const { user, loading } = useUser();
 
   if (loading) {
@@ -28,6 +30,12 @@ const AccountBilling = () => {
       </div>
     );
   }
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push(RouteGuimel.login);
+    }
+  }, [user, loading]);
 
   const { data, loading: loadingPayments } = useQuery<PaymentsDataType>(PAYMENTS_QUERY, {
     variables: {
@@ -177,4 +185,4 @@ const AccountBilling = () => {
   );
 };
 
-export default withAuth(AccountBilling);
+export default AccountBilling;

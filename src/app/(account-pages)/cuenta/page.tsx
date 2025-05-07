@@ -1,18 +1,20 @@
 "use client"
 
-import React from "react";
+import React, { useEffect } from "react";
 import Label from "@/components/Label";
 import Avatar from "@/shared/Avatar";
 import Input from "@/shared/Input";
 import { Toaster } from "sonner";
 import { useUser } from "context/UserContext";
 import SkeletonLoader from "@/shared/Guimel/SkeletonLoader";
-import { withAuth } from "hooks/withAuth";
+import { RouteGuimel } from "@/routers/routes";
+import { useRouter } from "next/navigation";
 
 export interface AccountPageProps {
 }
 
  function AccountPage ({}: AccountPageProps) {
+  const router = useRouter();
   const { user, loading } = useUser();
 
   if (loading) {
@@ -36,6 +38,12 @@ export interface AccountPageProps {
       </div>
     );
   }
+
+  useEffect(() => {
+      if (!loading && !user) {
+        router.push(RouteGuimel.login);
+      }
+    }, [user, loading]);
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -68,7 +76,7 @@ export interface AccountPageProps {
         <div className="flex-shrink-0 flex items-start">
           <div className="relative rounded-full overflow-hidden flex">
             <Avatar sizeClass="w-32 h-32" imgUrl={user?.image?.url ?? undefined}/>
-            <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
+            {/* <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-neutral-50 cursor-pointer">
               <svg
                 width="30"
                 height="30"
@@ -86,7 +94,7 @@ export interface AccountPageProps {
               </svg>
 
               <span className="mt-1 text-xs">Cambiar</span>
-            </div>
+            </div> */}
             <input
               type="file"
               className="absolute inset-0 opacity-0 cursor-pointer"
@@ -138,4 +146,4 @@ export interface AccountPageProps {
 };
 
 
-export default withAuth(AccountPage);
+export default AccountPage;

@@ -10,9 +10,9 @@ import ButtonPrimary from "@/shared/ButtonPrimary";
 import { RouteGuimel } from "@/routers/routes";
 import { BookingsDataType, BookingType } from "@/components/Guimel/account/types";
 import { useRouter } from "next/navigation";
-import { withAuth } from "hooks/withAuth";
 
 const AccountSavelists = () => {
+  const router = useRouter();
   const { user, loading } = useUser();
 
   if (loading) {
@@ -32,6 +32,12 @@ const AccountSavelists = () => {
       </div>
     );
   }
+
+  useEffect(() => {
+      if (!loading && !user) {
+        router.push(RouteGuimel.login);
+      }
+    }, [user, loading]);
 
   const { data, loading: loadBookings } = useQuery<BookingsDataType>(BOOKINGS_QUERY, {
     variables: {
@@ -111,4 +117,4 @@ const AccountSavelists = () => {
   return renderSection1();
 };
 
-export default withAuth(AccountSavelists);
+export default AccountSavelists;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import facebookSvg from "@/images/Facebook.svg";
 import twitterSvg from "@/images/Twitter.svg";
 import googleSvg from "@/images/Google.svg";
@@ -31,7 +31,7 @@ const schema = z.object({
 
 const PageLogin: FC<PageLoginProps> = ({}) => {
   const router = useRouter();
-  const { refreshUser, user } = useUser();
+  const { refreshUser } = useUser();
 
   const [authenticateWithPassword, { loading }] = useMutation(
     AUTHENTICATE_WITH_PASSWORD,
@@ -66,11 +66,6 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
       handleGqlError(error);
     }
   };
-
-  if(user){
-    router.push(RouteGuimel.account);
-  }
-
 
   return (
     <div className={`nc-PageLogin`}>
