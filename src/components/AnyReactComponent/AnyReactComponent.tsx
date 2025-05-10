@@ -56,14 +56,6 @@ const AnyReactComponent: FC<AnyReactComponentProps> = ({
           {listing && (
             <StayCard size="small" data={listing} className="shadow-2xl" />
           )}
-          {experiences && (
-            <ExperiencesCard
-              size="small"
-              data={experiences}
-              ratioClass="aspect-w-12 aspect-h-10"
-              className="shadow-2xl bg-white dark:bg-neutral-900 rounded-3xl"
-            />
-          )}
           {car && <CarCard size="small" data={car} className="shadow-2xl " />}
         </div>
       </Transition>

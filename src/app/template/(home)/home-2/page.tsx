@@ -30,7 +30,6 @@ import HIW2imgDark from "@/images/HIW2-2-dark.png";
 import HIW3imgDark from "@/images/HIW2-3-dark.png";
 import rightImgPng from "@/images/our-features-2.png";
 
-import SectionGridFeatureProperty from "../SectionGridFeatureProperty";
 import SectionDowloadApp from "../SectionDowloadApp";
 import Image from "next/image";
 import SectionHero2 from "@/app/(server-components)/SectionHero2";
@@ -159,7 +158,6 @@ function PageHome2() {
 
         <div className="relative py-16">
           <BackgroundSection />
-          <SectionGridFeatureProperty />
         </div>
 
         <SectionOurFeatures type="type2" rightImg={rightImgPng} />

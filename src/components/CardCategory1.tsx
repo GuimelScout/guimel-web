@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { TaxonomyType } from "@/data/types";
 import Link from "next/link";
 import Image from "next/image";
+import { RouteGuimel } from "@/routers/routes";
 
 export interface CardCategory1Props {
   className?: string;
@@ -14,7 +15,7 @@ const CardCategory1: FC<CardCategory1Props> = ({
   size = "normal",
   taxonomy,
 }) => {
-  const { count, name, href = "/", thumbnail } = taxonomy;
+  const { count, name, href = RouteGuimel.home, thumbnail } = taxonomy;
   return (
     <Link
       href={href}

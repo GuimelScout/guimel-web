@@ -1,8 +1,6 @@
 "use client";
 
 import React, { FC } from "react";
-import LocationInput from "../LocationInput";
-import GuestsInput from "../GuestsInput";
 import ExperiencesDateSingleInput from "./ExperiencesDateSingleInput";
 
 export interface ExperiencesSearchFormProps {}

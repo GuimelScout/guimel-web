@@ -4,6 +4,7 @@ import Badge from "@/shared/Badge";
 import convertNumbThousand from "@/utils/convertNumbThousand";
 import Link from "next/link";
 import Image from "next/image";
+import { RouteGuimel } from "@/routers/routes";
 
 export interface CardCategoryBox1Props {
   className?: string;
@@ -14,7 +15,7 @@ const CardCategoryBox1: FC<CardCategoryBox1Props> = ({
   className = "",
   taxonomy,
 }) => {
-  const { count, name, thumbnail, href = "/" } = taxonomy;
+  const { count, name, thumbnail, href = RouteGuimel.home } = taxonomy;
   return (
     <Link
       href={href}

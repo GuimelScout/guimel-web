@@ -9,6 +9,7 @@ import ButtonSubmit from "./ButtonSubmit";
 import { PathName } from "@/routers/types";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
 import { GuestsObject } from "../type";
+import { RouteGuimel } from "@/routers/routes";
 
 export interface GuestsInputProps {
   fieldClassName?: string;
@@ -20,7 +21,7 @@ export interface GuestsInputProps {
 const GuestsInput: FC<GuestsInputProps> = ({
   fieldClassName = "[ nc-hero-field-padding ]",
   className = "[ nc-flex-1 ]",
-  buttonSubmitHref = "/listing-stay-map",
+  buttonSubmitHref = RouteGuimel.home,
   hasButtonSubmit = true,
 }) => {
   const [guestAdultsInputValue, setGuestAdultsInputValue] = useState(2);

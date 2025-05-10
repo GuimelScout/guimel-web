@@ -34,9 +34,7 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
         <TabFilters />
       </div>
       <div className="grid grid-cols-1 gap-6 md:gap-8 xl:grid-cols-2 ">
-        {data.map((stay) => (
-          <PropertyCardH key={stay.id} data={stay} />
-        ))}
+       
       </div>
       <div className="flex mt-16 justify-center items-center">
         <Pagination />

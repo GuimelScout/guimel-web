@@ -1,3 +1,4 @@
+import { RouteGuimel } from "@/routers/routes";
 import { PathName } from "@/routers/types";
 import Link from "next/link";
 import React, { FC } from "react";
@@ -6,7 +7,7 @@ interface Props {
   href?: PathName;
 }
 
-const ButtonSubmit: FC<Props> = ({ href = "/listing-stay-map" }) => {
+const ButtonSubmit: FC<Props> = ({ href = RouteGuimel.home }) => {
   return (
     <Link
       href={href}

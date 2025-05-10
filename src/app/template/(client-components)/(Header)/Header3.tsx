@@ -6,7 +6,6 @@ import useOutsideAlerter from "@/hooks/useOutsideAlerter";
 import NotifyDropdown from "./NotifyDropdown";
 import MenuBar from "@/shared/MenuBar";
 import { SearchTab } from "../(HeroSearchForm)/HeroSearchForm";
-import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
 import { usePathname } from "next/navigation";
 import HeroSearchFormSmall from "../(HeroSearchFormSmall)/HeroSearchFormSmall";
 import { StaySearchFormFields } from "../type";
@@ -170,9 +169,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
               <div className="flex-1 hidden lg:flex self-center">
                 {renderButtonOpenHeroSearch()}
               </div>
-              <div className="self-center flex-1 lg:hidden w-full max-w-lg mx-auto">
-                <HeroSearchForm2MobileFactory />
-              </div>
+ 
               {renderHeroSearch()}
             </div>
 

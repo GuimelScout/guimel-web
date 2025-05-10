@@ -3,6 +3,7 @@ import { TaxonomyType } from "@/data/types";
 import convertNumbThousand from "@/utils/convertNumbThousand";
 import Link from "next/link";
 import Image from "next/image";
+import { RouteGuimel } from "@/routers/routes";
 
 export interface CardCategory6Props {
   className?: string;
@@ -13,7 +14,7 @@ const CardCategory6: FC<CardCategory6Props> = ({
   className = "flex-1",
   taxonomy,
 }) => {
-  const { count, name, href = "/", thumbnail } = taxonomy;
+  const { count, name, href = RouteGuimel.home, thumbnail } = taxonomy;
   return (
     <Link
       href={href}

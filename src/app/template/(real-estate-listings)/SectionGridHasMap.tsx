@@ -9,7 +9,6 @@ import Checkbox from "@/shared/Checkbox";
 import Pagination from "@/shared/Pagination";
 import TabFilters from "./TabFilters";
 import Heading2 from "@/shared/Heading2";
-import PropertyCardH from "@/components/Guimel/account/BookinCard";
 
 const DEMO_EXPERIENCES = DEMO_STAY_LISTINGS.filter((_, i) => i < 12);
 
@@ -37,17 +36,6 @@ const SectionGridHasMap: FC<SectionGridHasMapProps> = () => {
           />
           <div className="mb-8 lg:mb-11">
             <TabFilters />
-          </div>
-          <div className="grid grid-cols-1 gap-8">
-            {DEMO_EXPERIENCES.map((item) => (
-              <div
-                key={item.id}
-                onMouseEnter={() => setCurrentHoverID((_) => item.id)}
-                onMouseLeave={() => setCurrentHoverID((_) => -1)}
-              >
-                <PropertyCardH data={item} />
-              </div>
-            ))}
           </div>
           <div className="flex mt-16 justify-center items-center">
             <Pagination />

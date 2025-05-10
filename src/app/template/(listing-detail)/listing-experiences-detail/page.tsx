@@ -294,10 +294,7 @@ const ListingExperiencesDetailPage: FC<
 
         {/* comment */}
         <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
-          <CommentListing className="py-8" />
+       
           <div className="pt-8">
             <ButtonSecondary>View more 20 reviews</ButtonSecondary>
           </div>

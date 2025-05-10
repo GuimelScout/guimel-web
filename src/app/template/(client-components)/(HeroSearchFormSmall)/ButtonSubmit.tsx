@@ -3,6 +3,7 @@
 import React, { FC } from "react";
 import { PathName } from "@/routers/types";
 import Link from "next/link";
+import { RouteGuimel } from "@/routers/routes";
 
 interface Props {
   className?: string;
@@ -11,7 +12,7 @@ interface Props {
 
 const ButtonSubmit: FC<Props> = ({
   className = "",
-  href = "/listing-stay-map",
+  href = RouteGuimel.home,
 }) => {
   return (
     <Link

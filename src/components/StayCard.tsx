@@ -6,7 +6,6 @@ import BtnLikeIcon from "@/components/BtnLikeIcon";
 import SaleOffBadge from "@/components/SaleOffBadge";
 import Badge from "@/shared/Badge";
 import Link from "next/link";
-import GallerySlider from "./GallerySlider";
 
 export interface StayCardProps {
   className?: string;
@@ -40,13 +39,6 @@ const StayCard: FC<StayCardProps> = ({
   const renderSliderGallery = () => {
     return (
       <div className="relative w-full">
-        <GallerySlider
-          uniqueID={`StayCard_${id}`}
-          ratioClass="aspect-w-4 aspect-h-3 "
-          galleryImgs={galleryImgs}
-          href={href}
-          galleryClass={size === "default" ? undefined : ""}
-        />
         <BtnLikeIcon isLiked={like} className="absolute right-3 top-3 z-[1]" />
         {saleOff && <SaleOffBadge className="absolute left-3 top-3" />}
       </div>

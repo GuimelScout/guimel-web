@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import GallerySlider from "@/components/GallerySlider";
 import { DEMO_STAY_LISTINGS } from "@/data/listings";
 import { StayDataType } from "@/data/types";
 import StartRating from "@/components/StartRating";
@@ -40,13 +39,7 @@ const StayCard2: FC<StayCard2Props> = ({
   const renderSliderGallery = () => {
     return (
       <div className="relative w-full">
-        <GallerySlider
-          uniqueID={`StayCard2_${id}`}
-          ratioClass="aspect-w-12 aspect-h-11"
-          galleryImgs={galleryImgs}
-          imageClass="rounded-lg"
-          href={href}
-        />
+      
         <BtnLikeIcon isLiked={like} className="absolute right-3 top-3 z-[1]" />
         {saleOff && <SaleOffBadge className="absolute left-3 top-3" />}
       </div>

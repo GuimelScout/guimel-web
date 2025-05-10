@@ -1,7 +1,6 @@
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { Fragment } from "react";
-import { NAVIGATION_DEMO_2 } from "@/data/navigation";
 import { NavItemType } from "@/shared/Navigation/NavigationItem";
 import Link from "next/link";
 import Collection from "@/components/Collection";
@@ -59,20 +58,7 @@ export default function TemplatesDropdown() {
                 <div className="bg-white dark:bg-neutral-900 shadow-lg">
                   <div className="container">
                     <div className="flex text-sm border-t border-slate-200 dark:border-slate-700 py-14">
-                      <div className="flex-1 grid grid-cols-5 gap-6 xl:gap-8 pr-6 xl:pr-8">
-                        {NAVIGATION_DEMO_2.map((item, index) => (
-                          <div key={index}>
-                            <p className="font-medium text-slate-900 dark:text-neutral-200">
-                              {item.name}
-                            </p>
-                            <ul className="grid space-y-4 mt-4">
-                              {item.children?.map((item, index) =>
-                                renderMegaMenuNavlink(item, index, close)
-                              )}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
+                      
                       <div className="w-[35%] xl:w-[30%]">
                         <Collection />
                       </div>

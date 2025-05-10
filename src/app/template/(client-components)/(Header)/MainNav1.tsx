@@ -7,7 +7,6 @@ import SearchDropdown from "./SearchDropdown";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import MenuBar from "@/shared/MenuBar";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
-import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
 import { useUser } from "context/UserContext";
 import AvatarDropdown from "./AvatarDropdown";
 
@@ -23,12 +22,6 @@ const MainNav1: FC<MainNav1Props> = ({ className = ""}) => {
         <div className="hidden md:flex justify-start flex-1 space-x-4 sm:space-x-10">
           <Logo className="w-24 self-center" imgLight={{src:"/logo-light.svg",height:280, width:280}} img={{src:"/logo-dark.svg",height:280, width:280}} />
           <Navigation />
-        </div>
-
-        <div className="flex lg:hidden flex-[3] max-w-lg !mx-auto md:px-3 ">
-          <div className="self-center flex-1">
-            <HeroSearchForm2MobileFactory />
-          </div>
         </div>
 
         <div className="hidden md:flex flex-shrink-0 justify-end flex-1 lg:flex-none text-neutral-700 dark:text-neutral-100">
