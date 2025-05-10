@@ -169,7 +169,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
               lastName: dataForm.lastName,
               phone: dataForm.phone,
               email: dataForm.email,
-              password: `${dataForm.nameCard}12345`,
+              password: `1234567890`,
               countryCode: dataForm.countryCode
             }
           }

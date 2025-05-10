@@ -25,8 +25,6 @@ const FiveStartIconForRate: FC<FiveStartIconForRateProps> = ({
   }, [defaultPoint]);
 
   const handleClick = (rating: number) => {
-    console.log("rating");
-    console.log(rating);
     setPoint(rating);
     if (onChange) {
       onChange(rating); 

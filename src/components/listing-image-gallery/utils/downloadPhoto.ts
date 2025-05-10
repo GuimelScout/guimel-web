@@ -8,7 +8,6 @@ function forceDownload(blobUrl: string, filename: string) {
 }
 
 export default function downloadPhoto(url: string, filename: string) {
-  console.log("downloadPhoto");
   if (!filename) {
     filename = url.split("\\").pop()?.split("/").pop() || "";
   }

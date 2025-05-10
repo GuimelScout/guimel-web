@@ -6,7 +6,6 @@ import twitterSvg from "@/images/Twitter.svg";
 import googleSvg from "@/images/Google.svg";
 import Input from "@/shared/Input";
 import ButtonPrimary from "@/shared/ButtonPrimary";
-import Image from "next/image";
 import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,8 +56,10 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
         response.data?.authenticateUserWithPassword?.__typename ===
         "UserAuthenticationWithPasswordSuccess"
       ) {
-        refreshUser();
-        router.push(RouteGuimel.account);
+        await refreshUser();
+        setTimeout(() => {
+          router.replace(RouteGuimel.account);
+        },0);
       } else {
         throw new Error("Autenticación fallida. Comprueba tus credenciales.");
       }
@@ -74,7 +75,6 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
           Iniciar sesión
         </h2>
         <div className="max-w-md mx-auto space-y-6">
-       
           {/* FORM */}
           <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(onSubmit)}>
             <label className="block">
@@ -104,7 +104,6 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
             {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
             <ButtonPrimary type="submit" loading={loading}>Continuar</ButtonPrimary>
           </form>
-
           {/* ==== */}
           <span className="block text-center text-neutral-700 dark:text-neutral-300">
            ¿Eres nuevo? {` `}

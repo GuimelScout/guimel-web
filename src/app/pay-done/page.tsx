@@ -9,6 +9,7 @@ import { ActivityDataType, CARD_TYPE } from "@/data/types";
 import { ACTIVITY_QUERY, BOOKING_QUERY } from "@/components/Guimel/activity/QueryActivity.queries";
 import dateFormat, { formatDateSpanish, parseLocalDateString } from "@/utils/date-format-helper";
 import { BookingDataType } from "@/components/Guimel/account/types";
+import { RouteGuimel } from "@/routers/routes";
 
 export interface PayPageProps {
   searchParams: { [key: string]: string | undefined };
@@ -16,18 +17,11 @@ export interface PayPageProps {
 
 const PayPage: FC<PayPageProps> = ({ searchParams }) => {
 
-  console.log("searchParams");
-  console.log(searchParams);
   const renderContent = () => {
-    console.log("searchParam activity");
-    console.log(searchParams.activity);
 
       const { data } = useQuery<BookingDataType>(BOOKING_QUERY, {
         variables: { where: { id: searchParams.booking} },
       });
-
-      console.log("data");
-      console.log(data);
 
     return (
       <div className="w-full flex flex-col sm:rounded-2xl space-y-10 px-0 sm:p-6 xl:p-8">
@@ -190,7 +184,7 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
           </div>
         </div>
         <div>
-          <ButtonPrimary href="/">Explore more stays</ButtonPrimary>
+          <ButtonPrimary href={RouteGuimel.login}>Iniciar sesión para conocer tus detalles</ButtonPrimary>
         </div>
       </div>
     );

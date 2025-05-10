@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import Label from "@/components/Label";
 import Avatar from "@/shared/Avatar";
 import Input from "@/shared/Input";
-import { Toaster } from "sonner";
 import { useUser } from "context/UserContext";
 import SkeletonLoader from "@/shared/Guimel/SkeletonLoader";
 import { RouteGuimel } from "@/routers/routes";
@@ -47,7 +46,6 @@ export interface AccountPageProps {
       </div>
     );
   }
-
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -150,7 +148,9 @@ export interface AccountPageProps {
               await logout();
               setUser(undefined);
               refreshUser();
-              router.push(RouteGuimel.home);
+              setTimeout(() => {
+                router.replace(RouteGuimel.home);
+              }, 0);
             }}
           >
             <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">
@@ -190,7 +190,7 @@ export interface AccountPageProps {
           </div>
         </div>
       </div>
-      <Toaster position="top-right" closeButton richColors/>
+      {/* <Toaster position="top-right" closeButton richColors/> */}
     </div>
   );
 };
