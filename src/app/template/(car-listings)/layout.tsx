@@ -2,7 +2,7 @@ import BgGlassmorphism from "@/components/BgGlassmorphism";
 import React, { ReactNode } from "react";
 import heroRightImage from "@/images/hero-right-car.png";
 import BackgroundSection from "@/components/BackgroundSection";
-import SectionSliderNewCategories from "@/components/SectionSliderNewCategories";
+import SectionSliderNewCategories from "@/components/Guimel/SectionSliderNewCategories";
 import SectionSubscribe2 from "@/components/SectionSubscribe2";
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox";
 import SectionHeroArchivePage from "@/app/(server-components)/SectionHeroArchivePage";

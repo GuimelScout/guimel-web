@@ -183,10 +183,10 @@ const Location = ({ params }: { params: { link: string } }) => {
         <div className="w-full border-b border-neutral-100 dark:border-neutral-700" />
 
         <div className="flex items-center justify-between xl:justify-start space-x-8 xl:space-x-12 text-sm text-neutral-700 dark:text-neutral-300">
-          <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 text-center sm:text-left sm:space-x-3 ">
+         {/*  <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 text-center sm:text-left sm:space-x-3 ">
             <i className="las la-clock text-2xl"></i>
             <span className="">3.5 hours</span>
-          </div>
+          </div> */}
           <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 text-center sm:text-left sm:space-x-3 ">
             <i className="las la-user-friends text-2xl"></i>
             <span className="">Hasta 10 personas</span>
@@ -401,7 +401,7 @@ const Location = ({ params }: { params: { link: string } }) => {
                 <Input
                   fontClass=""
                   {...register("review")}
-                  sizeClass="h-16 px-4 py-3"
+                  sizeClass="h-16 px-4 py-6"
                   rounded="rounded-3xl"
                   placeholder="Comparte una reseña ..."
                   />
@@ -458,7 +458,8 @@ const Location = ({ params }: { params: { link: string } }) => {
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
-              src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${data?.activity.address}`}
+              //src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${data?.activity.address}`}
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(data?.activity.address || '')}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
             ></iframe>
           </div>
         </div>
@@ -591,7 +592,7 @@ const Location = ({ params }: { params: { link: string } }) => {
         </div>
 
         {/* SIDEBAR */}
-        <div className="hidden lg:block flex-grow mt-14 lg:mt-0">
+        <div className=" lg:block flex-grow mt-14 lg:mt-0">
           <div className="sticky top-28">{renderSidebar()}</div>
         </div>
       </main>

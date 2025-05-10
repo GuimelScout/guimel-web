@@ -1,7 +1,7 @@
 import SectionHero2ArchivePage from "@/app/(server-components)/SectionHero2ArchivePage";
 import BackgroundSection from "@/components/BackgroundSection";
 import SectionGridAuthorBox from "@/components/SectionGridAuthorBox";
-import SectionSliderNewCategories from "@/components/SectionSliderNewCategories";
+import SectionSliderNewCategories from "@/components/Guimel/SectionSliderNewCategories";
 import SectionSubscribe2 from "@/components/SectionSubscribe2";
 import React, { ReactNode } from "react";
 

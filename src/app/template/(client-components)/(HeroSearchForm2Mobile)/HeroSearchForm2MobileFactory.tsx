@@ -2,7 +2,7 @@
 
 import React from "react";
 import { PathName } from "@/routers/types";
-import HeroSearchForm2Mobile from "./HeroSearchForm2Mobile";
+import HeroSearchForm2Mobile from "../../../../components/Guimel/HeroSearchForm2Mobile";
 import HeroSearchForm2RealEstateMobile from "./HeroSearchForm2RealEstateMobile";
 import { usePathname } from "next/navigation";
 

@@ -3,7 +3,7 @@
 import React from "react";
 import BgGlassmorphism from "@/components/BgGlassmorphism";
 import { TaxonomyType } from "@/data/types";
-import SectionSliderNewCategories from "@/components/SectionSliderNewCategories";
+import SectionSliderNewCategories from "@/components/Guimel/SectionSliderNewCategories";
 import SectionOurFeatures from "@/components/SectionOurFeatures";
 import BackgroundSection from "@/components/BackgroundSection";
 import SectionGridFeaturePlaces from "@/components/SectionGridFeaturePlaces";

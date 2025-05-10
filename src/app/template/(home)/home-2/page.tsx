@@ -1,4 +1,4 @@
-import SectionSliderNewCategories from "@/components/SectionSliderNewCategories";
+import SectionSliderNewCategories from "@/components/Guimel/SectionSliderNewCategories";
 import React from "react";
 import SectionSubscribe2 from "@/components/SectionSubscribe2";
 import SectionOurFeatures from "@/components/SectionOurFeatures";

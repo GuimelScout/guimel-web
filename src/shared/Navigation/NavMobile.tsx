@@ -12,6 +12,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
 import Link from "next/link";
 import LangDropdown from "@/app/template/(client-components)/(Header)/LangDropdown";
+import { RouteGuimel } from "@/routers/routes";
 
 export interface NavMobileProps {
   data?: NavItemType[];
@@ -109,8 +110,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
       <Logo imgLight={{src:"/logo-light.svg",height:280, width:280}} img={{src:"/logo-dark.svg",height:280, width:280}} />
         <div className="flex flex-col mt-5 text-neutral-700 dark:text-neutral-300 text-sm">
           <span>
-            Discover the most outstanding articles on all topics of life. Write
-            your stories and share them
+            Descubre actividades cerca de ti, conoce y explora el mundo que te rodea.
           </span>
 
           <div className="flex justify-between items-center mt-4">
@@ -130,17 +130,16 @@ const NavMobile: React.FC<NavMobileProps> = ({
       <div className="flex items-center justify-between py-6 px-5">
         <a
           className="inline-block"
-          href="https://themeforest.net/item/chisfis-online-booking-nextjs-template/43399526"
-          target="_blank"
+          href={RouteGuimel.home}
           rel="noopener noreferrer"
         >
-          <ButtonPrimary>Get Template</ButtonPrimary>
+          <ButtonPrimary>Explorar</ButtonPrimary>
         </a>
 
-        <LangDropdown
+        {/* <LangDropdown
           className="flex"
           panelClassName="z-10 w-screen max-w-[280px] px-4 mb-3 right-3 bottom-full sm:px-0"
-        />
+        /> */}
       </div>
     </div>
   );

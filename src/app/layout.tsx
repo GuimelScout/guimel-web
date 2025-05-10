@@ -5,10 +5,10 @@ import "./globals.css";
 import "@/fonts/line-awesome-1.3.0/css/line-awesome.css";
 import "@/styles/index.scss";
 import "rc-slider/assets/index.css";
-import Footer from "@/components/Footer";
-import FooterNav from "@/components/FooterNav";
+import FooterNav from "@/components/Guimel/FooterNav";
 import ApolloWrapper from "@/utils/apolloWrapper";
 import { UserProvider } from "context/UserContext";
+import Footer from "@/components/Guimel/Footer";
 
 const poppins = Poppins({
   subsets: ["latin"],

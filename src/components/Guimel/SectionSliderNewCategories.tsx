@@ -2,14 +2,14 @@
 
 import React, { FC, useEffect, useState } from "react";
 import { LocationType, TaxonomyType } from "@/data/types";
-import CardCategory3 from "@/components/CardCategory3";
+import CardCategory3 from "@/components/Guimel/CardCategory3";
 import CardCategory4 from "@/components/CardCategory4";
 import CardCategory5 from "@/components/CardCategory5";
 import Heading from "@/shared/Heading";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
-import PrevBtn from "./PrevBtn";
-import NextBtn from "./NextBtn";
+import PrevBtn from "../PrevBtn";
+import NextBtn from "../NextBtn";
 import { variants } from "@/utils/animationVariants";
 import { useWindowSize } from "react-use";
 
@@ -23,7 +23,6 @@ export interface SectionSliderNewCategoriesProps {
   itemPerRow?: 4 | 5;
   sliderStyle?: "style1" | "style2";
 }
-
 const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
   heading = "Nuestros Lugares",
   subHeading = "Lugares populares que te recomendamos",
@@ -36,24 +35,20 @@ const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [numberOfItems, setNumberOfitem] = useState(0);
+  const [numberOfItems, setNumberOfitem] = useState(1);
 
   const windowWidth = useWindowSize().width;
-  useEffect(() => {
-    if (windowWidth < 320) {
-      return setNumberOfitem(1);
-    }
-    if (windowWidth < 500) {
-      return setNumberOfitem(itemPerRow - 3);
-    }
-    if (windowWidth < 1024) {
-      return setNumberOfitem(itemPerRow - 2);
-    }
-    if (windowWidth < 1280) {
-      return setNumberOfitem(itemPerRow - 1);
-    }
 
-    setNumberOfitem(itemPerRow);
+  useEffect(() => {
+    if (windowWidth < 500) {
+      setNumberOfitem(1);
+    } else if (windowWidth < 768) {
+      setNumberOfitem(2);
+    } else if (windowWidth < 1024) {
+      setNumberOfitem(Math.max(1, itemPerRow - 1));
+    } else {
+      setNumberOfitem(itemPerRow);
+    }
   }, [itemPerRow, windowWidth]);
 
   function changeItemId(newVal: number) {
@@ -67,7 +62,7 @@ const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      if (currentIndex < categories?.length - 1) {
+      if (currentIndex < categories.length - numberOfItems) {
         changeItemId(currentIndex + 1);
       }
     },
@@ -80,16 +75,7 @@ const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
   });
 
   const renderCard = (item: LocationType) => {
-   /*   switch (categoryCardType) {
-      case "card3":
-        return <CardCategory3 location={item} />;
-      case "card4":
-        return <CardCategory4 location={item} />;
-      case "card5":
-        return <CardCategory5 location={item} />;
-      default:  */
-        return <CardCategory3 location={item} />;
-    /*  }  */
+    return <CardCategory3 location={item} />;
   };
 
   if (!numberOfItems) return null;
@@ -99,22 +85,24 @@ const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
       <Heading desc={subHeading} isCenter={sliderStyle === "style2"}>
         {heading}
       </Heading>
+
       <MotionConfig
         transition={{
           x: { type: "spring", stiffness: 300, damping: 30 },
           opacity: { duration: 0.2 },
         }}
       >
-        <div className={`relative flow-root`} {...handlers}>
-          <div className={`flow-root overflow-hidden rounded-xl`}>
+        <div className="relative flow-root" {...handlers}>
+          <div className="overflow-hidden rounded-xl">
             <motion.ul
               initial={false}
-              className="relative whitespace-nowrap -mx-2 xl:-mx-4"
+              className="relative whitespace-nowrap -mx-2 sm:-mx-4"
             >
               <AnimatePresence initial={false} custom={direction}>
-                {categories.map((item, indx) => (
+              {categories.map((item, indx) => (
                   <motion.li
                     className={`relative inline-block px-2 xl:px-4 ${itemClassName}`}
+                    style={{ width: `${90 / numberOfItems}%` }}
                     custom={direction}
                     initial={{
                       x: `${(currentIndex - 1) * -100}%`,
@@ -124,9 +112,6 @@ const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
                     }}
                     variants={variants(200, 1)}
                     key={indx}
-                    style={{
-                      width: `calc(1/${numberOfItems} * 100%)`,
-                    }}
                   >
                     {renderCard(item)}
                   </motion.li>
@@ -135,21 +120,19 @@ const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
             </motion.ul>
           </div>
 
-          {currentIndex ? (
+          {currentIndex > 0 && (
             <PrevBtn
-              style={{ transform: "translate3d(0, 0, 0)" }}
               onClick={() => changeItemId(currentIndex - 1)}
-              className="w-9 h-9 xl:w-12 xl:h-12 text-lg absolute -left-3 xl:-left-6 top-1/3 -translate-y-1/2 z-[1]"
+              className="w-9 h-9 xl:w-12 xl:h-12 text-lg absolute -left-3 xl:-left-6 top-1/3 -translate-y-1/2 z-[1] hidden sm:block"
             />
-          ) : null}
+          )}
 
-          {categories.length > currentIndex + numberOfItems ? (
+          {categories.length > currentIndex + numberOfItems && (
             <NextBtn
-              style={{ transform: "translate3d(0, 0, 0)" }}
               onClick={() => changeItemId(currentIndex + 1)}
-              className="w-9 h-9 xl:w-12 xl:h-12 text-lg absolute -right-3 xl:-right-6 top-1/3 -translate-y-1/2 z-[1]"
+              className="w-9 h-9 xl:w-12 xl:h-12 text-lg absolute -right-3 xl:-right-6 top-1/3 -translate-y-1/2 z-[1] hidden sm:block"
             />
-          ) : null}
+          )}
         </div>
       </MotionConfig>
     </div>

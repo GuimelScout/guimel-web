@@ -2,8 +2,8 @@ import gql from "graphql-tag";
 
 
 export const BOOKINGS_QUERY = gql`
-  query Bookings($where: BookingWhereInput!) {
-    bookings(where: $where) {
+  query Bookings($where: BookingWhereInput!, $orderBy: [BookingOrderByInput!]!) {
+    bookings(where: $where, orderBy: $orderBy) {
       id
       activity {
         name
@@ -39,8 +39,8 @@ export const BOOKINGS_QUERY = gql`
 
 
 export const PAYMENTS_QUERY = gql`
-  query Payments($where: PaymentWhereInput!) {
-    payments(where: $where) {
+  query Payments($where: PaymentWhereInput!, $orderBy: [PaymentOrderByInput!]!) {
+    payments(where: $where, orderBy: $orderBy) {
       id
       amount
       notes

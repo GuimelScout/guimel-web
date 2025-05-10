@@ -49,7 +49,7 @@ export default function AvatarDropdown({ className = "", user }: Props) {
                       <div className="flex-grow">
                         <h4 className="font-semibold">{user?.name} {user?.lastName}</h4>
                         <p className="text-xs mt-0.5">
-                          Te uniste el {user!.createdAt 
+                          Te uniste en {user!.createdAt 
                           ? new Date(user!.createdAt).toLocaleDateString("es-ES", { year: "numeric", month: "long" }) 
                           : "Fecha desconocida"}
                           </p>

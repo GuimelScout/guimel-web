@@ -28,6 +28,7 @@ import { Toaster, toast } from 'sonner'
 import { useRouter } from "next/navigation";
 import Select from "@/shared/Select";
 import { useUser } from "context/UserContext";
+import { RouteGuimel } from "@/routers/routes";
 
 export interface CheckOutPagePageMainProps {
   className?: string;
@@ -563,7 +564,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                         {...register("notes")}
                         placeholder="Escribe aquí" />
                         <span className="text-sm text-neutral-500 block">
-                          Escribe algunas instrucciones para tu experiencia
+                          Escribe algunas notas sobre tu pago (opcional).
                         </span>
                         {errors.notes && <p className="text-red-500 text-sm">{errors.notes.message}</p>}
                       </div>

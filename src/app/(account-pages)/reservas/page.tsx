@@ -41,7 +41,8 @@ const AccountSavelists = () => {
 
   const { data, loading: loadBookings } = useQuery<BookingsDataType>(BOOKINGS_QUERY, {
     variables: {
-    where: { user: { id: { equals: user?.id ?? undefined } } }
+    where: { user: { id: { equals: user?.id ?? undefined } } },
+    orderBy: [{createdAt: "desc"}]
     },
     fetchPolicy: "no-cache",
   });   

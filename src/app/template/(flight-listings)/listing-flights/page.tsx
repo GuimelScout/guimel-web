@@ -1,5 +1,5 @@
 import BgGlassmorphism from "@/components/BgGlassmorphism";
-import SectionSliderNewCategories from "@/components/SectionSliderNewCategories";
+import SectionSliderNewCategories from "@/components/Guimel/SectionSliderNewCategories";
 import SectionSubscribe2 from "@/components/SectionSubscribe2";
 import React, { FC } from "react";
 import SectionGridFilterCard from "../SectionGridFilterCard";

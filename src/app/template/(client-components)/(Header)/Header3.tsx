@@ -4,11 +4,9 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import Logo from "@/shared/Logo";
 import useOutsideAlerter from "@/hooks/useOutsideAlerter";
 import NotifyDropdown from "./NotifyDropdown";
-import AvatarDropdown from "./AvatarDropdown";
 import MenuBar from "@/shared/MenuBar";
 import { SearchTab } from "../(HeroSearchForm)/HeroSearchForm";
 import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import HeroSearchFormSmall from "../(HeroSearchFormSmall)/HeroSearchFormSmall";
 import { StaySearchFormFields } from "../type";
@@ -165,7 +163,7 @@ const Header3: FC<Header3Props> = ({ className = "" }) => {
           <div className="flex-1 flex justify-between">
             {/* Logo (lg+) */}
             <div className="relative z-10 hidden md:flex flex-1 items-center">
-            <Logo imgLight={{src:"/logo-light.svg",height:280, width:280}} img={{src:"/logo-dark.svg",height:280, width:280}} />
+              <Logo imgLight={{src:"/logo-light.svg",height:280, width:280}} img={{src:"/logo-dark.svg",height:280, width:280}} />
             </div>
 
             <div className="flex flex-[2] lg:flex-none mx-auto">
