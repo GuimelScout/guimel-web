@@ -16,7 +16,7 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
       data-nc-id="SectionSubscribe2"
     >
       <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mr-10 lg:w-2/5">
-        <h2 className="font-semibold text-4xl">Join our newsletter 🎉</h2>
+        <h2 className="font-semibold text-4xl">Unete a nuestro newsletter 🎉</h2>
         <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
           Read and share new perspectives on just about any topic. Everyone’s
           welcome.
@@ -39,7 +39,7 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
           <Input
             required
             aria-required
-            placeholder="Enter your email"
+            placeholder="Escribe tu email"
             type="email"
             rounded="rounded-full"
             sizeClass="h-12 px-5 py-3"

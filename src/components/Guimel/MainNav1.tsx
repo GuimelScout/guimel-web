@@ -22,7 +22,9 @@ const MainNav1: FC<MainNav1Props> = ({ className = ""}) => {
       <div className="px-4 lg:container h-20 relative flex justify-between">
         <div className="hidden md:flex justify-start flex-1 space-x-4 sm:space-x-10">
           <Logo className="w-24 self-center" imgLight={{src:"/logo-light.svg",height:280, width:280}} img={{src:"/logo-dark.svg",height:280, width:280}} />
-          <Navigation />
+          <div className="md:flex justify-center flex-1" >
+            <Navigation />
+          </div>
         </div>
 
         <div className="flex lg:hidden flex-[3] max-w-lg !mx-auto md:px-3 ">

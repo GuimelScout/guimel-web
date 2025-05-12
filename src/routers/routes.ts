@@ -5,7 +5,10 @@ export const RouteGuimel =  {
   home: "/" as any,
   activity: "/actividad" as any,
   lodging: "/hospedaje" as any,
+  location: "/ubicacion" as any,
   account: "/cuenta" as any,
   bookings: "/reservas" as any,
   payments: "/pagos" as any,
+  about: "/acerca-de" as any,
+  contact: "/contacto" as any,
 }

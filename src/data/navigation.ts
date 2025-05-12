@@ -1,37 +1,38 @@
 import { NavItemType } from "@/shared/Navigation/NavigationItem";
 import ncNanoId from "@/utils/ncNanoId";
 import __megamenu from "./jsons/__megamenu.json";
+import { RouteGuimel } from "@/routers/routes";
 
-export const NAVIGATION_DEMO: NavItemType[] = [
+export const NAVIGATION: NavItemType[] = [
   {
     id: ncNanoId(),
-    href: "/",
+    href: RouteGuimel.home,
     name: "Inicio",
   },
   {
     id: ncNanoId(),
-    href: "/actividad",
+    href: RouteGuimel.activity,
     name: "Actividades",
   },
   {
     id: ncNanoId(),
-    href: "/ubicacion",
+    href: RouteGuimel.location,
     name: "Lugares",
   },
   {
     id: ncNanoId(),
-    href: "/hospedaje",
+    href: RouteGuimel.lodging,
     name: "Hospedaje",
   },
   {
     id: ncNanoId(),
-    href: "/",
+    href: RouteGuimel.about,
     name: "Acerca de",
   },
   {
     id: ncNanoId(),
-    href: "/",
-    name: "Nosotros",
+    href: RouteGuimel.contact,
+    name: "Contacto",
   },
 ];
 
