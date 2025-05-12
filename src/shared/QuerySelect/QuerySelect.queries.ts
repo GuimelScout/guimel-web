@@ -40,6 +40,7 @@ export const LOCATION_QUERY = gql`
       address
       price
       reviewCount
+      reviewStar
       gallery {
         description
         image {

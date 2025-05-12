@@ -40,6 +40,8 @@ const ActivityCard: FC<ActivityCardProps> = ({
   };
 
   const renderContent = () => {
+    console.log("data");
+    console.log(data);
     return (
       <div className={size === "default" ? "py-4 space-y-3 p-3" : "p-3 space-y-1"}>
         <div className="space-y-2">
@@ -70,7 +72,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
               </span>
             )}
           </span>
-          <StartRating reviewCount={reviewCount} point={reviewStar || 0} />
+          <StartRating reviewCount={reviewCount || 0} point={reviewStar || 0} />
         </div>
       </div>
     );

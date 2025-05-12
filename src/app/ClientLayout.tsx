@@ -1,6 +1,6 @@
 "use client"
 
-import SiteHeader from "./template/(client-components)/(Header)/SiteHeader";
+import SiteHeader from "../components/Guimel/SiteHeader";
 import ClientCommons from "./ClientCommons";
 import "./globals.css";
 import "@/fonts/line-awesome-1.3.0/css/line-awesome.css";

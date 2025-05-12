@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import Select from "@/shared/Select";
 import { useUser } from "context/UserContext";
 import { RouteGuimel } from "@/routers/routes";
+import { useThemeMode } from "@/utils/useThemeMode";
 
 export interface CheckOutPagePageMainProps {
   className?: string;
@@ -162,6 +163,12 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
         userID = getUser.user.id;
         stripeCustomerId = getUser.user.stripeCustomerId;
       }else{
+        const name = dataForm.nameCard;
+        const firstTwoLetters = name.substring(0, 2).toUpperCase();
+        const year = new Date().getFullYear();
+        const randomDigits = Math.floor(Math.random() * 90 + 10);
+        const password = `G${year}${firstTwoLetters}${randomDigits}`;
+
         resUser = await createUser({
           variables:{
             data: {
@@ -169,7 +176,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
               lastName: dataForm.lastName,
               phone: dataForm.phone,
               email: dataForm.email,
-              password: `1234567890`,
+              password: password,
               countryCode: dataForm.countryCode
             }
           }
@@ -409,7 +416,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
   };
 
   const renderMain = () => {
-  
+    const {isDarkMode} = useThemeMode();
  
     return (
       <div className="w-full flex flex-col sm:rounded-2xl sm:border border-neutral-200 dark:border-neutral-700 space-y-8 px-0 sm:p-6 xl:p-8">
@@ -426,7 +433,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                   onClick={() => openModal()}
                   className="block lg:hidden underline  mt-1 cursor-pointer"
                 >
-                  View booking details
+                  Ver detalles de la reserva
                 </span>
               )}
               renderContent={renderSidebar}
@@ -541,10 +548,10 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                               style: {
                                 base: {
                                   fontSize: "14px",
-                                  color: "#1f2937",
+                                  color: isDarkMode ? "#ffffff" : "#1f2937",
                                   fontFamily: "inherit",
                                   "::placeholder": {
-                                    color: "#9ca3af",
+                                    color: isDarkMode ? "#9ca3af" : "#9ca3af",
                                   },
                                 },
                                 invalid: {
