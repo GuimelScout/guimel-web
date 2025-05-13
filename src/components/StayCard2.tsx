@@ -6,6 +6,7 @@ import BtnLikeIcon from "@/components/BtnLikeIcon";
 import SaleOffBadge from "@/components/SaleOffBadge";
 import Badge from "@/shared/Badge";
 import Link from "next/link";
+import GallerySlider from "./GallerySlider";
 
 export interface StayCard2Props {
   className?: string;
@@ -39,6 +40,13 @@ const StayCard2: FC<StayCard2Props> = ({
   const renderSliderGallery = () => {
     return (
       <div className="relative w-full">
+        {/* <GallerySlider
+          uniqueID={`ExperiencesCard_${name}`}
+          ratioClass="aspect-w-3 aspect-h-3"
+          galleryImgs={gallery ?? []}
+          //@ts-ignore
+          href={`actividad/${link}`}
+        /> */}
       
         <BtnLikeIcon isLiked={like} className="absolute right-3 top-3 z-[1]" />
         {saleOff && <SaleOffBadge className="absolute left-3 top-3" />}
