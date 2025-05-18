@@ -22,3 +22,13 @@ export const LOG_OUT_MUTATION = gql`
     endSession
   }
 `;
+
+export const USER_REGISTER = gql`
+  mutation Mutation($data: UserCreateInput!) {
+    createUser(data: $data) {
+      id
+      name
+      email
+    }
+  }
+`;

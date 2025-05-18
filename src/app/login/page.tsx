@@ -36,7 +36,6 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
     AUTHENTICATE_WITH_PASSWORD,
   );
   
-
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {

@@ -9,10 +9,18 @@ import { toast } from 'sonner'
  * @returns void
  */
 export function handleGqlError(error: unknown): void {
-  //IMPORTANT its necesary to add TOAST tag in front
-  //<Toaster position="top-right" closeButton richColors/>
+  //IMPORTANT: it's necessary to add <Toaster position="top-right" closeButton richColors/>
+
+  let message = "Tuvimos un problema de comunicación, intente de nuevo más tarde.";
   if (error instanceof ApolloError) {
-    toast.error(error.message);
+    const rawMessage = error.message;
+    if (rawMessage.includes("Unique constraint failed") && rawMessage.includes("email")) {
+      message = "Este correo ya está registrado.";
+    } else {
+      message = rawMessage;
+    }
+
+    toast.warning(message);
     return;
   }
 
@@ -21,5 +29,5 @@ export function handleGqlError(error: unknown): void {
     return;
   }
 
-  toast.error("Tuvimos un problema de comunicación, intente de nuevo más tarde.");
+  toast.error(message);
 }
