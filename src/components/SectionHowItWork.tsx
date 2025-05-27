@@ -21,20 +21,20 @@ const DEMO_DATA: SectionHowItWorkProps["data"] = [
   {
     id: 1,
     img: HIW1img,
-    title: "Book & relax",
-    desc: "Let each trip be an inspirational journey, each room a peaceful space",
+    title: "Cada destino es una historia",
+    desc: "No solo viajamos, descubrimos lo que hace único a cada lugar. Desde rincones naturales hasta experiencias culturales, te conectamos con lo auténtico.",
   },
   {
     id: 2,
     img: HIW2img,
-    title: "Smart checklist",
-    desc: "Let each trip be an inspirational journey, each room a peaceful space",
+    title: "Antes de recomendar, lo vivimos",
+    desc: "Nos quedamos en los hospedajes, caminamos las rutas y probamos las experiencias. Nada de catálogos genéricos: lo que ves aquí, ya lo vivimos nosotros.",
   },
   {
     id: 3,
     img: HIW3img,
-    title: "Save more",
-    desc: "Let each trip be an inspirational journey, each room a peaceful space",
+    title: "Apoya lo local",
+    desc: "Reservas directamente con anfitriones y guías locales. Sin comisiones excesivas, sin algoritmos que te alejan de lo humano.",
   },
 ];
 
@@ -47,8 +47,8 @@ const SectionHowItWork: FC<SectionHowItWorkProps> = ({
       className={`nc-SectionHowItWork  ${className}`}
       data-nc-id="SectionHowItWork"
     >
-      <Heading isCenter desc="Keep calm & travel on">
-        Como trabajamos
+      <Heading isCenter desc="Viajar con propósito, descubrir con sentido">
+        Nuestra forma de explorar
       </Heading>
       <div className="mt-20 relative grid md:grid-cols-3 gap-20">
         <Image
@@ -76,7 +76,7 @@ const SectionHowItWork: FC<SectionHowItWorkProps> = ({
               </>
             ) : (
               <Image
-                alt=""
+                alt={item.title}
                 className="mb-8 max-w-[180px] mx-auto"
                 src={item.img}
               />

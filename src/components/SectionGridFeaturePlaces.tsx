@@ -26,8 +26,8 @@ export interface SectionGridFeaturePlacesProps {
 const SectionGridFeaturePlaces: FC<SectionGridFeaturePlacesProps> = ({
   stayListings = DEMO_DATA,
   gridClass = "",
-  heading = "Actividades favoritas",
-  subHeading = "Actividades populares que te recomendamos",
+  heading = "Guimel Spots",
+  subHeading = "Actividades populares en la Comunidad",
   headingIsCenter,
   tabs = ["New York", "Tokyo", "Paris", "London"],
   cardType = "card2",
