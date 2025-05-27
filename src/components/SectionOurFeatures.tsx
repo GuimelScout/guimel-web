@@ -30,39 +30,36 @@ const SectionOurFeatures: FC<SectionOurFeaturesProps> = ({
         }`}
       >
         <span className="uppercase text-sm text-gray-400 tracking-widest">
-          BENnefits
+          Explora. Descubre. Conecta.
         </span>
-        <h2 className="font-semibold text-4xl mt-5">Happening cities </h2>
+        <h2 className="font-semibold text-4xl mt-5">Unete a la Comunidad </h2>
 
         <ul className="space-y-10 mt-16">
           <li className="space-y-4">
-            <Badge name="Advertising" />
+            <Badge name="Exploramos por ti" />
             <span className="block text-xl font-semibold">
-              Cost-effective advertising
+              Accede a destinos únicos
             </span>
             <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
-              With a free listing, you can advertise your rental with no upfront
-              costs
+              Nuestros scouts recorren México en busca de lugares auténticos y experiencias inolvidables. Tú solo eliges a dónde quieres ir.
             </span>
           </li>
           <li className="space-y-4">
-            <Badge color="green" name="Exposure " />
+            <Badge color="green" name="Visibilidad real, sin costo " />
             <span className="block text-xl font-semibold">
-              Reach millions with Chisfis
+              Conecta con una comunidad viajera
             </span>
             <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
-              Millions of people are searching for unique places to stay around
-              the world
+              Publicar tu espacio o experiencia en Scouteando México es gratuito. Nosotros te ayudamos a llegar a personas que valoran lo local y lo distinto.
             </span>
           </li>
           <li className="space-y-4">
-            <Badge color="red" name="Secure" />
+            <Badge color="red" name="Reservas seguras y sin complicaciones" />
             <span className="block text-xl font-semibold">
-              Secure and simple
+              Simple para ti, confiable para todos
             </span>
             <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
-              A Holiday Lettings listing gives you a secure and easy way to take
-              bookings and payments online
+              Facilitamos el contacto directo con los anfitriones. Sin comisiones ocultas, sin rodeos.
             </span>
           </li>
         </ul>

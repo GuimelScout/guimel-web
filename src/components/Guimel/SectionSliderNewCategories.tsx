@@ -1,10 +1,8 @@
 "use client";
 
 import React, { FC, useEffect, useState } from "react";
-import { LocationType, TaxonomyType } from "@/data/types";
+import { LocationType } from "@/data/types";
 import CardCategory3 from "@/components/Guimel/CardCategory3";
-import CardCategory4 from "@/components/CardCategory4";
-import CardCategory5 from "@/components/CardCategory5";
 import Heading from "@/shared/Heading";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
@@ -24,8 +22,8 @@ export interface SectionSliderNewCategoriesProps {
   sliderStyle?: "style1" | "style2";
 }
 const SectionSliderNewCategories: FC<SectionSliderNewCategoriesProps> = ({
-  heading = "Nuestros Lugares",
-  subHeading = "Lugares populares que te recomendamos",
+  heading = "Nuestros Spots",
+  subHeading = "Hacemos expediciones para descubrir lugares únicos, actividades locales auténticas y opciones reales de hospedaje. Luego, los compartimos con la comunidad.",
   className = "",
   itemClassName = "",
   categories = [],
