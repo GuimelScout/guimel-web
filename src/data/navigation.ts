@@ -16,6 +16,11 @@ export const NAVIGATION: NavItemType[] = [
   },
   {
     id: ncNanoId(),
+    href: RouteGuimel.activity,
+    name: "GScouting Trips",
+  },
+  {
+    id: ncNanoId(),
     href: RouteGuimel.location,
     name: "Lugares",
   },
