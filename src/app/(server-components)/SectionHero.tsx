@@ -23,8 +23,16 @@ const SectionHero: FC<SectionHeroProps> = ({ className = "",title = "Guimel Comm
           <span className="text-base md:text-lg text-neutral-500 dark:text-neutral-400">
             {subtitle}
           </span>
-          <ButtonPrimary href="/listing-stay-map" sizeClass="px-5 py-4 sm:px-7">
-            Start your search
+          <ButtonPrimary
+            onClick={() => {
+              const el = document.getElementById("gscouting-trip");
+              if (el) {
+                el.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+            sizeClass="px-5 py-4 sm:px-7"
+          >
+            GScouting Trip
           </ButtonPrimary> 
         </div>
         <div className="flex-grow">

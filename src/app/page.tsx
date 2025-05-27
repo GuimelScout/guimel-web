@@ -62,7 +62,7 @@ function PageHome() {
 
         <SectionGridCategoryBox />
 
-        <div className="relative py-16">
+        <div className="relative py-16" id="gscouting-trip">
           <BackgroundSection />
           <SectionBecomeAnAuthor />
         </div>
