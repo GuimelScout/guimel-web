@@ -24,7 +24,7 @@ const Logo: React.FC<LogoProps> = ({
         <img
           className={`block max-h-30 ${imgLight ? "dark:hidden" : ""}`}
           src={img.src}
-          alt="Logo Guimel Community"
+          alt="Logo Scouteando México"
         />
       ) : (
         "Logo Guimel"
@@ -33,7 +33,7 @@ const Logo: React.FC<LogoProps> = ({
         <img
           className="hidden max-h-30 dark:block"
           src={imgLight.src}
-          alt="Logo Guimel Community"
+          alt="Logo Scouteando México"
         />
       )} 
     </Link>

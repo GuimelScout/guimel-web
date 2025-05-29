@@ -13,7 +13,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Guimel Community",
+  title: "Scouteando México",
   description: "Sitio oficial de Guimel para reservas, actividades y más",
   keywords: ["Guimel", "Reservas", "Servicios"],
 }; 

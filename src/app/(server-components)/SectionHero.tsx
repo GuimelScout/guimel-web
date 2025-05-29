@@ -10,7 +10,7 @@ export interface SectionHeroProps {
   image?:string;
 }
 
-const SectionHero: FC<SectionHeroProps> = ({ className = "",title = "Guimel Community", subtitle="People - Technology - Nature", image=imagePng }) => {
+const SectionHero: FC<SectionHeroProps> = ({ className = "",title = "Scouteando México", subtitle="Unimos a la Comunidad con esos lugares ocultos de México.", image=imagePng }) => {
   return (
     <div
       className={`nc-SectionHero flex flex-col-reverse lg:flex-col relative ${className}`}
