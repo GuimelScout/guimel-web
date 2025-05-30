@@ -67,12 +67,12 @@ function PageHome() {
           <SectionBecomeAnAuthor />
         </div>
 
-        <SectionSliderNewCategories
+        {/* <SectionSliderNewCategories
           heading="Explore by types of stays"
           subHeading="Explore houses based on 10 types of stays"
           categoryCardType="card5"
           itemPerRow={5}
-        />
+        /> */}
 
         <SectionVideos />
 
