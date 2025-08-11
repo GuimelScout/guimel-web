@@ -202,7 +202,7 @@ const Location = ({ params }: { params: { link: string } }) => {
           <span className="text-3xl font-semibold">
             ${parseFloat(data?.lodging.price || "0.00").toFixed(2)}
             <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
-              /noche
+              /persona
             </span>
           </span>
           <StartRating reviewCount={data?.lodging.reviewCount} point={data?.lodging.reviewStar} />
@@ -218,7 +218,7 @@ const Location = ({ params }: { params: { link: string } }) => {
             hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
             sizeClass="h-14 w-14"
             radius="rounded-full"
-            imgUrl={data?.lodging.hostBy?.image.url}
+            imgUrl={data?.lodging.hostBy?.image?.url}
             
           />
           <div>
@@ -372,7 +372,7 @@ const Location = ({ params }: { params: { link: string } }) => {
             hasCheckedClass="w-4 h-4 -top-0.5 right-0.5"
             sizeClass="h-14 w-14"
             radius="rounded-full"
-            imgUrl={data?.lodging.hostBy?.image.url}
+            imgUrl={data?.lodging.hostBy?.image?.url}
             
           />
           <div>

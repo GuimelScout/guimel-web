@@ -68,7 +68,7 @@ const LodgingCard: FC<LodgingCardProps> = ({
             {` `}
             {size === "default" && (
               <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
-                /noche
+                /persona
               </span>
             )}
           </span>

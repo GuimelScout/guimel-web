@@ -601,7 +601,7 @@ const CheckOutPagePageMain: FC<CheckOutPagePageMainProps> = ({
                 </div>
               </div>
             </form>
-            <Toaster position="top-right" closeButton richColors/>
+            <Toaster position="bottom-center" closeButton richColors/>
         </div>
       </div>
     );

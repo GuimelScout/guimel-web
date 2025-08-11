@@ -58,3 +58,48 @@ export const PAYMENTS_QUERY = gql`
     }
   }
 `;
+
+export const ACTIVITIES_QUERY = gql`
+  query Query($where: ActivityWhereInput!) {
+    activities(where: $where) {
+      id
+      name
+      price
+      reviewCount
+      link
+      is_available
+      image {
+        url
+      }
+      bookingCount
+      lodgingCount
+      location {
+        name
+        link
+      }
+    }
+  }
+`;
+
+export const LODGINGS_QUERY = gql`
+  query Lodgings($where: LodgingWhereInput!) {
+    lodgings(where: $where) {
+      id
+      name
+      location {
+        name
+        link
+      }
+      logo {
+        url
+      }
+      activityCount
+      address
+      bookingCount
+      link
+      paymentCount
+      reviewCount
+      reviewStar
+    }
+  }
+`;
