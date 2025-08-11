@@ -13,6 +13,9 @@ export const AUTHENTICATED_ITEM_QUERY = gql(`
         image {
           url
         }
+        role{
+          name
+        }
         createdAt
       }
     }

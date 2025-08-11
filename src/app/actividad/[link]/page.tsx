@@ -209,7 +209,7 @@ const Location = ({ params }: { params: { link: string } }) => {
           <span className="text-3xl font-semibold">
             ${parseFloat(data?.activity.price || "0.00").toFixed(2)}
             <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
-              /noche
+              /persona
             </span>
           </span>
           <StartRating reviewCount={data?.activity.reviewCount} point={data?.activity.reviewStar} />

@@ -14,6 +14,21 @@ const AccountBilling = () => {
   const router = useRouter();
   const { user, loading } = useUser();
 
+  const { data, loading: loadingPayments } = useQuery<PaymentsDataType>(PAYMENTS_QUERY, {
+    variables: {
+      where: { user: { id: { equals: user?.id ?? undefined } } },
+      orderBy: [{createdAt: "desc"}
+    ]
+    },
+    fetchPolicy: "no-cache",
+  });  
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push(RouteGuimel.login);
+    }
+  }, [user, loading, router]);
+
   if (loading) {
     return (
       <div className="space-y-6 sm:space-y-8">
@@ -30,21 +45,6 @@ const AccountBilling = () => {
       </div>
     );
   }
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push(RouteGuimel.login);
-    }
-  }, [user, loading]);
-
-  const { data, loading: loadingPayments } = useQuery<PaymentsDataType>(PAYMENTS_QUERY, {
-    variables: {
-    where: { user: { id: { equals: user?.id ?? undefined } } },
-    orderBy: [{createdAt: "desc"}
-  ]
-    },
-    fetchPolicy: "no-cache",
-  });   
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -183,8 +183,59 @@ const AccountBilling = () => {
           );
         })
       ) : (
-        <div className="p-4">
-          <p className="text-sm text-gray-600 text-center">Aún no tienes pagos</p>
+        <div className="flex flex-col items-center justify-center p-8 bg-neutral-50 dark:bg-neutral-800 rounded-xl shadow-sm">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-12 w-12 text-gray-400 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+          >
+            <rect
+              x="3"
+              y="5"
+              width="18"
+              height="14"
+              rx="2"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeMiterlimit="10"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M3 10H21"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeMiterlimit="10"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M7 15H9"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeMiterlimit="10"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M11 15H13"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeMiterlimit="10"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <p className="text-lg font-medium text-gray-700 dark:text-gray-200 text-center mb-2">
+            ¡Sin pagos aún!
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+            Aún no tienes pagos registrados.<br />
+            Cuando recibas un pago, aparecerá aquí.
+          </p>
         </div>
       )}
       </div>

@@ -40,8 +40,6 @@ const ActivityCard: FC<ActivityCardProps> = ({
   };
 
   const renderContent = () => {
-    console.log("data");
-    console.log(data);
     return (
       <div className={size === "default" ? "py-4 space-y-3 p-3" : "p-3 space-y-1"}>
         <div className="space-y-2">
@@ -68,7 +66,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
             {` `}
             {size === "default" && (
               <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
-                /noche
+                /persona
               </span>
             )}
           </span>

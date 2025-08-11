@@ -11,4 +11,9 @@ export const RouteGuimel =  {
   payments: "/pagos" as any,
   about: "/acerca-de" as any,
   contact: "/contacto" as any,
+
+  //hoster
+  client_bookings: "/reservas-de-clientes" as any,
+  my_lodgings: "/mis-hospedajes" as any,
+  my_activities: "/mis-actividades" as any,
 }

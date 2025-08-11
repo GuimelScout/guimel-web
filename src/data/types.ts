@@ -32,6 +32,8 @@ export interface ActivityType {
   hostBy?: Host;
   lodging?: Array<LodgingType>
   lodgingCount?: number;
+  location?: Array<LocationType>;
+  bookingCount?: number;
 }
 
 
@@ -70,6 +72,10 @@ export interface LodgingType {
   gallery?: Array<GalleryImageType>;
   includes: Array<Include>;
   hostBy?: Host;
+  bookingCount?: number;
+  paymentCount?: number;
+  activityCount?: number;
+  location?: Array<LocationType>;
 }
 
 export interface Host {
@@ -85,8 +91,14 @@ export interface Host {
   reviewsCount: number;
   reviewStar:number;
   image: ImageType;
+  role: Array<Role>;
   verified: boolean;
   createdAt: Date;
+}
+
+export interface Role {
+  id:string;
+  name:string;
 }
 
 export type AuthenticatedItem = Host;
