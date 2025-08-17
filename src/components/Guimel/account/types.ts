@@ -39,6 +39,10 @@ export const STATUS_BOOKING_COLORS : { [key: string]: TwMainColor } = {
 }
 
 
+export interface PaymentsDataType {
+  payments: Array<PaymentType>;
+}
+
 export interface LodgingsDataType {
   lodgings: Array<LodgingType>;
 }
