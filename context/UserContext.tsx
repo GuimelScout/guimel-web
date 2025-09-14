@@ -28,7 +28,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       const userData = await getAuthenticatedUser();
       setUser(userData || undefined);
     } catch (error) {
-      console.error("Error fetching user:", error);
       setUser(undefined);
     } finally {
       setLoading(false);

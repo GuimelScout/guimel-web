@@ -10,14 +10,14 @@ export interface BookingsDataType {
 
 export interface BookingType {
   id : string;
-  activity?: ActivityType | undefined;
+  activity?: Array<ActivityType> | undefined;
   lodging?: LodgingType | undefined;
   payment: PaymentType;
   gallery?: Array<GalleryImageType>;
   status: string;
   start_date: string;
   end_date: string;
-  guestss: number;
+  guestsCount: number;
   createdAt: Date;
   code: string;
 }

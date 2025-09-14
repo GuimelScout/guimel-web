@@ -324,7 +324,7 @@ const Location = ({ params }: { params: { link: string } }) => {
         </div> */}
 
         {/* SUBMIT */}
-        {/* <ButtonPrimary href={`/checkout?activity=${link}&guestss=${totalGuests}&startDate=${dateFormat(startDate)}&endDate=${dateFormat(endDate)}`}>Reservar</ButtonPrimary> */}
+        {/* <ButtonPrimary href={`/checkout?activity=${link}&guestsCount=${totalGuests}&startDate=${dateFormat(startDate)}&endDate=${dateFormat(endDate)}`}>Reservar</ButtonPrimary> */}
       </div>
     );
   };

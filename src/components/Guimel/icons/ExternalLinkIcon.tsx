@@ -1,7 +1,7 @@
 import React from "react";
-import { IconProps } from "../types";
+import { IconProps } from "../../../app/template/(client-components)/(Header)/AvatarDropdown/types";
 
-const CardIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
+const ExternalLinkIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
   <svg
     width={size}
     height={size}
@@ -11,10 +11,10 @@ const CardIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
   >
     <rect
       x="3"
-      y="5"
-      width="18"
+      y="7"
+      width="14"
       height="14"
-      rx="2"
+      rx="3"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeMiterlimit="10"
@@ -22,7 +22,7 @@ const CardIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
       strokeLinejoin="round"
     />
     <path
-      d="M3 10H21"
+      d="M14 3H21V10"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeMiterlimit="10"
@@ -30,15 +30,7 @@ const CardIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
       strokeLinejoin="round"
     />
     <path
-      d="M7 15H9"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeMiterlimit="10"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M11 15H13"
+      d="M21 3L10 14"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeMiterlimit="10"
@@ -48,4 +40,4 @@ const CardIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
   </svg>
 );
 
-export default React.memo(CardIcon);
+export default React.memo(ExternalLinkIcon);

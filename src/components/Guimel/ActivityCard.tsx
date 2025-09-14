@@ -5,7 +5,7 @@ import StartRating from "@/components/StartRating";
 import BtnLikeIcon from "@/components/BtnLikeIcon";
 import Badge from "@/shared/Badge";
 import Link from "next/link";
-import { MapPinIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon, PlayIcon } from "@heroicons/react/24/outline";
 
 export interface ActivityCardProps {
   className?: string;
@@ -25,7 +25,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
 
   const renderSliderGallery = () => {
     return (
-      <div className="relative w-full rounded-2xl overflow-hidden ">
+      <div className="relative w-full rounded-2xl overflow-hidden border-2 border-blue-100 shadow-lg">
         <GallerySlider
           uniqueID={`ExperiencesCard_${name}`}
           ratioClass={ratioClass}
@@ -33,26 +33,33 @@ const ActivityCard: FC<ActivityCardProps> = ({
           //@ts-ignore
           href={`actividad/${link}`}
         />
-        <BtnLikeIcon isLiked={true} className="absolute right-3 top-3" />
-        {/* {true && <SaleOffBadge className="absolute left-3 top-3" />} */}
+        <BtnLikeIcon isLiked={true} className="absolute right-2 top-2" />
+        {/* Activity Icon */}
+        <div className="absolute left-2 top-2 bg-blue-500 text-white p-1.5 rounded-full shadow-lg">
+          <PlayIcon className="w-3 h-3" />
+        </div>
+        {/* Activity Badge */}
+        <div className="absolute left-2 bottom-2">
+          <Badge name="Actividad" color="blue" className="bg-blue-500 text-white text-xs px-2 py-1" />
+        </div>
       </div>
     );
   };
 
   const renderContent = () => {
     return (
-      <div className={size === "default" ? "py-4 space-y-3 p-3" : "p-3 space-y-1"}>
-        <div className="space-y-2">
-          <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-2">
+      <div className={size === "default" ? "py-4 space-y-3 p-3" : "p-2 space-y-1"}>
+        <div className="space-y-1">
+          <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-xs space-x-1">
             {size === "default" && <MapPinIcon className="w-4 h-4" />}
-            <span className="">{address}</span>
+            {size === "small" && <MapPinIcon className="w-3 h-3" />}
+            <span className="line-clamp-1">{address}</span>
           </div>
 
           <div className="flex items-center space-x-2">
-            {true && <Badge name="Favorito" color="green" />}
             <h2
               className={` font-medium capitalize ${
-                size === "default" ? "text-base" : "text-base"
+                size === "default" ? "text-base" : "text-sm"
               }`}
             >
               <span className="line-clamp-1">{name}</span>
@@ -61,11 +68,16 @@ const ActivityCard: FC<ActivityCardProps> = ({
         </div>
         <div className="border-b border-neutral-100 dark:border-neutral-800"></div>
         <div className="flex justify-between items-center">
-          <span className="text-base font-semibold">
+          <span className={size === "default" ? "text-base font-semibold" : "text-sm font-semibold"}>
             ${parseFloat(price).toFixed(2)}
             {` `}
             {size === "default" && (
               <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
+                /persona
+              </span>
+            )}
+            {size === "small" && (
+              <span className="text-xs text-neutral-500 dark:text-neutral-400 font-normal">
                 /persona
               </span>
             )}
@@ -77,7 +89,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
   };
 
   return (
-    <div className={`nc-ExperiencesCard group relative ${className}`}>
+    <div className={`nc-ExperiencesCard group relative bg-gradient-to-br from-blue-50 to-blue-100/30 rounded-2xl p-1 ${className}`}>
       {renderSliderGallery()}
      {/*  @ts-ignore */}
      <Link href={`actividad/${link}`}>{renderContent()}</Link>

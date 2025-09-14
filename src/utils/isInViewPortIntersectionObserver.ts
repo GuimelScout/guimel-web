@@ -30,9 +30,6 @@ const checkInViewIntersectionObserver = ({
 
   // _checkBrowserSupport-----
   if (typeof window.IntersectionObserver === "undefined") {
-    console.error(
-      "window.IntersectionObserver === undefined! => Your Browser is Notsupport"
-    );
     return;
   }
 

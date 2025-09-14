@@ -1,6 +1,6 @@
 import React from "react";
 import SwitchDarkMode2 from "@/shared/SwitchDarkMode2";
-import { BulbIcon } from "../icons";
+import { BulbIcon } from "../../../../../../components/Guimel/icons";
 import { MENU_ITEM_CLASSES } from "../constants";
 
 const DarkModeToggle: React.FC = () => {

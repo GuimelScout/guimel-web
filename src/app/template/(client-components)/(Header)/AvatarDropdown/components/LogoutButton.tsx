@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { LogoutButtonProps } from "../types";
-import { LogoutIcon } from "../icons";
+import { LogoutIcon } from "../../../../../../components/Guimel/icons";
 import { MENU_ITEM_CLASSES } from "../constants";
 import { useLogout } from "../hooks/useLogout";
 

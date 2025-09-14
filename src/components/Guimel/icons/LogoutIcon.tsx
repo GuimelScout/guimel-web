@@ -1,5 +1,5 @@
 import React from "react";
-import { IconProps } from "../types";
+import { IconProps } from "../../../app/template/(client-components)/(Header)/AvatarDropdown/types";
 
 const LogoutIcon: React.FC<IconProps> = ({ className = "", size = 24 }) => (
   <svg

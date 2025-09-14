@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import CheckOutPagePageMain from "./PageMain";
+import CheckOutPagePageMain from "./PageMainNew";
 import {loadStripe} from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
@@ -10,7 +10,7 @@ const page = ({
 }: {
   searchParams: {
     activity: string;
-    guestss: string;
+    guestsCount: string;
     startDate: string;
     endDate: string;
   };
@@ -20,7 +20,7 @@ const page = ({
   return <Elements stripe={stripePromise}>
     <CheckOutPagePageMain params={{
     activity: searchParams.activity,
-    guestss: searchParams.guestss,
+    guestsCount: searchParams.guestsCount,
     startD: searchParams.startDate,
     endD: searchParams.endDate,
   }} />
