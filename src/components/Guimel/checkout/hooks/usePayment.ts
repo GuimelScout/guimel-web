@@ -172,7 +172,7 @@ export const usePayment = () => {
       if (response.data && response.data.makePayment.success) {
         setLoadingPayment(false);
         toast.success(response.data.makePayment.message);
-        router.push(`/pay-done?booking=${response.data.makePayment.data.booking}`);
+        router.push(`/pay-done?booking=${response.data.makePayment.data.booking}` as any);
       } else {
         setLoadingPayment(false);
         toast.error(response.data.makePayment.message, {

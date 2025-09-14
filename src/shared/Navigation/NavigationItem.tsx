@@ -117,14 +117,23 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem }) => {
   };
 
   const renderMegaMenuNavlink = (item: NavItemType) => {
+    const isActive = locationPathName === item.href;
+    
     return (
       <li key={item.id}>
         <Link
           rel="noopener noreferrer"
-          className="inline-flex items-center py-1 px-2 rounded hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 font-normal text-neutral-6000 dark:text-neutral-300"
+          className={`inline-flex items-center py-1 px-2 rounded font-normal transition-colors ${
+            isActive
+              ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-semibold"
+              : "text-neutral-6000 dark:text-neutral-300 hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+          }`}
           href={item.href || ""}
         >
           {item.name}
+          {isActive && (
+            <div className="ml-2 w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
+          )}
         </Link>
       </li>
     );
@@ -232,19 +241,30 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem }) => {
   };
 
   const renderDropdownMenuNavlink = (item: NavItemType) => {
+    const isActive = locationPathName === item.href;
+    
     return (
       <Link
         target={item.targetBlank ? "_blank" : undefined}
         rel="noopener noreferrer"
-        className="flex items-center font-normal text-neutral-6000 dark:text-neutral-300 py-2 px-4 rounded-md hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 "
+        className={`flex items-center font-normal py-2 px-4 rounded-md transition-colors ${
+          isActive
+            ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-semibold"
+            : "text-neutral-6000 dark:text-neutral-300 hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+        }`}
         href={item.href || ""}
       >
         {item.name}
         {item.type && (
           <ChevronDownIcon
-            className="ml-2 h-4 w-4 text-neutral-500"
+            className={`ml-2 h-4 w-4 ${
+              isActive ? "text-blue-500" : "text-neutral-500"
+            }`}
             aria-hidden="true"
           />
+        )}
+        {isActive && (
+          <div className="ml-auto w-2 h-2 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
         )}
       </Link>
     );
@@ -252,18 +272,29 @@ const NavigationItem: FC<NavigationItemWithRouterProps> = ({ menuItem }) => {
 
   // ===================== MENU MAIN MENU =====================
   const renderMainItem = (item: NavItemType) => {
+    const isActive = locationPathName === item.href;
+    
     return (
       <Link
         rel="noopener noreferrer"
-        className="inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+        className={`inline-flex items-center text-sm xl:text-base font-normal py-2 px-4 xl:px-5 rounded-full transition-colors ${
+          isActive
+            ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-semibold"
+            : "text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+        }`}
         href={item.href || "/"}
       >
         {item.name}
         {item.type && (
           <ChevronDownIcon
-            className="ml-1 -mr-1 h-4 w-4 text-neutral-400"
+            className={`ml-1 -mr-1 h-4 w-4 ${
+              isActive ? "text-blue-500" : "text-neutral-400"
+            }`}
             aria-hidden="true"
           />
+        )}
+        {isActive && (
+          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
         )}
       </Link>
     );

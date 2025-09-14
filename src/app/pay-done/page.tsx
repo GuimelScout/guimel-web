@@ -216,7 +216,7 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           {user ? (
-            <Link href="/reservas">
+            <Link href={"/reservas" as any}>
               <ButtonPrimary className="w-full sm:w-auto">
                 Ver Mis Reservas
               </ButtonPrimary>

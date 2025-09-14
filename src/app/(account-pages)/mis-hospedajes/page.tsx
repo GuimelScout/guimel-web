@@ -9,10 +9,13 @@ import { useQuery } from "@apollo/client";
 import { LodgingType, PaymentType } from "@/data/types";
 import { useRouter } from "next/navigation";
 import { RouteGuimel } from "@/routers/routes";
+import { useHostCheck } from "@/components/Guimel/account/hooks/useHostCheck";
+import HostOnlyAccess from "@/components/Guimel/account/HostOnlyAccess";
 
 const AccountBilling = () => {
   const router = useRouter();
   const { user, loading } = useUser();
+  const { hasHostAccess, loading: hostLoading } = useHostCheck();
 
   const pageTitle = "Mis Hospedajes";
 
@@ -23,6 +26,7 @@ const AccountBilling = () => {
     ]
     },
     fetchPolicy: "no-cache",
+    skip: !hasHostAccess
   });  
 
   useEffect(() => {
@@ -30,6 +34,26 @@ const AccountBilling = () => {
       router.push(RouteGuimel.login);
     }
   }, [user, loading, router]);
+
+  // Show host-only access message if user is not a host
+  if (!hostLoading && !hasHostAccess) {
+    return (
+      <HostOnlyAccess
+        title="Conviértete en Anfitrión"
+        description="Únete a nuestra comunidad de anfitriones y ofrece hospedaje único a viajeros de todo el mundo."
+        features={[
+          "Lista y gestiona tus propiedades",
+          "Establece precios competitivos",
+          "Recibe huéspedes de todo el mundo",
+          "Genera ingresos con tu espacio",
+          "Construye tu reputación como anfitrión",
+          "Accede a herramientas de gestión avanzadas"
+        ]}
+        ctaText="Convertirme en Anfitrión"
+        ctaLink={RouteGuimel.contact}
+      />
+    );
+  }
 
   if (loading) {
     return (

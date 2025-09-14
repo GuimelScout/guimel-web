@@ -5,6 +5,8 @@ import SocialsList1 from "@/shared/SocialsList1";
 import { CustomLink } from "@/data/types";
 import React from "react";
 import FooterNav from "./FooterNav";
+import { RouteGuimel } from "@/routers/routes";
+import Link from "next/link";
 
 export interface WidgetFooterMenu {
   id: string;
@@ -14,47 +16,44 @@ export interface WidgetFooterMenu {
 
 const widgetMenus: WidgetFooterMenu[] = [
   {
-    id: "5",
-    title: "Getting started",
-    menus: [
-      { href: "#", label: "Installation" },
-      { href: "#", label: "Release Notes" },
-      { href: "#", label: "Upgrade Guide" },
-      { href: "#", label: "Browser Support" },
-      { href: "#", label: "Editor Support" },
-    ],
-  },
-  {
     id: "1",
-    title: "Explore",
+    title: "Explorar",
     menus: [
-      { href: "#", label: "Design features" },
-      { href: "#", label: "Prototyping" },
-      { href: "#", label: "Design systems" },
-      { href: "#", label: "Pricing" },
-      { href: "#", label: "Security" },
+      { href: RouteGuimel.home, label: "Inicio" },
+      { href: RouteGuimel.activity, label: "Actividades" },
+      { href: RouteGuimel.location, label: "Lugares" },
+      { href: RouteGuimel.lodging, label: "Hospedaje" },
+      { href: RouteGuimel.about, label: "Acerca de" },
     ],
   },
   {
     id: "2",
-    title: "Resources",
+    title: "Mi Cuenta",
     menus: [
-      { href: "#", label: "Best practices" },
-      { href: "#", label: "Support" },
-      { href: "#", label: "Developers" },
-      { href: "#", label: "Learn design" },
-      { href: "#", label: "Releases" },
+      { href: RouteGuimel.login, label: "Iniciar Sesión" },
+      { href: RouteGuimel.signup, label: "Registrarse" },
+      { href: RouteGuimel.account, label: "Mi Perfil" },
+      { href: RouteGuimel.bookings, label: "Mis Reservas" },
+      { href: RouteGuimel.payments, label: "Mis Pagos" },
+    ],
+  },
+  {
+    id: "3",
+    title: "Para Anfitriones",
+    menus: [
+      { href: RouteGuimel.my_activities, label: "Mis Actividades" },
+      { href: RouteGuimel.my_lodgings, label: "Mis Hospedajes" },
+      { href: RouteGuimel.client_bookings, label: "Reservas de Clientes" },
     ],
   },
   {
     id: "4",
-    title: "Community",
+    title: "Soporte",
     menus: [
-      { href: "#", label: "Discussion Forums" },
-      { href: "#", label: "Code of Conduct" },
-      { href: "#", label: "Community Resources" },
-      { href: "#", label: "Contributing" },
-      { href: "#", label: "Concurrent Mode" },
+      { href: RouteGuimel.contact, label: "Contacto" },
+      { href: "#", label: "Centro de Ayuda" },
+      { href: "#", label: "Preguntas Frecuentes" },
+      { href: "#", label: "Reportar Problema" },
     ],
   },
 ];
@@ -69,13 +68,12 @@ const Footer: React.FC = () => {
         <ul className="mt-5 space-y-4">
           {menu.menus.map((item, index) => (
             <li key={index}>
-              <a
-                key={index}
-                className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
-                href={item.href}
+              <Link
+                href={item.href as any}
+                className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors duration-200"
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -91,13 +89,36 @@ const Footer: React.FC = () => {
         <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 ">
           <div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
             <div className="col-span-2 md:col-span-1">
-            <Logo imgLight={{src:"/logo-light.svg",height:280, width:280}} img={{src:"/logo-dark.svg",height:280, width:280}} />
+              <Logo imgLight={{src:"/logo-light.svg",height:280, width:280}} img={{src:"/logo-dark.svg",height:280, width:280}} />
             </div>
             <div className="col-span-2 flex items-center md:col-span-3">
               <SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-2.5 lg:items-start" />
             </div>
           </div>
           {widgetMenus.map(renderWidgetMenuItem)}
+        </div>
+        
+        {/* Términos y Condiciones */}
+        <div className="container mt-16 pt-8 border-t border-neutral-200 dark:border-neutral-700">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-sm text-neutral-6000 dark:text-neutral-300">
+              © {new Date().getFullYear()} Guimel. Todos los derechos reservados.
+            </div>
+            <div className="flex items-center space-x-6">
+              <Link
+                href={"/terminos-y-condiciones" as any}
+                className="text-sm text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors duration-200"
+              >
+                Términos y Condiciones
+              </Link>
+              <Link
+                href={"/aviso-de-privacidad" as any}
+                className="text-sm text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors duration-200"
+              >
+                Aviso de Privacidad
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -7,6 +7,8 @@ import { useQuery } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { RouteGuimel } from "@/routers/routes";
 import { BOOKINGS_HOSTER_QUERY } from "@/components/Guimel/hoster/QueryHoster.queries";
+import { useHostCheck } from "@/components/Guimel/account/hooks/useHostCheck";
+import HostOnlyAccess from "@/components/Guimel/account/HostOnlyAccess";
 
 // Tipos para booking y bookings
 interface BookingUser {
@@ -193,6 +195,7 @@ const BookingsList = ({ bookings }: { bookings: BookingType[] }) => {
 const ReservasDeClientes = () => {
   const router = useRouter();
   const { user, loading } = useUser();
+  const { hasHostAccess, loading: hostLoading } = useHostCheck();
   const pageTitle = 'Reservas de Clientes';
 
   const { data, loading: loadingBookings } = useQuery(BOOKINGS_HOSTER_QUERY, {
@@ -206,6 +209,7 @@ const ReservasDeClientes = () => {
       orderBy: [{ createdAt: "desc" }],
     },
     fetchPolicy: "no-cache",
+    skip: !hasHostAccess
   });
 
   useEffect(() => {
@@ -213,6 +217,26 @@ const ReservasDeClientes = () => {
       router.push(RouteGuimel.login);
     }
   }, [user, loading, router]);
+
+  // Show host-only access message if user is not a host
+  if (!hostLoading && !hasHostAccess) {
+    return (
+      <HostOnlyAccess
+        title="Conviértete en Anfitrión"
+        description="Únete a nuestra comunidad de anfitriones y gestiona las reservas de tus clientes de manera profesional."
+        features={[
+          "Gestiona todas las reservas de tus actividades",
+          "Controla las reservas de tus hospedajes",
+          "Comunícate directamente con tus clientes",
+          "Monitorea el rendimiento de tu negocio",
+          "Accede a reportes detallados",
+          "Herramientas de gestión avanzadas"
+        ]}
+        ctaText="Convertirme en Anfitrión"
+        ctaLink={RouteGuimel.contact}
+      />
+    );
+  }
 
   if (loading || loadingBookings) {
     return (
