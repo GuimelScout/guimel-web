@@ -72,7 +72,7 @@ const SuccessAnimation: React.FC<SuccessAnimationProps> = ({
               style={{
                 animation: `particleExplode${i} 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${1.2 + i * 0.02}s infinite`,
                 opacity: 0,
-                transform: 'translate(0, 0) scale(0)',
+                transform: shape === 'diamond' ? 'translate(0, 0) scale(0) rotate(45deg)' : 'translate(0, 0) scale(0)',
                 left: '50%',
                 top: '50%',
                 width: `${size}px`,
@@ -82,8 +82,7 @@ const SuccessAnimation: React.FC<SuccessAnimationProps> = ({
                 borderRadius: shape === 'circle' ? '50%' : 
                            shape === 'square' ? '2px' : 
                            shape === 'triangle' ? '0' : '25%',
-                clipPath: shape === 'triangle' ? 'polygon(50% 0%, 0% 100%, 100% 100%)' : 'none',
-                transform: shape === 'diamond' ? 'rotate(45deg)' : 'none'
+                clipPath: shape === 'triangle' ? 'polygon(50% 0%, 0% 100%, 100% 100%)' : 'none'
               }}
             />
           );
