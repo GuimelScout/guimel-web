@@ -18,8 +18,6 @@ const RelatedActivities: React.FC<RelatedActivitiesProps> = ({
   loading,
   onActivityToggle,
 }) => {
-  console.log("RelatedActivities props:", { location, activities, selectedActivities, loading });
-  
   if (!location) return null;
 
   return (

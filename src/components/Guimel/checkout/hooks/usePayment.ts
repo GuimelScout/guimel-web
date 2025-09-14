@@ -24,29 +24,21 @@ export const usePayment = () => {
     checkoutState: CheckoutState,
     activityData: any
   ) => {
-    console.log("🚀 [usePayment] Starting payment process");
-    console.log("📋 [usePayment] Form data:", formData);
-    console.log("🛒 [usePayment] Checkout state:", checkoutState);
-    console.log("🎯 [usePayment] Activity data:", activityData);
 
     if (!stripe || !elements) {
-      console.log("❌ [usePayment] Stripe or elements not available");
       return;
     }
 
     const cardElement = elements.getElement(CardElement);
     if (!cardElement) {
-      console.log("❌ [usePayment] Card element not found");
       return;
     }
 
     setLoadingPayment(true);
     const userName = `${formData.nameCard} ${formData.lastName}`;
-    console.log("👤 [usePayment] User name:", userName);
 
     try {
       // Get or create user
-      console.log("🔍 [usePayment] Looking for user with email:", formData.email);
       const { data: getUser } = await client.query({
         query: GET_USER,
         variables: {
@@ -61,11 +53,9 @@ export const usePayment = () => {
       let stripeCustomerId: string | null;
 
       if (getUser.user) {
-        console.log("✅ [usePayment] User found:", getUser.user);
         userID = getUser.user.id;
         stripeCustomerId = getUser.user.stripeCustomerId;
       } else {
-        console.log("🆕 [usePayment] Creating new user");
         const password = generatePassword(formData.nameCard);
         const resUser = await createUser({
           variables: {
@@ -79,13 +69,11 @@ export const usePayment = () => {
             }
           }
         });
-        console.log("✅ [usePayment] User created:", resUser.data.createUser);
         userID = resUser.data.createUser.id;
         stripeCustomerId = resUser.data.createUser.stripeCustomerId;
       }
 
       // Create payment method
-      console.log("💳 [usePayment] Creating payment method with Stripe");
       const { error, paymentMethod } = await stripe.createPaymentMethod({
         type: "card",
         card: cardElement,
@@ -97,15 +85,12 @@ export const usePayment = () => {
       });
 
       if (error) {
-        console.log("❌ [usePayment] Stripe payment method error:", error);
         toast.error("Error al procesar el pago: " + error.message);
         setLoadingPayment(false);
         return;
       }
-      console.log("✅ [usePayment] Payment method created:", paymentMethod);
 
       // Check for duplicate payment methods
-      console.log("🔍 [usePayment] Checking for duplicate payment methods");
       const { data: getStripePaymentMethods } = await client.query({
         query: GET_STRIPE_PAYMENT_METHODS,
         variables: {
@@ -118,7 +103,6 @@ export const usePayment = () => {
       let noDuplicatePaymentMethod: boolean;
 
       const methodsList = getStripePaymentMethods?.StripePaymentMethods?.data.data;
-      console.log("📋 [usePayment] Existing payment methods:", methodsList);
       
       const stripePaymentMethodDuplicate = Array.isArray(methodsList)
         ? methodsList.find((method: any) => (
@@ -130,7 +114,6 @@ export const usePayment = () => {
         : undefined;
 
       if (!stripePaymentMethodDuplicate) {
-        console.log("🆕 [usePayment] Creating new payment method in database");
         const res = await createPaymentMethod({
           variables: {
             data: {
@@ -150,9 +133,7 @@ export const usePayment = () => {
         });
         paymentMethodID = res.data.createPaymentMethod.id;
         noDuplicatePaymentMethod = true;
-        console.log("✅ [usePayment] New payment method created:", paymentMethodID);
-      } else {
-        console.log("♻️ [usePayment] Using existing payment method:", stripePaymentMethodDuplicate.id);
+        } else {
         const { data: getPaymentMethod } = await client.query({
           query: GET_PAYMENT_METHOD,
           variables: {
@@ -164,13 +145,10 @@ export const usePayment = () => {
         });
         paymentMethodID = getPaymentMethod.paymentMethod.id;
         noDuplicatePaymentMethod = false;
-        console.log("✅ [usePayment] Existing payment method found:", paymentMethodID);
       }
 
       // Create payment
-      console.log("💰 [usePayment] Preparing payment data");
       const calculatedTotal = calculateTotal(checkoutState, activityData);
-      console.log("🧮 [usePayment] Calculated total:", calculatedTotal);
       
       const paymentData: PaymentData = {
         activityIds: checkoutState.activitiesSelected.map(activity => activity.id),
@@ -187,27 +165,21 @@ export const usePayment = () => {
         noDuplicatePaymentMethod
       };
 
-      console.log("📤 [usePayment] Sending payment data to backend:", paymentData);
       const response = await makePayment({
         variables: paymentData
       });
-      console.log("📥 [usePayment] Backend response:", response);
 
       if (response.data && response.data.makePayment.success) {
-        console.log("🎉 [usePayment] Payment successful!");
-        console.log("📋 [usePayment] Booking ID:", response.data.makePayment.data.booking);
         setLoadingPayment(false);
         toast.success(response.data.makePayment.message);
         router.push(`/pay-done?booking=${response.data.makePayment.data.booking}`);
       } else {
-        console.log("❌ [usePayment] Payment failed:", response.data?.makePayment?.message);
         setLoadingPayment(false);
         toast.error(response.data.makePayment.message, {
           duration: Infinity
         });
       }
     } catch (error) {
-      console.log("💥 [usePayment] Payment process error:", error);
       toast.error("Tuvimos un problema de comunicación, intente de nuevo más tarde.", {
         duration: Infinity
       });
@@ -216,22 +188,15 @@ export const usePayment = () => {
   };
 
   const calculateTotal = (checkoutState: CheckoutState, activityData: any): string => {
-    console.log("🧮 [usePayment] Calculating total for activities:", checkoutState.activitiesSelected);
-    console.log("🧮 [usePayment] Guest adults count:", checkoutState.guestAdultsInputValue);
-    console.log("🧮 [usePayment] Selected lodging:", checkoutState.lodginSelected);
     
-    // Use the same calculation logic as useCheckout
     const activitiesTotal = checkoutState.activitiesSelected.reduce((total, activity) => {
       const activityPrice = parseFloat(activity.price || "0.00") * checkoutState.guestAdultsInputValue;
-      console.log(`🧮 [usePayment] Activity ${activity.name}: $${activity.price} x ${checkoutState.guestAdultsInputValue} = $${activityPrice}`);
       return total + activityPrice;
     }, 0);
     
     const lodgingPrice = parseFloat(checkoutState.lodginSelected?.price || "0.00") * checkoutState.guestAdultsInputValue;
-    console.log(`🧮 [usePayment] Lodging price: $${checkoutState.lodginSelected?.price || "0.00"} x ${checkoutState.guestAdultsInputValue} = $${lodgingPrice}`);
     
     const finalTotal = (activitiesTotal + lodgingPrice).toFixed(2);
-    console.log(`🧮 [usePayment] Final total: ${activitiesTotal} + ${lodgingPrice} = ${finalTotal}`);
     
     return finalTotal;
   };

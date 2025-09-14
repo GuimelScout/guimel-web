@@ -34,7 +34,6 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
   }, [user, form]);
 
   const handleLocationSelect = (location: any) => {
-    console.log("handleLocationSelect called with:", location);
     if (data?.activity) {
       updateCheckoutState({
         activitiesSelected: [data.activity],
