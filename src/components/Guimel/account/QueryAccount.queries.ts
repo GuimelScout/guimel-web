@@ -11,6 +11,7 @@ export const BOOKINGS_QUERY = gql`
         price
         reviewCount
         reviewStar
+        address
         gallery {
           description
           image {
@@ -21,6 +22,8 @@ export const BOOKINGS_QUERY = gql`
       lodging {
         name
         link
+        price
+        address
       }
       payment {
         id

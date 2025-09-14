@@ -42,7 +42,7 @@ const LodgingCard: FC<LodgingCardProps> = ({
         </div>
         {/* Lodging Badge */}
         <div className="absolute left-2 bottom-2">
-          <Badge name="Hospedaje" color="orange" className="bg-orange-500 text-white text-xs px-2 py-1" />
+          <Badge name="Hospedaje" color="yellow" className="bg-orange-500 text-white text-xs px-2 py-1" />
         </div>
       </div>
     );
