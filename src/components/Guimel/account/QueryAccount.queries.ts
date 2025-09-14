@@ -29,7 +29,7 @@ export const BOOKINGS_QUERY = gql`
       }
       status
       start_date
-      guestss
+      guestsCount
       end_date
       createdAt
       code

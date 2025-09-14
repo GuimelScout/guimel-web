@@ -127,41 +127,56 @@ const Location = ({ params }: { params: { link: string } }) => {
           images={galleryModal}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 mt-12 ">
-          <div className="p-4">
-            <Heading2
-              heading="Actividades"
-              subHeading={
-                <span className="block text-neutral-500 dark:text-neutral-400 mt-3">
-                  {data?.location.activityCount} actividades
-                </span>
-              }
-              />
-            <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 ">
+        <div className="grid grid-cols-1 lg:grid-cols-2 mt-16 gap-8">
+          {/* Actividades Section */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+              <div>
+                <Heading2
+                  heading="Actividades"
+                  subHeading={
+                    <span className="block text-blue-600 dark:text-blue-400 mt-1 text-sm font-medium">
+                      {data?.location.activityCount} actividades disponibles
+                    </span>
+                  }
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
               {data?.location.activity!.map(
                 (activity,index) => (
                   <ActivityCard key={index} data={activity}
-                  className="shadow-lg rounded-xl"
+                  size="small"
+                  className="shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                   /> 
                   
                 )
               )}
             </div>
           </div>
-          <div className="p-4">
-            <Heading2
-              heading="Hospedaje"
-              subHeading={
-                <span className="block text-neutral-500 dark:text-neutral-400 mt-3">
-                  {data?.location.lodgingCount} hospedaje
-                </span>
-              }
-              />
-            <div className="grid grid-cols-1 gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 ">
+
+          {/* Hospedaje Section */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-1 h-8 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"></div>
+              <div>
+                <Heading2
+                  heading="Hospedaje"
+                  subHeading={
+                    <span className="block text-orange-600 dark:text-orange-400 mt-1 text-sm font-medium">
+                      {data?.location.lodgingCount} hospedajes disponibles
+                    </span>
+                  }
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
               {data?.location.lodging!.map(
                 (lodgging,index) => (
                   <LodgingCard key={index} data={lodgging}
-                  className="shadow-lg rounded-xl"
+                  size="small"
+                  className="shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                   /> 
                 )
               )}

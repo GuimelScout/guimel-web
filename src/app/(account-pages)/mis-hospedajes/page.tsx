@@ -25,9 +25,6 @@ const AccountBilling = () => {
     fetchPolicy: "no-cache",
   });  
 
-  console.log("data", data);
-  console.log("user", user);
-
   useEffect(() => {
     if (!loading && !user) {
       router.push(RouteGuimel.login);

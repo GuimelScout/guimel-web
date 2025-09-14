@@ -30,7 +30,7 @@ interface BookingType {
   end_date: string;
   status: string;
   user: BookingUser;
-  guestss: string;
+  guestsCount: string;
   createdAt: string;
   activity?: BookingActivity | null;
   lodging?: BookingLodging | null;
@@ -87,7 +87,7 @@ const BookingCard = ({ booking }: { booking: BookingType }) => {
         </div>
         <div>
           <span className="text-sm text-gray-800 font-medium">
-            Huéspedes: {booking.guestss}
+            Personas: {booking.guestsCount}
           </span>
         </div>
         <div>

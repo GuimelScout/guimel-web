@@ -17,7 +17,6 @@ export const useLogout = () => {
       refreshUser();
       router.push(RouteGuimel.home);
     } catch (err) {
-      console.error("Logout error:", err);
       // Still clear user state even if logout mutation fails
       setUser(undefined);
       refreshUser();

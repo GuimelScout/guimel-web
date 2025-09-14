@@ -64,7 +64,7 @@ const ModalReserveMobile: FC<ModalReserveMobileProps> = ({
                       <div className="flex-1 bg-white dark:bg-neutral-900">
                         <CheckOutPagePageMain params={{
                           activity: "",
-                          guestss: "",
+                          guestsCount: "",
                           startD: "",
                           endD: ""
                         }} />

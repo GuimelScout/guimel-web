@@ -3,197 +3,246 @@
 import StartRating from "@/components/StartRating";
 import React, { FC } from "react";
 import ButtonPrimary from "@/shared/ButtonPrimary";
+import ButtonSecondary from "@/shared/ButtonSecondary";
 import Image from "next/image";
 import { useQuery } from "@apollo/client";
-import { ActivityDataType, CARD_TYPE } from "@/data/types";
-import { ACTIVITY_QUERY, BOOKING_QUERY } from "@/components/Guimel/activity/QueryActivity.queries";
-import dateFormat, { formatDateSpanish, parseLocalDateString } from "@/utils/date-format-helper";
+import {  CARD_TYPE } from "@/data/types";
+import { BOOKING_QUERY } from "@/components/Guimel/activity/QueryActivity.queries";
+import  { formatDateSpanish, parseLocalDateString } from "@/utils/date-format-helper";
 import { BookingDataType } from "@/components/Guimel/account/types";
 import { RouteGuimel } from "@/routers/routes";
+import MapPinIcon from "@/components/Guimel/icons/MapPinIcon";
+import { useUser } from "context/UserContext";
+import Link from "next/link";
+import { CheckCircleIcon, CalendarIcon, UserGroupIcon, MapPinIcon as MapPin, CreditCardIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
+import SuccessAnimation from "@/components/Guimel/SuccessAnimation";
 
 export interface PayPageProps {
   searchParams: { [key: string]: string | undefined };
 }
 
 const PayPage: FC<PayPageProps> = ({ searchParams }) => {
+  const { user, loading } = useUser();
 
   const renderContent = () => {
+    const { data, loading: bookingLoading } = useQuery<BookingDataType>(BOOKING_QUERY, {
+      variables: { where: { id: searchParams.booking} },
+    });
 
-      const { data } = useQuery<BookingDataType>(BOOKING_QUERY, {
-        variables: { where: { id: searchParams.booking} },
-      });
+    if (bookingLoading) {
+      return (
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+      );
+    }
+
+    if (!data?.booking) {
+      return (
+        <div className="text-center py-12">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+            Reserva no encontrada
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            No pudimos encontrar la reserva solicitada.
+          </p>
+          <ButtonPrimary href="/">Volver al inicio</ButtonPrimary>
+        </div>
+      );
+    }
 
     return (
-      <div className="w-full flex flex-col sm:rounded-2xl space-y-10 px-0 sm:p-6 xl:p-8">
-        <h2 className="text-3xl lg:text-4xl font-semibold">
-          ¡Felicidades! 🎉
-        </h2>
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Success Header */}
+        <div className="text-center bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-3xl p-8 border border-green-200 dark:border-green-800">
+          <div className="flex justify-center mb-6">
+            <SuccessAnimation size={80} />
+          </div>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            ¡Pago Exitoso! 🎉
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+            Tu reserva ha sido confirmada y está lista para disfrutar
+          </p>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 inline-block shadow-lg">
+            <span className="text-sm text-gray-500 dark:text-gray-400">Código de reserva</span>
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 font-mono">
+              {data.booking.code}
+            </p>
+          </div>
+        </div>
 
-        <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
+        {/* Activities Section */}
+        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <CalendarIcon className="w-6 h-6 mr-3 text-blue-600" />
+            Actividades Reservadas
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.booking.activity?.map((activity) => (
+              <div key={activity.id} className="group bg-gray-50 dark:bg-gray-700 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden">
+                  <Image
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    alt={activity.name}
+                    src={activity.image?.url ?? "/placeholder-activity.jpg"}
+                  />
+                </div>
+                
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {activity.name}
+                </h3>
+                
+                <div className="flex items-center text-gray-600 dark:text-gray-300 mb-3">
+                  <MapPin className="w-4 h-4 mr-2 text-blue-500" />
+                  <span className="text-sm truncate">{activity.address}</span>
+                </div>
+                
+                <StartRating point={activity.reviewStar} reviewCount={activity.reviewCount} />
+              </div>
+            ))}
+          </div>
+        </div>
 
-        <div className="space-y-6">
-          <h3 className="text-2xl font-semibold">Tu experiencia esta lista</h3>
+        {/* Trip Details */}
+        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            Detalles del Viaje
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+              <CalendarIcon className="w-8 h-8 text-blue-600" />
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Fechas</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  {formatDateSpanish(parseLocalDateString(data.booking.start_date), true)} - {formatDateSpanish(parseLocalDateString(data.booking.end_date))}
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+              <UserGroupIcon className="w-8 h-8 text-green-600" />
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Scouts</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  {data.booking.guestsCount} personas
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center">
-            <div className="flex-shrink-0 w-full sm:w-40">
-              <div className=" aspect-w-4 aspect-h-3 sm:aspect-h-4 rounded-2xl overflow-hidden">
+        {/* Lodging Section */}
+        {data.booking.lodging && (
+          <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+              <MapPin className="w-6 h-6 mr-3 text-orange-600" />
+              Hospedaje Incluido
+            </h2>
+            
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="relative w-full md:w-64 h-48 rounded-2xl overflow-hidden">
                 <Image
                   fill
                   className="object-cover"
-                  alt={data?.booking?.activity?.name || searchParams.activity || "-"}
-                  src={data?.booking?.activity?.image.url!}
+                  alt={data.booking.lodging.name}
+                  src={data.booking.lodging.logo?.url || "/placeholder-lodging.jpg"}
                 />
               </div>
-            </div>
-            <div className="pt-5  sm:pb-5 sm:px-5 space-y-3">
-              <div>
-                <span className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-1">
-                  {data?.booking.activity?.address}
-                </span>
-                <span className="text-base sm:text-lg font-medium mt-1 block">
-                  {data?.booking.activity?.name}
-                </span>
-              </div>
-              {/* <span className="block  text-sm text-neutral-500 dark:text-neutral-400">
-                2 beds · 2 baths
-              </span> */}
-              <div className="w-10 border-b border-neutral-200  dark:border-neutral-700"></div>
-              <StartRating point={data?.booking.activity?.reviewStar} reviewCount={data?.booking.activity?.reviewCount} />
-            </div>
-          </div>
-
-         
-
-          <div className="mt-6 border border-neutral-200 dark:border-neutral-700 rounded-3xl flex flex-col sm:flex-row divide-y sm:divide-x sm:divide-y-0 divide-neutral-200 dark:divide-neutral-700">
-            <div className="flex-1 p-5 flex space-x-4">
-              <svg
-                className="w-8 h-8 text-neutral-300 dark:text-neutral-6000"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9.33333 8.16667V3.5M18.6667 8.16667V3.5M8.16667 12.8333H19.8333M5.83333 24.5H22.1667C23.4553 24.5 24.5 23.4553 24.5 22.1667V8.16667C24.5 6.878 23.4553 5.83333 22.1667 5.83333H5.83333C4.54467 5.83333 3.5 6.878 3.5 8.16667V22.1667C3.5 23.4553 4.54467 24.5 5.83333 24.5Z"
-                  stroke="#D1D5DB"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-
-              <div className="flex flex-col">
-                <span className="text-sm text-neutral-400">Fecha</span>
-                <span className="mt-1.5 text-lg font-semibold">
-                  {formatDateSpanish(parseLocalDateString(data?.booking?.start_date), true)} - {formatDateSpanish(parseLocalDateString(data?.booking?.end_date))}
-                </span>
-              </div>
-            </div>
-            <div className="flex-1 p-5 flex space-x-4">
-              <svg
-                className="w-8 h-8 text-neutral-300 dark:text-neutral-6000"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14 5.07987C14.8551 4.11105 16.1062 3.5 17.5 3.5C20.0773 3.5 22.1667 5.58934 22.1667 8.16667C22.1667 10.744 20.0773 12.8333 17.5 12.8333C16.1062 12.8333 14.8551 12.2223 14 11.2535M17.5 24.5H3.5V23.3333C3.5 19.4673 6.63401 16.3333 10.5 16.3333C14.366 16.3333 17.5 19.4673 17.5 23.3333V24.5ZM17.5 24.5H24.5V23.3333C24.5 19.4673 21.366 16.3333 17.5 16.3333C16.225 16.3333 15.0296 16.6742 14 17.2698M15.1667 8.16667C15.1667 10.744 13.0773 12.8333 10.5 12.8333C7.92267 12.8333 5.83333 10.744 5.83333 8.16667C5.83333 5.58934 7.92267 3.5 10.5 3.5C13.0773 3.5 15.1667 5.58934 15.1667 8.16667Z"
-                  stroke="#D1D5DB"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-
-              <div className="flex flex-col">
-                <span className="text-sm text-neutral-400">Personas</span>
-                <span className="mt-1.5 text-lg font-semibold">{data?.booking.guestss} Huéspedes</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {
-            (data?.booking.lodging) ? 
-            <>
-              <h4 className="text-2xl font-semibold">¡Incluiste el siguiente hospedaje!</h4>
-              <div className="flex flex-col sm:flex-row sm:items-center">
-                <div className="flex-shrink-0 w-full sm:w-40">
-                  <div className=" aspect-w-4 aspect-h-3 sm:aspect-h-4 rounded-2xl overflow-hidden">
-                    <Image
-                      fill
-                      className="object-cover"
-                      alt={data?.booking?.lodging?.name || searchParams.lodging || "-"}
-                      src={data?.booking?.lodging.logo.url!}
-                    />
-                  </div>
+              
+              <div className="flex-1 space-y-4">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    {data.booking.lodging.name}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 flex items-center">
+                    <MapPin className="w-4 h-4 mr-2 text-orange-500" />
+                    {data.booking.lodging.address}
+                  </p>
                 </div>
-                <div className="pt-5  sm:pb-5 sm:px-5 space-y-3">
+                
+                <StartRating point={data.booking.lodging.reviewStar} reviewCount={data.booking.lodging.reviewCount} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Payment Details */}
+        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <CreditCardIcon className="w-6 h-6 mr-3 text-purple-600" />
+            Detalles del Pago
+          </h2>
+          
+          <div className="space-y-4">
+            <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-600">
+              <span className="text-gray-600 dark:text-gray-400">Total pagado</span>
+              <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                ${parseFloat(data.booking.payment.amount!).toFixed(2)} MXN
+              </span>
+            </div>
+            
+            <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-600">
+              <span className="text-gray-600 dark:text-gray-400">Método de pago</span>
+              <span className="font-medium text-gray-900 dark:text-white">
+                {CARD_TYPE[data.booking.payment.paymentMethod.cardType as keyof typeof CARD_TYPE] || "Tarjeta"}
+              </span>
+            </div>
+            
+            <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-600">
+              <span className="text-gray-600 dark:text-gray-400">Fecha de pago</span>
+              <span className="font-medium text-gray-900 dark:text-white">
+                {formatDateSpanish(parseLocalDateString(data.booking.createdAt.toString().split("T")[0]))}
+              </span>
+            </div>
+            
+            {data.booking.payment.notes && (
+              <div className="py-3">
+                <div className="flex items-start space-x-3">
+                  <DocumentTextIcon className="w-5 h-5 text-gray-400 mt-1" />
                   <div>
-                    <span className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-1">
-                      {data?.booking.lodging.address}
-                    </span>
-                    <span className="text-base sm:text-lg font-medium mt-1 block">
-                      {data?.booking.lodging.name}
-                    </span>
+                    <span className="text-gray-600 dark:text-gray-400 block text-sm">Notas adicionales</span>
+                    <span className="text-gray-900 dark:text-white">{data.booking.payment.notes}</span>
                   </div>
-                  {/* <span className="block  text-sm text-neutral-500 dark:text-neutral-400">
-                    2 beds · 2 baths
-                  </span> */}
-                  <div className="w-10 border-b border-neutral-200  dark:border-neutral-700"></div>
-                  <StartRating point={data?.booking.lodging.reviewStar} reviewCount={data?.booking.lodging.reviewCount} />
                 </div>
-              </div>             
-            </>  
-            : 
-            <></>
-          }
-
-        <div className="space-y-6">
-          <h3 className="text-2xl font-semibold">Detalles de la reserva</h3>
-          <div className="flex flex-col space-y-4">
-            <div className="flex text-neutral-6000 dark:text-neutral-300">
-              <span className="flex-1">Código</span>
-              <span className="flex-1 font-medium text-neutral-900 dark:text-neutral-100">
-                {data?.booking.code}
-              </span>
-            </div>
-            <div className="flex text-neutral-6000 dark:text-neutral-300">
-              <span className="flex-1">Fecha de creación</span>
-              <span className="flex-1 font-medium text-neutral-900 dark:text-neutral-100">
-              {formatDateSpanish(parseLocalDateString(data?.booking?.createdAt.toString().split("T")[0]))}
-              </span>
-            </div>
-            <div className="flex text-neutral-6000 dark:text-neutral-300">
-              <span className="flex-1">Total</span>
-              <span className="flex-1 font-medium text-neutral-900 dark:text-neutral-100">
-                ${parseFloat(data?.booking.payment.amount!).toFixed(2)}
-              </span>
-            </div>
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <span className="flex-1">Método de pago</span>
-              <span className="flex-1 font-medium text-neutral-900 dark:text-neutral-100">
-                {CARD_TYPE[data?.booking.payment.paymentMethod.cardType as keyof typeof CARD_TYPE] || "Tipo de tarjeta desconocido"}
-              </span>
-            </div>
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <span className="flex-1">Tus notas</span>
-              <span className="flex-1 font-medium text-neutral-900 dark:text-neutral-100">
-                {data?.booking.payment.notes}
-              </span>
-            </div>
+              </div>
+            )}
           </div>
         </div>
-        <div>
-          <ButtonPrimary href={RouteGuimel.login}>Iniciar sesión para conocer tus detalles</ButtonPrimary>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {user ? (
+            <Link href="/reservas">
+              <ButtonPrimary className="w-full sm:w-auto">
+                Ver Mis Reservas
+              </ButtonPrimary>
+            </Link>
+          ) : (
+            <Link href={RouteGuimel.login}>
+              <ButtonPrimary className="w-full sm:w-auto">
+                Iniciar Sesión
+              </ButtonPrimary>
+            </Link>
+          )}
+          
+          <Link href="/">
+            <ButtonSecondary className="w-full sm:w-auto">
+              Explorar Más Actividades
+            </ButtonSecondary>
+          </Link>
         </div>
       </div>
     );
   };
 
   return (
-    <div className={`nc-PayPage`}>
-      <main className="container mt-11 mb-24 lg:mb-32 ">
-        <div className="max-w-4xl mx-auto">{renderContent()}</div>
+    <div className="nc-PayPage min-h-screen bg-gray-50 dark:bg-gray-900">
+      <main className="container py-12">
+        {renderContent()}
       </main>
     </div>
   );

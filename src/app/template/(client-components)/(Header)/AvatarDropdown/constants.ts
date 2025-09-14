@@ -1,6 +1,6 @@
 import { RouteGuimel } from "@/routers/routes";
 import { MenuItemConfig, SafeUser } from "./types";
-import { UserIcon, BookingIcon, CardIcon, HelpIcon } from "./icons";
+import { UserIcon, BookingIcon, CardIcon, HelpIcon } from "../../../../../components/Guimel/icons";
 
 export const MENU_ITEMS: MenuItemConfig[] = [
   {

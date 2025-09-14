@@ -1,14 +1,18 @@
 import gql from "graphql-tag";
 
 export const ACTIVITIES_QUERY = gql`
-  query Activities {
-    activities {
+  query Activities($where: ActivityWhereInput) {
+    activities(where: $where) {
+      id
       name
       link
       address
       price
       reviewCount
       reviewStar
+      image {
+        url
+      }
       gallery {
         description
         image {
@@ -75,6 +79,13 @@ export const ACTIVITY_QUERY = gql`
           url
         }
       }
+      location {
+        id
+        name
+        image {
+          url
+        }
+      }
     }
   }
 `;
@@ -83,7 +94,7 @@ export const BOOKING_QUERY = gql`
   query Booking($where: BookingWhereUniqueInput!) {
     booking(where: $where) {
       id
-      guestss
+      guestsCount
       start_date
       end_date
       code

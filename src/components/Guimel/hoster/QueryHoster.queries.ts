@@ -13,7 +13,7 @@ export const BOOKINGS_HOSTER_QUERY = gql`
         phone
         email
       }
-      guestss
+      guestsCount
       end_date
       createdAt
       activity {

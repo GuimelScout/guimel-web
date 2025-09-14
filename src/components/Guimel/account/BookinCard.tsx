@@ -24,7 +24,7 @@ const BookingCard: FC<BookingCardProps> = ({
     status, 
     start_date,
     end_date,
-    guestss,
+    guestsCount,
     createdAt,
     code
    } = data;
@@ -97,7 +97,7 @@ const BookingCard: FC<BookingCardProps> = ({
               name={
                 <div className="flex items-center">
                   <i className="text-sm las la-user-friends"></i>
-                  <span className="ml-1">{guestss} personas</span>
+                  <span className="ml-1">{guestsCount} personas</span>
                 </div>
               }
               color="yellow"

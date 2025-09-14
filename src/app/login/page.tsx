@@ -17,6 +17,7 @@ import { handleGqlError } from "@/utils/error-handling";
 import { useRouter } from "next/navigation";
 import { useUser } from "context/UserContext";
 import { RouteGuimel } from "@/routers/routes";
+import Logo from "@/shared/Logo";
 
 export interface PageLoginProps {}
 
@@ -70,9 +71,12 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
   return (
     <div className={`nc-PageLogin`}>
       <div className="container mb-24 lg:mb-32">
-        <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
-          Iniciar sesión
-        </h2>
+        <div className="flex flex-col items-center text-center justify-center mt-10">
+          <Logo imgLight={{src:"/logo-light.svg",height:580, width:580}} img={{src:"/logo-dark.svg",height:580, width:580}} />
+          <h2 className="my-20 flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
+            Iniciar sesión
+          </h2>
+        </div>
         <div className="max-w-md mx-auto space-y-6">
           {/* FORM */}
           <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(onSubmit)}>
