@@ -32,6 +32,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
           galleryImgs={gallery ?? []}
           //@ts-ignore
           href={`actividad/${link}`}
+          cardType="activity"
         />
         <BtnLikeIcon isLiked={true} className="absolute right-2 top-2" />
         {/* Activity Icon */}

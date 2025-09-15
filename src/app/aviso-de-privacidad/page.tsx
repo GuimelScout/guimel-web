@@ -23,7 +23,7 @@ const AvisoDePrivacidad = () => {
         {/* Content */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 space-y-8">
           
-          {/* Información del Responsable */}
+          {/* Responsible Information */}
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
               <BuildingOfficeIcon className="w-6 h-6 text-green-600 mr-2" />
@@ -279,7 +279,7 @@ const AvisoDePrivacidad = () => {
             </p>
           </section>
 
-          {/* Fecha de Elaboración */}
+          {/* Creation Date */}
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
               <ClockIcon className="w-6 h-6 text-green-600 mr-2" />

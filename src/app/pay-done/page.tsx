@@ -5,6 +5,7 @@ import React, { FC } from "react";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import ButtonSecondary from "@/shared/ButtonSecondary";
 import Image from "next/image";
+import ImageWithPlaceholder from "@/components/Guimel/ImageWithPlaceholder";
 import { useQuery } from "@apollo/client";
 import {  CARD_TYPE } from "@/data/types";
 import { BOOKING_QUERY } from "@/components/Guimel/activity/QueryActivity.queries";
@@ -83,11 +84,14 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
             {data.booking.activity?.map((activity) => (
               <div key={activity.id} className="group bg-gray-50 dark:bg-gray-700 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
                 <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden">
-                  <Image
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  <ImageWithPlaceholder
+                    image={activity.image}
                     alt={activity.name}
-                    src={activity.image?.url ?? "/placeholder-activity.jpg"}
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    useCardPlaceholder={true}
+                    placeholderType="activity"
                   />
                 </div>
                 
@@ -145,11 +149,14 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
             
             <div className="flex flex-col md:flex-row gap-6">
               <div className="relative w-full md:w-64 h-48 rounded-2xl overflow-hidden">
-                <Image
-                  fill
-                  className="object-cover"
+                <ImageWithPlaceholder
+                  image={data.booking.lodging.logo}
                   alt={data.booking.lodging.name}
-                  src={data.booking.lodging.logo?.url || "/placeholder-lodging.jpg"}
+                  className="object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 256px"
+                  useCardPlaceholder={true}
+                  placeholderType="lodging"
                 />
               </div>
               

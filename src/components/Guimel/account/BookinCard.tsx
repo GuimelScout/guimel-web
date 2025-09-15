@@ -5,6 +5,7 @@ import { BookingType, STATUS_BOOKING, STATUS_BOOKING_COLORS } from "./types";
 import { RouteGuimel } from "@/routers/routes";
 import { formatDateSpanish, parseLocalDateString } from "@/utils/date-format-helper";
 import { MapPinIcon, CalendarIcon, UserGroupIcon, CurrencyDollarIcon, ClockIcon } from "@heroicons/react/24/outline";
+import ImageWithPlaceholder from "../ImageWithPlaceholder";
 
 export interface BookingCardProps {
   className?: string;
@@ -89,15 +90,16 @@ const BookingCard: FC<BookingCardProps> = ({
                     </span>
                   </div>
                 </div>
-                {act.image && (
-                  <div className="ml-3 w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                    <img 
-                      src={act.image.url} 
-                      alt={act.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
+                <div className="ml-3 w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                  <ImageWithPlaceholder
+                    image={act.image}
+                    alt={act.name}
+                    className="w-full h-full object-cover"
+                    width={64}
+                    height={64}
+                    placeholderText=""
+                  />
+                </div>
               </div>
             </div>
           ))}

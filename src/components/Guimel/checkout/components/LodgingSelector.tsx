@@ -61,7 +61,7 @@ const LodgingSelector: React.FC<LodgingSelectorProps> = ({
                     onLodgingSelect(null);
                   }
                 }}
-                imgUrl={lodging.logo.url}
+                imgUrl={lodging.logo?.url}
                 title={lodging.name}
               />
             ))}

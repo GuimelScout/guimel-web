@@ -16,6 +16,8 @@ import FiveStartIconForRate from "@/components/FiveStartIconForRate";
 import Input from "@/shared/Input";
 import ButtonCircle from "@/shared/ButtonCircle";
 import CommentListing from "@/components/Guimel/CommentListing";
+import ImageWithPlaceholder from "@/components/Guimel/ImageWithPlaceholder";
+import PlaceholderGallery from "@/components/Guimel/PlaceholderGallery";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -593,56 +595,68 @@ const Location = ({ params }: { params: { link: string } }) => {
       <Skeleton /> : 
       <div>
         <header className="rounded-md sm:rounded-xl">
-          <div className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
-            <div
-              className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
-              onClick={handleOpenModalImageGallery}
-            >
-              <Image
-                fill
-                className="object-cover rounded-md sm:rounded-xl"
-                src={data?.lodging.logo.url!}
-                alt={data?.lodging?.name || link}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity"></div>
-            </div>
-            {gallery.filter((_, i) => i >= 0 && i < 4).map((item, index) => (
+          {(!data?.lodging.logo || !data?.lodging.logo.url) && gallery.length === 0 ? (
+            <PlaceholderGallery
+              type="lodging"
+              className="w-full"
+              showText={true}
+              customText="Hospedaje sin imágenes"
+            />
+          ) : (
+            <div className="relative grid grid-cols-3 sm:grid-cols-4 gap-1 sm:gap-2">
               <div
-                key={index}
-                className={`relative rounded-md sm:rounded-xl overflow-hidden ${
-                  index >= 3 ? "hidden sm:block" : ""
-                }`}
+                className="col-span-2 row-span-3 sm:row-span-2 relative rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+                onClick={handleOpenModalImageGallery}
               >
-                <div className="aspect-w-4 aspect-h-3 sm:aspect-w-6 sm:aspect-h-5">
-                  <Image
-                    fill
-                    className="object-cover rounded-md sm:rounded-xl "
-                    src={item.image.url || ""}
-                    alt={item.description}
-                    sizes="400px"
+                <ImageWithPlaceholder
+                  image={data?.lodging.logo}
+                  alt={data?.lodging?.name || link}
+                  className="object-cover rounded-md sm:rounded-xl"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+                  placeholderText="Hospedaje sin imagen"
+                />
+                <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity"></div>
+              </div>
+              {gallery.filter((_, i) => i >= 0 && i < 4).map((item, index) => (
+                <div
+                  key={index}
+                  className={`relative rounded-md sm:rounded-xl overflow-hidden ${
+                    index >= 3 ? "hidden sm:block" : ""
+                  }`}
+                >
+                  <div className="aspect-w-4 aspect-h-3 sm:aspect-w-6 sm:aspect-h-5">
+                    <ImageWithPlaceholder
+                      image={item.image}
+                      alt={item.description}
+                      className="object-cover rounded-md sm:rounded-xl"
+                      fill
+                      sizes="400px"
+                      placeholderText=""
+                      placeholderIcon={true}
+                    />
+                  </div>
+                  <div
+                    className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
+                    onClick={handleOpenModalImageGallery}
                   />
                 </div>
-                <div
-                  className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
-                  onClick={handleOpenModalImageGallery}
-                />
-              </div>
-            ))}
-            {
-              (gallery.length > 4 ) ? 
-            <button
-              className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-neutral-100 text-neutral-500 hover:bg-neutral-200 z-10"
-              onClick={handleOpenModalImageGallery}
-            >
-              <Squares2X2Icon className="w-5 h-5" />
-              <span className="ml-2 text-neutral-800 text-sm font-medium">
-                Ver todas las imagenes
-              </span>
-            </button>
-              : <></>
-            }
-          </div>
+              ))}
+              {
+                (gallery.length > 4 ) ? 
+              <button
+                className="absolute hidden md:flex md:items-center md:justify-center left-3 bottom-3 px-4 py-2 rounded-xl bg-neutral-100 text-neutral-500 hover:bg-neutral-200 z-10"
+                onClick={handleOpenModalImageGallery}
+              >
+                <Squares2X2Icon className="w-5 h-5" />
+                <span className="ml-2 text-neutral-800 text-sm font-medium">
+                  Ver todas las imagenes
+                </span>
+              </button>
+                : <></>
+              }
+            </div>
+          )}
         </header>
         <ListingImageGallery
           isShowModal={modal === `GALLERY-${link}`}

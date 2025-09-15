@@ -98,7 +98,7 @@ const Footer: React.FC = () => {
           {widgetMenus.map(renderWidgetMenuItem)}
         </div>
         
-        {/* Términos y Condiciones */}
+        {/* Terms and Conditions */}
         <div className="container mt-16 pt-8 border-t border-neutral-200 dark:border-neutral-700">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-neutral-6000 dark:text-neutral-300">
