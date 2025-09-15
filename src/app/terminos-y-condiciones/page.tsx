@@ -23,7 +23,7 @@ const TerminosYCondiciones = () => {
         {/* Content */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 space-y-8">
           
-          {/* Introducción */}
+          {/* Introduction */}
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
               <ShieldCheckIcon className="w-6 h-6 text-blue-600 mr-2" />
@@ -151,7 +151,7 @@ const TerminosYCondiciones = () => {
             </div>
           </section>
 
-          {/* Limitación de Responsabilidad */}
+          {/* Limitation of Liability */}
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
               7. Limitación de Responsabilidad

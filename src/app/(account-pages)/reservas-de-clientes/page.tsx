@@ -155,7 +155,7 @@ const BookingsList = ({ bookings }: { bookings: BookingType[] }) => {
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          {/* Línea superior */}
+          {/* Top line */}
           <path
             d="M3 9H21"
             stroke="currentColor"
@@ -294,7 +294,7 @@ const ReservasDeClientes = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          {/* Línea superior */}
+          {/* Top line */}
           <path
             d="M3 9H21"
             stroke="currentColor"

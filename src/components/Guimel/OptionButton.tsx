@@ -1,10 +1,10 @@
 import React from "react";
-import Image from "next/image";
+import ImageWithPlaceholder from "./ImageWithPlaceholder";
 
 interface OptionButtonProps {
   selected: boolean;
   onClick: () => void;
-  imgUrl: string;
+  imgUrl: string | null | undefined;
   title: string;
 }
 
@@ -18,13 +18,16 @@ const OptionButton: React.FC<OptionButtonProps> = ({ selected, onClick, imgUrl, 
     onClick={onClick}
     type="button"
   >
-    <Image
-      className="w-8 rounded-full"
-      src={imgUrl}
-      width={60}
-      height={60}
+    <ImageWithPlaceholder
+      image={imgUrl ? { url: imgUrl } : null}
       alt={title}
-      style={{ minHeight: 30, minWidth: 30, maxHeight: 30, maxWidth: 30 }}
+      className="w-8 rounded-full"
+      width={30}
+      height={30}
+      useCardPlaceholder={false}
+      placeholderIcon={false}
+      placeholderText=""
+      
     />
     <span className="mr-2.5">{title}</span>
   </button>

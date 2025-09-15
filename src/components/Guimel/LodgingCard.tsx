@@ -34,6 +34,7 @@ const LodgingCard: FC<LodgingCardProps> = ({
           galleryImgs={gallery ?? []}
           //@ts-ignore
           href={`hospedaje/${link}`}
+          cardType="lodging"
         />
         <BtnLikeIcon isLiked={true} className="absolute right-2 top-2" />
         {/* Lodging Icon */}

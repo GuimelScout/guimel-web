@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { RouteGuimel } from "@/routers/routes";
 import { ActivityType } from "@/data/types";
 import ExternalLinkIcon from "./icons/ExternalLinkIcon";
+import ImageWithPlaceholder from "./ImageWithPlaceholder";
 
 interface ActivityCardSmallProps {
   activity: ActivityType;
@@ -26,11 +26,14 @@ const ActivityCardSmall: React.FC<ActivityCardSmallProps> = ({
     {/* Imagen */}
     <div className="flex-shrink-0 w-full sm:w-20">
       <div className="aspect-w-2 aspect-h-1 sm:aspect-h-2 rounded-2xl overflow-hidden">
-        <Image
+        <ImageWithPlaceholder
+          image={activity?.image}
+          alt={activity?.name || "Actividad"}
+          className="object-cover w-full h-full"
           fill
           sizes="200px"
-          alt={activity?.name}
-          src={activity?.image.url ?? ""}
+          useCardPlaceholder={false}
+          placeholderIcon={false}
         />
       </div>
     </div>

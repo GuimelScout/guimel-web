@@ -2,7 +2,8 @@ import React, { FC } from "react";
 import { LocationType } from "@/data/types";
 import convertNumbThousand from "@/utils/convertNumbThousand";
 import Link from "next/link";
-import Image from "next/image";
+import ImageWithPlaceholder from "./ImageWithPlaceholder";
+import { RouteGuimel } from "@/routers/routes";
 
 export interface CardCategory3Props {
   className?: string;
@@ -17,17 +18,18 @@ const CardCategory3: FC<CardCategory3Props> = ({
 
   return (
     <Link
-    //@ts-ignore
-    href={`/ubicacion/${link}`}
+    href={`${RouteGuimel.location}/${link}` as any}
     className={`nc-CardCategory3 group block rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${className} mb-6`}
   >
     <div className="relative w-full h-48 sm:h-56 overflow-hidden">
-      <Image
-        src={image.url || ""}
-        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+      <ImageWithPlaceholder
+        image={image}
         alt={`ubicación ${name} guimel`}
+        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
         fill
         sizes="(max-width: 400px) 100vw, 300px"
+        useCardPlaceholder
+        placeholderType="location"
       />
 
       {/* Badge "Favorito" */}

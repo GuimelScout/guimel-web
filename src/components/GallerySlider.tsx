@@ -9,6 +9,7 @@ import { variants } from "@/utils/animationVariants";
 import Link from "next/link";
 import { Route } from "@/routers/types";
 import { GalleryImageType } from "@/data/types";
+import ImageWithPlaceholder from "@/components/Guimel/ImageWithPlaceholder";
 
 export interface GallerySliderProps {
   className?: string;
@@ -19,6 +20,7 @@ export interface GallerySliderProps {
   imageClass?: string;
   galleryClass?: string;
   navigation?: boolean;
+  cardType?: 'activity' | 'lodging' | 'default';
 }
 
 export default function GallerySlider({
@@ -31,8 +33,9 @@ export default function GallerySlider({
   //@ts-ignore
   href,
   navigation = true,
+  cardType = 'default',
 }: GallerySliderProps) {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const images = galleryImgs;
@@ -91,13 +94,16 @@ export default function GallerySlider({
                   exit="exit"
                   className="absolute inset-0"
                 >
-                  <Image
-                    src={currentImage?.image?.url ?? ""}
-                    fill
-                    alt={currentImage?.description}
+                  <ImageWithPlaceholder
+                    image={currentImage?.image}
+                    alt={currentImage?.description || "Gallery image"}
                     className={`object-cover ${imageClass}`}
-                    onLoadingComplete={() => setLoaded(true)}
+                    fill
                     sizes="(max-width: 1025px) 100vw, 300px"
+                    placeholderText=""
+                    placeholderIcon={false}
+                    useCardPlaceholder={true}
+                    placeholderType={cardType}
                   />
                 </motion.div>
               </AnimatePresence>
@@ -114,13 +120,16 @@ export default function GallerySlider({
                   exit="exit"
                   className="absolute inset-0"
                 >
-                  <Image
-                    src={currentImage?.image?.url ?? ""}
-                    fill
-                    alt={currentImage?.description}
+                  <ImageWithPlaceholder
+                    image={currentImage?.image}
+                    alt={currentImage?.description || "Gallery image"}
                     className={`object-cover ${imageClass}`}
-                    onLoadingComplete={() => setLoaded(true)}
+                    fill
                     sizes="(max-width: 1025px) 100vw, 300px"
+                    placeholderText=""
+                    placeholderIcon={true}
+                    useCardPlaceholder={true}
+                    placeholderType={cardType}
                   />
                 </motion.div>
               </AnimatePresence>

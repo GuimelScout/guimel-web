@@ -24,7 +24,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
             key={location.id}
             selected={selectedLocation === location}
             onClick={() => onLocationSelect(location)}
-            imgUrl={location.image.url}
+            imgUrl={location.image?.url}
             title={location.name}
           />
         ))}
