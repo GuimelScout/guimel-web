@@ -1,17 +1,37 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import { UPDATE_USER_MUTATION, UPLOAD_USER_IMAGE_MUTATION } from '../QueryUser.queries';
+import { UPDATE_USER_MUTATION, UPLOAD_USER_IMAGE_MUTATION, GET_USER_QUERY } from '../QueryUser.queries';
 import { UserType, UserUpdateData } from '../UserTypes';
+import { useUser } from '../../../../../context/UserContext';
 
 export const useUserEdit = (user: UserType | undefined) => {
+  const { refreshUser } = useUser();
   const [formData, setFormData] = useState<UserUpdateData>({});
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const [updateUser] = useMutation(UPDATE_USER_MUTATION);
-  const [uploadImage] = useMutation(UPLOAD_USER_IMAGE_MUTATION);
+  const [updateUser] = useMutation(UPDATE_USER_MUTATION, {
+    refetchQueries: ['GetUser'],
+    awaitRefetchQueries: true,
+    update: (cache, { data }) => {
+      if (data?.updateUser) {
+        cache.writeQuery({
+          query: GET_USER_QUERY,
+          variables: { id: user?.id },
+          data: {
+            user: data.updateUser
+          }
+        });
+      }
+    }
+  });
+  
+  const [uploadImage] = useMutation(UPLOAD_USER_IMAGE_MUTATION, {
+    refetchQueries: ['GetUser'],
+    awaitRefetchQueries: true
+  });
 
   // Initialize form data when user changes
   useEffect(() => {
@@ -55,27 +75,40 @@ export const useUserEdit = (user: UserType | undefined) => {
     setSuccess(null);
 
     try {
-      // Filter out empty strings and undefined values
-      const updateData = Object.entries(formData).reduce((acc, [key, value]) => {
-        if (value && value.trim() !== '') {
-          acc[key as keyof UserUpdateData] = value.trim();
-        }
-        return acc;
-      }, {} as UserUpdateData);
+      // Update basic user data
+      const basicUpdateData = {
+        name: formData.name?.trim() || '',
+        lastName: formData.lastName?.trim() || '',
+        secondLastName: formData.secondLastName?.trim() || '',
+        email: formData.email?.trim() || '',
+        phone: formData.phone?.trim() || '',
+        countryCode: formData.countryCode?.trim() || '',
+        description: formData.description?.trim() || '',
+        instagram: formData.instagram?.trim() || '',
+        facebook: formData.facebook?.trim() || '',
+        twitter: formData.twitter?.trim() || '',
+        linkedin: formData.linkedin?.trim() || '',
+        tiktok: formData.tiktok?.trim() || '',
+        youtube: formData.youtube?.trim() || '',
+        website: formData.website?.trim() || '',
+      };
 
-      await updateUser({
+
+      const basicResult = await updateUser({
         variables: {
           id: user.id,
-          data: updateData
+          data: basicUpdateData
         }
       });
+
+      await refreshUser();
 
       setSuccess('Perfil actualizado exitosamente');
       setIsEditing(false);
       
-      // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
     } catch (err: any) {
+      console.error('Error updating user:', err);
       setError(err.message || 'Error al actualizar el perfil');
     } finally {
       setIsLoading(false);
@@ -118,6 +151,8 @@ export const useUserEdit = (user: UserType | undefined) => {
           image: file
         }
       });
+
+      await refreshUser();
 
       setSuccess('Imagen actualizada exitosamente');
       setTimeout(() => setSuccess(null), 3000);

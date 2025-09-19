@@ -1,9 +1,125 @@
 import gql from "graphql-tag";
 
+export const GET_HOSTERS_QUERY = gql`
+  query GetHosters($where: UserWhereInput, $orderBy: [UserOrderByInput!]) {
+    users(where: $where, orderBy: $orderBy) {
+      id
+      name
+      lastName
+      secondLastName
+      email
+      phone
+      description
+      link
+      instagram
+      facebook
+      twitter
+      linkedin
+      tiktok
+      youtube
+      website
+      image {
+        url
+      }
+      role {
+        id
+        name
+      }
+      verified
+      createdAt
+      activityCount
+      lodgingCount
+      reviewsCount
+      reviewStar
+    }
+  }
+`;
+
+export const GET_HOSTER_DETAILS_QUERY = gql`
+  query GetHosterDetails($link: String!) {
+    user(where: { link: $link }) {
+      id
+      name
+      lastName
+      secondLastName
+      email
+      phone
+      description
+      link
+      instagram
+      facebook
+      twitter
+      linkedin
+      tiktok
+      youtube
+      website
+      image {
+        url
+      }
+      role {
+        id
+        name
+      }
+      verified
+      createdAt
+      activityCount
+      lodgingCount
+      reviewsCount
+      reviewStar
+      activity {
+        id
+        name
+        description
+        price
+        image {
+          url
+        }
+        link
+        reviewCount
+        reviewStar
+        address
+      }
+      lodging {
+        id
+        name
+        description
+        price
+        logo {
+          url
+        }
+        link
+        reviewCount
+        reviewStar
+        address
+      }
+      reviews {
+        id
+        rating
+        review
+        createdAt
+        user {
+          id
+          verified
+          name
+          lastName
+          image {
+            url
+          }
+        }
+        activity {
+          name
+        }
+        lodging {
+          name
+        }
+      }
+    }
+  }
+`;
 
 export const BOOKINGS_HOSTER_QUERY = gql`
-  query GetBookings($where: BookingWhereInput!) {
-    bookings(where: $where) {
+  query GetBookings($where: BookingWhereInput!, $orderBy: [BookingOrderByInput!]) {
+    bookings(where: $where, orderBy: $orderBy) {
       id
       code
       start_date
@@ -22,14 +138,19 @@ export const BOOKINGS_HOSTER_QUERY = gql`
         }
         name
         link
+        hostBy {
+          id
+        }
       }
       lodging {
         name
         logo {
           url
         }
+        hostBy {
+          id
+        }
       }
     }
   }
 `;
-

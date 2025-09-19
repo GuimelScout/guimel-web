@@ -66,3 +66,9 @@ export const PANEL_CLASSES = {
   inner: "overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5",
   content: "relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6",
 };
+
+export enum Role {
+  ADMIN = "admin",
+  HOSTER = "hoster",
+  USER = "user",
+}

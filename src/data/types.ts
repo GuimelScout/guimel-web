@@ -86,6 +86,14 @@ export interface Host {
   description: string;
   email: string; 
   phone:string;
+  link: string;
+  instagram?: string;
+  facebook?: string;
+  twitter?: string;
+  linkedin?: string;
+  tiktok?: string;
+  youtube?: string;
+  website?: string;
   activityCount: number;
   lodgingCount: number;
   reviewsCount: number;
@@ -94,6 +102,27 @@ export interface Host {
   role: Array<Role>;
   verified: boolean;
   createdAt: Date;
+  activity?: Array<ActivityType>;
+  lodging?: Array<LodgingType>;
+  reviews?: Array<ReviewType>;
+}
+
+export interface ReviewType {
+  id: string;
+  rating: number;
+  review: string;
+  createdAt: Date;
+  user: {
+    name: string;
+    lastName: string;
+    image: ImageType;
+  };
+  activity?: {
+    name: string;
+  };
+  lodging?: {
+    name: string;
+  };
 }
 
 export interface Role {
