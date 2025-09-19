@@ -49,9 +49,20 @@ const Avatar: FC<AvatarProps> = ({
 
       {hasChecked && (
         <span
-          className={` bg-teal-500 rounded-full text-white text-xs flex items-center justify-center absolute  ${hasCheckedClass}`}
+          className={`bg-gradient-to-r from-green-500 to-green-600 rounded-full text-white text-xs flex items-center justify-center absolute shadow-lg border-2 border-white dark:border-gray-800 ${hasCheckedClass}`}
         >
-          <i className="las la-check"></i>
+          <svg
+            className="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
         </span>
       )}
     </div>
