@@ -8,6 +8,8 @@ export const ACTIVITIES_QUERY = gql`
       link
       address
       price
+      commission_type
+      commission_value
       reviewCount
       reviewStar
       image {
@@ -35,6 +37,8 @@ export const ACTIVITY_QUERY = gql`
       link
       address
       price
+      commission_type
+      commission_value
       reviewCount
       reviewStar
       image {
@@ -73,6 +77,8 @@ export const ACTIVITY_QUERY = gql`
         id
         name
         price
+        commission_type
+        commission_value
         address
         link
         logo {
@@ -99,6 +105,7 @@ export const BOOKING_QUERY = gql`
       end_date
       code
       status
+      payment_type
       createdAt
       activity {
         id

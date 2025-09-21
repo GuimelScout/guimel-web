@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Tab } from "@headlessui/react";
 import { Fragment } from "react";
 import Image from "next/image";
@@ -11,7 +11,10 @@ import ButtonPrimary from "@/shared/ButtonPrimary";
 import Select from "@/shared/Select";
 import { CardElement } from "@stripe/react-stripe-js";
 import { useThemeMode } from "@/utils/useThemeMode";
-import { CheckoutFormData } from "../types";
+import { CheckoutFormData, PaymentBreakdowns } from "../types";
+import PaymentTypeSelector from "./PaymentTypeSelector";
+import StayDatesRangeInput from "../../../Guimel/activity/StayDatesRangeInput";
+import GuestsInput from "../../../Guimel/activity/GuestsInput";
 
 interface PaymentFormProps {
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
@@ -19,6 +22,18 @@ interface PaymentFormProps {
   register: any;
   loadingPayment: boolean;
   total: string;
+  paymentType: 'full_payment' | 'commission_only';
+  onPaymentTypeChange: (type: 'full_payment' | 'commission_only') => void;
+  breakdown: PaymentBreakdowns;
+  // Props for date and guest controls (matching existing components)
+  startDate: Date | null;
+  endDate: Date | null;
+  setStartDate: Dispatch<SetStateAction<Date | null>>;
+  setEndDate: Dispatch<SetStateAction<Date | null>>;
+  guestAdultsInputValue: number;
+  setGuestAdultsInputValue: Dispatch<SetStateAction<number>>;
+  guestChildrenInputValue: number;
+  setGuestChildrenInputValue: Dispatch<SetStateAction<number>>;
 }
 
 const PaymentForm: React.FC<PaymentFormProps> = ({
@@ -27,6 +42,17 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   register,
   loadingPayment,
   total,
+  paymentType,
+  onPaymentTypeChange,
+  breakdown,
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+  guestAdultsInputValue,
+  setGuestAdultsInputValue,
+  guestChildrenInputValue,
+  setGuestChildrenInputValue,
 }) => {
   const { isDarkMode } = useThemeMode();
 
@@ -35,6 +61,38 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
       <h2 className="text-3xl lg:text-4xl font-semibold">
         Confirmar tu reservación
       </h2>
+
+      <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
+      
+      <div className="space-y-6">
+        <h3 className="text-lg font-semibold">Detalles de tu reservación</h3>
+        
+        <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl">
+          <StayDatesRangeInput 
+            className="flex-1 z-[11]" 
+            startDate={startDate} 
+            setStartDate={setStartDate} 
+            endDate={endDate} 
+            setEndDate={setEndDate}
+          />
+          <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
+          <GuestsInput 
+            className="flex-1" 
+            guestAdultsInputValue={guestAdultsInputValue} 
+            setGuestAdultsInputValue={setGuestAdultsInputValue} 
+            guestChildrenInputValue={guestChildrenInputValue} 
+            setGuestChildrenInputValue={setGuestChildrenInputValue} 
+          />
+        </form>
+      </div>
+      
+      <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
+      
+      <PaymentTypeSelector
+        paymentType={paymentType}
+        onPaymentTypeChange={onPaymentTypeChange}
+        breakdown={breakdown}
+      />
       
       <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
       
@@ -166,11 +224,23 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
           <div className="pt-8">
             <div className="flex flex-col items-center space-y-4">
               <div className="text-center">
-                <p className="text-sm text-neutral-500 dark:text-neutral-400">Total a pagar</p>
-                <p className="text-3xl font-bold text-green-600 dark:text-green-400">{total}</p>
+                <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                  {paymentType === 'full_payment' ? 'Total a pagar' : 'Pago ahora'}
+                </p>
+                <p className="text-3xl font-bold text-green-600 dark:text-green-400">
+                  ${breakdown[paymentType].payNow.toFixed(2)} MXN
+                </p>
+                {paymentType === 'commission_only' && breakdown.commission_only.payAtProperty > 0 && (
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+                    + ${breakdown.commission_only.payAtProperty.toFixed(2)} MXN al llegar
+                  </p>
+                )}
               </div>
               <ButtonPrimary type="submit" loading={loadingPayment} className="w-full">
-                Confirmar y pagar {total}
+                {paymentType === 'full_payment' 
+                  ? `Confirmar y pagar $${breakdown[paymentType].payNow.toFixed(2)} MXN`
+                  : `Pagar tarifa de confirmación $${breakdown[paymentType].payNow.toFixed(2)} MXN`
+                }
               </ButtonPrimary>
             </div>
           </div>

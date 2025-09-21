@@ -17,6 +17,7 @@ import { useUser } from "context/UserContext";
 import Link from "next/link";
 import { CheckCircleIcon, CalendarIcon, UserGroupIcon, MapPinIcon as MapPin, CreditCardIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
 import SuccessAnimation from "@/components/Guimel/SuccessAnimation";
+import { calculateRemainingAmount } from "@/components/Guimel/checkout/utils/calculateTotal";
 
 export interface PayPageProps {
   searchParams: { [key: string]: string | undefined };
@@ -185,12 +186,59 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
           </h2>
           
           <div className="space-y-4">
+            {/* Payment Type Badge */}
             <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-600">
-              <span className="text-gray-600 dark:text-gray-400">Total pagado</span>
+              <span className="text-gray-600 dark:text-gray-400">Tipo de pago</span>
+              <div className="flex items-center space-x-2">
+                {data.booking.payment_type === 'full_payment' ? (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                    <CheckCircleIcon className="w-4 h-4 mr-1" />
+                    Pago Completo
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-800 dark:bg-teal-900/20 dark:text-teal-400">
+                    <DocumentTextIcon className="w-4 h-4 mr-1" />
+                    Solo Tarifa de Confirmación
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-600">
+              <span className="text-gray-600 dark:text-gray-400">
+                {data.booking.payment_type === 'full_payment' ? 'Total pagado' : 'Tarifa de confirmación pagada'}
+              </span>
               <span className="text-2xl font-bold text-green-600 dark:text-green-400">
                 ${parseFloat(data.booking.payment.amount!).toFixed(2)} MXN
               </span>
             </div>
+
+            {data.booking.payment_type === 'commission_only' && (
+              <div className="space-y-4">
+                {/* Amount to pay at property */}
+                <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-600">
+                  <span className="text-gray-600 dark:text-gray-400">Pago pendiente en el lugar</span>
+                  <span className="text-xl font-bold text-orange-600 dark:text-orange-400">
+                    ${calculateRemainingAmount(data.booking)} MXN
+                  </span>
+                </div>
+
+                {/* Info box */}
+                <div className="bg-teal-50 dark:bg-teal-900/20 rounded-xl p-4 border border-teal-200 dark:border-teal-800">
+                  <div className="flex items-start space-x-3">
+                    <DocumentTextIcon className="w-5 h-5 text-teal-600 dark:text-teal-400 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium text-teal-900 dark:text-teal-100 mb-1">
+                        Pago pendiente en el lugar
+                      </h4>
+                      <p className="text-sm text-teal-700 dark:text-teal-300">
+                        El resto del pago se realizará directamente en el establecimiento al momento de tu llegada.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             
             <div className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-600">
               <span className="text-gray-600 dark:text-gray-400">Método de pago</span>
@@ -213,6 +261,35 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
                   <div>
                     <span className="text-gray-600 dark:text-gray-400 block text-sm">Notas adicionales</span>
                     <span className="text-gray-900 dark:text-white">{data.booking.payment.notes}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Total Summary for commission_only */}
+            {data.booking.payment_type === 'commission_only' && (
+              <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600">
+                <h4 className="font-semibold text-gray-900 dark:text-white mb-3">Resumen Total</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">Tarifa de confirmación pagada:</span>
+                    <span className="font-medium text-green-600 dark:text-green-400">
+                      ${parseFloat(data.booking.payment.amount!).toFixed(2)} MXN
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">Pago pendiente en el lugar:</span>
+                    <span className="font-medium text-orange-600 dark:text-orange-400">
+                      ${calculateRemainingAmount(data.booking)} MXN
+                    </span>
+                  </div>
+                  <div className="border-t border-gray-300 dark:border-gray-600 pt-2">
+                    <div className="flex justify-between font-semibold">
+                      <span className="text-gray-900 dark:text-white">Total de la reserva:</span>
+                      <span className="text-lg text-blue-600 dark:text-blue-400">
+                        ${(parseFloat(data.booking.payment.amount!) + parseFloat(calculateRemainingAmount(data.booking).toString())).toFixed(2)} MXN
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

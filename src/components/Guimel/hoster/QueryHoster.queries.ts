@@ -124,6 +124,7 @@ export const BOOKINGS_HOSTER_QUERY = gql`
       code
       start_date
       status
+      payment_type
       user {
         name
         phone
@@ -138,6 +139,7 @@ export const BOOKINGS_HOSTER_QUERY = gql`
         }
         name
         link
+        price
         hostBy {
           id
         }
@@ -147,8 +149,18 @@ export const BOOKINGS_HOSTER_QUERY = gql`
         logo {
           url
         }
+        price
         hostBy {
           id
+        }
+      }
+      payment {
+        id
+        amount
+        notes
+        paymentMethod {
+          lastFourDigits
+          cardType
         }
       }
     }

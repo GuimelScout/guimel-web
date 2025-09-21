@@ -19,6 +19,7 @@ export interface CheckoutState {
   lodginSelected: LodgingType | null;
   locationSelected: LocationType | null;
   activitiesSelected: ActivityType[];
+  paymentType: 'full_payment' | 'commission_only';
 }
 
 export interface CheckoutParams {
@@ -41,6 +42,7 @@ export interface PaymentData {
   paymentMethodId: string;
   total: string;
   noDuplicatePaymentMethod: boolean;
+  paymentType: 'full_payment' | 'commission_only';
 }
 
 export interface CheckoutSidebarProps {
@@ -70,4 +72,19 @@ export interface CheckoutMainProps {
 export interface CheckOutPagePageMainProps {
   className?: string;
   params: { activity: string, guestsCount: string, startD: string, endD: string }
+}
+
+export interface PaymentBreakdown {
+  payNow: number;
+  payAtProperty: number;
+}
+
+export interface PaymentBreakdowns {
+  full_payment: PaymentBreakdown;
+  commission_only: PaymentBreakdown;
+}
+
+export interface CommissionData {
+  type: 'fixed' | 'percentage';
+  value: number;
 }
