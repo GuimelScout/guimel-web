@@ -16,7 +16,7 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
   params
 }) => {
   const { user } = useUser();
-  const { checkoutState, updateCheckoutState, data, activitiesRelated, loadingActivitiesRelated, getTotal } = useCheckout(params);
+  const { checkoutState, updateCheckoutState, data, activitiesRelated, loadingActivitiesRelated, getTotal, breakdown } = useCheckout(params);
   const form = useCheckoutForm(user);
   const { processPayment, loadingPayment } = usePayment();
 
@@ -75,6 +75,10 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
     });
   };
 
+  const handlePaymentTypeChange = (paymentType: 'full_payment' | 'commission_only') => {
+    updateCheckoutState({ paymentType });
+  };
+
   const handleSubmit = async (e?: React.BaseSyntheticEvent) => {
     if (e) {
       e.preventDefault();
@@ -96,6 +100,7 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
       onLodgingSelect={handleLodgingSelect}
       onActivityToggle={handleActivityToggle}
       getTotal={getTotal}
+      breakdown={breakdown}
     />
   );
 
@@ -109,6 +114,29 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
             register={form.register}
             loadingPayment={loadingPayment}
             total={getTotal()}
+            paymentType={checkoutState.paymentType}
+            onPaymentTypeChange={handlePaymentTypeChange}
+            breakdown={breakdown}
+            startDate={checkoutState.startDate}
+            endDate={checkoutState.endDate}
+            setStartDate={(date) => {
+              const newDate = typeof date === 'function' ? date(checkoutState.startDate) : date;
+              handleDateChange(newDate, checkoutState.endDate);
+            }}
+            setEndDate={(date) => {
+              const newDate = typeof date === 'function' ? date(checkoutState.endDate) : date;
+              handleDateChange(checkoutState.startDate, newDate);
+            }}
+            guestAdultsInputValue={checkoutState.guestAdultsInputValue}
+            setGuestAdultsInputValue={(value) => {
+              const newValue = typeof value === 'function' ? value(checkoutState.guestAdultsInputValue) : value;
+              handleGuestsChange(newValue, checkoutState.guestChildrenInputValue);
+            }}
+            guestChildrenInputValue={checkoutState.guestChildrenInputValue}
+            setGuestChildrenInputValue={(value) => {
+              const newValue = typeof value === 'function' ? value(checkoutState.guestChildrenInputValue) : value;
+              handleGuestsChange(checkoutState.guestAdultsInputValue, newValue);
+            }}
           />
         </div>
         

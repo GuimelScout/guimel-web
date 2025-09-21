@@ -17,7 +17,8 @@ import {
   UserGroupIcon,
   FunnelIcon,
   XMarkIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  DocumentTextIcon
 } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, ExclamationTriangleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 
@@ -59,6 +60,7 @@ const AccountSavelists = () => {
     total: data?.bookings?.length || 0,
     paid: data?.bookings?.filter(b => b.status === 'paid').length || 0,
     pending: data?.bookings?.filter(b => b.status === 'pending').length || 0,
+    reserved: data?.bookings?.filter(b => b.status === 'reserved').length || 0,
     cancelled: data?.bookings?.filter(b => b.status === 'cancelled').length || 0,
   };
 
@@ -68,6 +70,8 @@ const AccountSavelists = () => {
         return <CheckCircleIcon className="w-5 h-5 text-green-500" />;
       case 'pending':
         return <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />;
+      case 'reserved':
+        return <DocumentTextIcon className="w-5 h-5 text-cyan-500" />;
       case 'cancelled':
         return <XCircleIcon className="w-5 h-5 text-red-500" />;
       default:
@@ -96,11 +100,11 @@ const AccountSavelists = () => {
   );
 
   const renderHeader = () => (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 mb-8">
+    <div className="bg-gradient-to-r from-sky-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 mb-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-xl">
-            <CalendarIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+          <div className="bg-sky-100 dark:bg-sky-900/30 p-3 rounded-xl">
+            <CalendarIcon className="w-8 h-8 text-sky-600 dark:text-sky-400" />
           </div>
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Mis Reservas</h1>
@@ -112,7 +116,7 @@ const AccountSavelists = () => {
         <div className="flex items-center gap-3">
           <ButtonPrimary 
             href={RouteGuimel.activity} 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
+            className="bg-sky-600 hover:bg-sky-700 text-white px-6 py-2 rounded-lg transition-colors"
           >
             Nueva Reserva
           </ButtonPrimary>
@@ -122,7 +126,7 @@ const AccountSavelists = () => {
   );
 
   const renderStats = () => (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
       <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-3">
           <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
@@ -153,6 +157,17 @@ const AccountSavelists = () => {
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Pendientes</p>
             <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.pending}</p>
+          </div>
+        </div>
+      </div>
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-3">
+          <div className="bg-cyan-100 dark:bg-cyan-900/30 p-2 rounded-lg">
+            <DocumentTextIcon className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Reservadas</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.reserved}</p>
           </div>
         </div>
       </div>
@@ -192,6 +207,7 @@ const AccountSavelists = () => {
             <option value="all">Todos los estados</option>
             <option value="paid">Pagadas</option>
             <option value="pending">Pendientes</option>
+            <option value="reserved">Reservadas</option>
             <option value="cancelled">Canceladas</option>
           </select>
         </div>

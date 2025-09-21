@@ -5,6 +5,7 @@ export const BOOKINGS_QUERY = gql`
   query Bookings($where: BookingWhereInput!, $orderBy: [BookingOrderByInput!]!) {
     bookings(where: $where, orderBy: $orderBy) {
       id
+      payment_type
       activity {
         name
         link
@@ -68,6 +69,8 @@ export const ACTIVITIES_QUERY = gql`
       id
       name
       price
+      commission_type
+      commission_value
       reviewCount
       link
       is_available
@@ -89,6 +92,9 @@ export const LODGINGS_QUERY = gql`
     lodgings(where: $where) {
       id
       name
+      price
+      commission_type
+      commission_value
       location {
         name
         link

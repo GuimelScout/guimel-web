@@ -16,9 +16,14 @@ import {
   UserGroupIcon,
   MagnifyingGlassIcon,
   BuildingOfficeIcon,
-  MapPinIcon
+  MapPinIcon,
+  CheckCircleIcon as CheckCircleOutline,
+  DocumentTextIcon,
+  InformationCircleIcon,
+  CurrencyDollarIcon
 } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, ExclamationTriangleIcon, XCircleIcon } from "@heroicons/react/24/solid";
+import { calculateRemainingAmount } from "@/components/Guimel/checkout/utils/calculateTotal";
 
 // Tipos para booking y bookings
 interface BookingUser {
@@ -30,6 +35,7 @@ interface BookingActivity {
   image?: { url: string } | null;
   name: string;
   link: string;
+  price: string;
   hostBy?: {
     id: string;
   };
@@ -37,8 +43,18 @@ interface BookingActivity {
 interface BookingLodging {
   name: string;
   logo?: { url: string } | null;
+  price: string;
   hostBy?: {
     id: string;
+  };
+}
+interface BookingPayment {
+  id: string;
+  amount: string;
+  notes?: string;
+  paymentMethod: {
+    lastFourDigits: number;
+    cardType: string;
   };
 }
 interface BookingType {
@@ -47,11 +63,13 @@ interface BookingType {
   start_date: string;
   end_date: string;
   status: string;
+  payment_type: 'full_payment' | 'commission_only';
   user: BookingUser;
   guestsCount: string;
   createdAt: string;
   activity?: BookingActivity[] | null;
   lodging?: BookingLodging | null;
+  payment: BookingPayment;
 }
 
 const BookingCard = ({ booking }: { booking: BookingType }) => {
@@ -65,6 +83,8 @@ const BookingCard = ({ booking }: { booking: BookingType }) => {
         return <CheckCircleIcon className="w-5 h-5 text-green-500" />;
       case 'pending':
         return <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />;
+      case 'reserved':
+        return <DocumentTextIcon className="w-5 h-5 text-cyan-500" />;
       case 'cancelled':
         return <XCircleIcon className="w-5 h-5 text-red-500" />;
       default:
@@ -78,6 +98,8 @@ const BookingCard = ({ booking }: { booking: BookingType }) => {
         return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
       case 'pending':
         return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+      case 'reserved':
+        return 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400';
       case 'cancelled':
         return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
       default:
@@ -125,17 +147,17 @@ const BookingCard = ({ booking }: { booking: BookingType }) => {
 
       {/* Activities section - show all if multiple */}
       {activities.length > 1 && (
-        <div className="mb-4 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+        <div className="mb-4 p-3 bg-sky-50 dark:bg-sky-900/20 rounded-lg">
           <div className="flex items-center gap-2 mb-3">
-            <MapPinIcon className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-            <span className="text-sm font-medium text-purple-900 dark:text-purple-100">
+            <MapPinIcon className="w-4 h-4 text-sky-600 dark:text-sky-400" />
+            <span className="text-sm font-medium text-sky-900 dark:text-sky-100">
               {activities.length} Actividades Incluidas
             </span>
           </div>
           <div className="space-y-2">
             {activities.map((activity, index) => (
               <div key={index} className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                <div className="w-2 h-2 bg-sky-400 rounded-full"></div>
                 <span className="text-gray-700 dark:text-gray-300">{activity.name}</span>
               </div>
             ))}
@@ -166,6 +188,63 @@ const BookingCard = ({ booking }: { booking: BookingType }) => {
           </div>
         </div>
       )}
+
+      {/* Payment info */}
+      <div className="mb-4">
+        {booking.payment_type === 'commission_only' ? (
+          <div className="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4 border border-teal-200 dark:border-teal-800">
+            <h4 className="text-md font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <DocumentTextIcon className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+              Información de Pago
+            </h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Tipo de pago:</span>
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400">
+                  <DocumentTextIcon className="w-3 h-3 mr-1" />
+                  Solo Tarifa de Confirmación
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Tarifa pagada:</span>
+                <span className="text-sm font-semibold text-green-600 dark:text-green-400">
+                  ${Number(booking.payment.amount).toFixed(2)} MXN
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Pago pendiente:</span>
+                <span className="text-sm font-semibold text-orange-600 dark:text-orange-400">
+                  ${calculateRemainingAmount(booking)} MXN
+                </span>
+              </div>
+              <div className="flex items-start gap-2 text-xs text-teal-700 dark:text-teal-300 bg-teal-100 dark:bg-teal-900/30 p-2 rounded">
+                <InformationCircleIcon className="w-4 h-4 text-teal-600 dark:text-teal-400 mt-0.5 flex-shrink-0" />
+                <span>El cliente pagará el resto directamente en el establecimiento.</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4 border border-teal-200 dark:border-teal-800">
+            <h4 className="text-md font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <CheckCircleOutline className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+              Información de Pago
+            </h4>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600 dark:text-gray-400">Tipo de pago:</span>
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-400">
+                <CheckCircleOutline className="w-3 h-3 mr-1" />
+                Pago Completo
+              </span>
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <span className="text-sm text-gray-600 dark:text-gray-400">Total pagado:</span>
+              <span className="text-sm font-semibold text-teal-600 dark:text-teal-400">
+                ${Number(booking.payment.amount).toFixed(2)} MXN
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Client info */}
       <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
@@ -210,13 +289,14 @@ const BookingCard = ({ booking }: { booking: BookingType }) => {
           <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
             {booking.status === "paid" ? "Pagado" : 
              booking.status === "pending" ? "Pendiente" :
+             booking.status === "reserved" ? "Reservado" :
              booking.status === "cancelled" ? "Cancelado" : booking.status}
           </span>
         </div>
         {primaryActivity?.link && (
           <a
             href={`/actividad/${primaryActivity.link}`}
-            className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-medium underline"
+            className="text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 text-sm font-medium underline"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -317,6 +397,7 @@ const ReservasDeClientes = () => {
     total: filteredBookings.length,
     paid: filteredBookings.filter((b: BookingType) => b.status === 'paid').length,
     pending: filteredBookings.filter((b: BookingType) => b.status === 'pending').length,
+    reserved: filteredBookings.filter((b: BookingType) => b.status === 'reserved').length,
     cancelled: filteredBookings.filter((b: BookingType) => b.status === 'cancelled').length,
   };
 
@@ -332,6 +413,8 @@ const ReservasDeClientes = () => {
         return <CheckCircleIcon className="w-5 h-5 text-green-500" />;
       case 'pending':
         return <ExclamationTriangleIcon className="w-5 h-5 text-yellow-500" />;
+      case 'reserved':
+        return <DocumentTextIcon className="w-5 h-5 text-blue-500" />;
       case 'cancelled':
         return <XCircleIcon className="w-5 h-5 text-red-500" />;
       default:
@@ -386,7 +469,7 @@ const ReservasDeClientes = () => {
   );
 
   const renderStats = () => (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
       <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-3">
           <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-lg">
@@ -417,6 +500,17 @@ const ReservasDeClientes = () => {
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Pendientes</p>
             <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.pending}</p>
+          </div>
+        </div>
+      </div>
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-3">
+          <div className="bg-cyan-100 dark:bg-cyan-900/30 p-2 rounded-lg">
+            <DocumentTextIcon className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Reservadas</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.reserved}</p>
           </div>
         </div>
       </div>
@@ -456,6 +550,7 @@ const ReservasDeClientes = () => {
             <option value="all">Todos los estados</option>
             <option value="paid">Pagadas</option>
             <option value="pending">Pendientes</option>
+            <option value="reserved">Reservadas</option>
             <option value="cancelled">Canceladas</option>
           </select>
         </div>

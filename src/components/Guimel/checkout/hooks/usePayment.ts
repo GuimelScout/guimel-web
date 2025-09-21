@@ -6,7 +6,8 @@ import { toast } from "sonner";
 import { CREATE_PAYMENT_METHOD, CREATE_USER, GET_PAYMENT_METHOD, GET_STRIPE_PAYMENT_METHODS, GET_USER, MAKE_PAYMENT } from "@/components/Guimel/checkout/QueryCheckOut.queries";
 import { generatePassword } from "@/utils/helpers/generate_password";
 import dateFormat from "@/utils/date-format-helper";
-import { CheckoutFormData, PaymentData, CheckoutState } from "../types";
+import { CheckoutFormData, PaymentData, CheckoutState, PaymentBreakdowns } from "../types";
+import { calculatePaymentBreakdowns } from "../utils/calculateTotal";
 
 export const usePayment = () => {
   const client = useApolloClient();
@@ -147,8 +148,12 @@ export const usePayment = () => {
         noDuplicatePaymentMethod = false;
       }
 
-      // Create payment
-      const calculatedTotal = calculateTotal(checkoutState, activityData);
+      const breakdown = calculatePaymentBreakdowns(
+        checkoutState.activitiesSelected,
+        checkoutState.lodginSelected,
+        checkoutState.guestAdultsInputValue
+      );
+      const calculatedTotal = breakdown[checkoutState.paymentType].payNow.toFixed(2);
       
       const paymentData: PaymentData = {
         activityIds: checkoutState.activitiesSelected.map(activity => activity.id),
@@ -162,7 +167,8 @@ export const usePayment = () => {
         notes: formData.notes || "",
         paymentMethodId: paymentMethodID,
         total: calculatedTotal,
-        noDuplicatePaymentMethod
+        noDuplicatePaymentMethod,
+        paymentType: checkoutState.paymentType
       };
 
       const response = await makePayment({
@@ -185,20 +191,6 @@ export const usePayment = () => {
       });
       setLoadingPayment(false);
     }
-  };
-
-  const calculateTotal = (checkoutState: CheckoutState, activityData: any): string => {
-    
-    const activitiesTotal = checkoutState.activitiesSelected.reduce((total, activity) => {
-      const activityPrice = parseFloat(activity.price || "0.00") * checkoutState.guestAdultsInputValue;
-      return total + activityPrice;
-    }, 0);
-    
-    const lodgingPrice = parseFloat(checkoutState.lodginSelected?.price || "0.00") * checkoutState.guestAdultsInputValue;
-    
-    const finalTotal = (activitiesTotal + lodgingPrice).toFixed(2);
-    
-    return finalTotal;
   };
 
   return {

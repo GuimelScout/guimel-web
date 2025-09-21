@@ -18,7 +18,9 @@ import {
   MapPinIcon,
   UserGroupIcon,
   PlusIcon,
-  StarIcon
+  StarIcon,
+  CurrencyDollarIcon,
+  DocumentTextIcon
 } from "@heroicons/react/24/outline";
 import { CheckCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
@@ -53,6 +55,31 @@ const LodgingCard = ({ lodging }: { lodging: LodgingType }) => {
               {lodging.address}
             </p>
           )}
+        </div>
+      </div>
+
+      {/* Commission info */}
+      <div className="mb-4 p-3 bg-teal-50 dark:bg-teal-900/20 rounded-lg border border-teal-200 dark:border-teal-800">
+        <div className="flex items-center gap-2 mb-2">
+          <DocumentTextIcon className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+          <span className="text-sm font-medium text-teal-900 dark:text-teal-100">Tarifa de Confirmación</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-gray-600 dark:text-gray-400">
+            {lodging.commission_type === 'percentage' ? 'Porcentaje' : 'Fijo'}
+          </span>
+          <span className="text-sm font-semibold text-teal-600 dark:text-teal-400">
+            {lodging.commission_type === 'percentage' 
+              ? `${lodging.commission_value || 0}%` 
+              : `$${lodging.commission_value || 0} MXN`
+            }
+          </span>
+        </div>
+        <div className="flex items-center justify-between mt-1">
+          <span className="text-xs text-gray-500 dark:text-gray-400">Precio base:</span>
+          <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+            ${Number(lodging.price).toFixed(2)} MXN/persona
+          </span>
         </div>
       </div>
 

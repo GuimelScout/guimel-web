@@ -23,6 +23,8 @@ export interface ActivityType {
   address:string;
   link: string;
   price: string;
+  commission_type?: 'fixed' | 'percentage';
+  commission_value?: number;
   reviewCount: number;
   reviewStar : number;
   image: ImageType;
@@ -66,6 +68,8 @@ export interface LodgingType {
   link: string;
   address:string;
   price: string;
+  commission_type?: 'fixed' | 'percentage';
+  commission_value?: number;
   reviewCount: number;
   reviewStar : number;
   logo: ImageType;
@@ -154,6 +158,8 @@ export interface LodgingType {
   address:string;
   link: string;
   price: string;
+  commission_type?: 'fixed' | 'percentage';
+  commission_value?: number;
   reviewCount: number;
   reviewStar : number;
   logo: ImageType;
@@ -257,7 +263,8 @@ export type TwMainColor =
   | "indigo"
   | "blue"
   | "purple"
-  | "gray";
+  | "gray"
+  | "cyan";
 
 //
 export interface StayDataType {

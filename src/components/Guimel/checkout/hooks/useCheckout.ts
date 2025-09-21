@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { ActivityDataType, ActivitiesDataType} from "@/data/types";
 import { ACTIVITIES_QUERY, ACTIVITY_QUERY } from "@/components/Guimel/activity/QueryActivity.queries";
-import { CheckoutState, CheckoutParams } from "../types";
-import { calculateTotal, calculateTotalWithCurrency } from "../utils/calculateTotal";
+import { CheckoutState, CheckoutParams, PaymentBreakdowns } from "../types";
+import { calculateTotal, calculateTotalWithCurrency, calculatePaymentBreakdowns } from "../utils/calculateTotal";
 
 export const useCheckout = (params: CheckoutParams) => {
   const { startD, endD, guestsCount, activity } = params;
@@ -18,9 +18,14 @@ export const useCheckout = (params: CheckoutParams) => {
     lodginSelected: null,
     locationSelected: null,
     activitiesSelected: [],
+    paymentType: 'full_payment',
   });
 
   const [total, setTotal] = useState<string>("0.00");
+  const [breakdown, setBreakdown] = useState<PaymentBreakdowns>({
+    full_payment: { payNow: 0, payAtProperty: 0 },
+    commission_only: { payNow: 0, payAtProperty: 0 }
+  });
 
   const { data } = useQuery<ActivityDataType>(ACTIVITY_QUERY, {
     variables: { where: { link: activity } },
@@ -45,7 +50,6 @@ export const useCheckout = (params: CheckoutParams) => {
     skip: !checkoutState.locationSelected?.id,
   });
 
-  // Initialize dates
   useEffect(() => {
     setCheckoutState(prev => ({
       ...prev,
@@ -88,6 +92,13 @@ export const useCheckout = (params: CheckoutParams) => {
       checkoutState.guestAdultsInputValue
     );
     setTotal(total);
+
+    const paymentBreakdowns = calculatePaymentBreakdowns(
+      checkoutState.activitiesSelected,
+      checkoutState.lodginSelected,
+      checkoutState.guestAdultsInputValue
+    );
+    setBreakdown(paymentBreakdowns);
   }, [
     checkoutState.activitiesSelected.length,
     checkoutState.activitiesSelected.map(a => a.id).join(','),
@@ -112,6 +123,13 @@ export const useCheckout = (params: CheckoutParams) => {
             newState.guestAdultsInputValue
           );
           setTotal(total);
+
+          const paymentBreakdowns = calculatePaymentBreakdowns(
+            newState.activitiesSelected,
+            newState.lodginSelected,
+            newState.guestAdultsInputValue
+          );
+          setBreakdown(paymentBreakdowns);
         }
       
       return newState;
@@ -134,5 +152,6 @@ export const useCheckout = (params: CheckoutParams) => {
     loadingActivitiesRelated,
     refetch,
     getTotal,
+    breakdown,
   };
 };

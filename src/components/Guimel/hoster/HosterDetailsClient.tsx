@@ -5,13 +5,15 @@ import { notFound } from 'next/navigation';
 import { useQuery } from '@apollo/client';
 import { GET_HOSTER_DETAILS_QUERY } from './QueryHoster.queries';
 import ImageWithPlaceholder from '@/components/Guimel/ImageWithPlaceholder';
-import { StarIcon, CheckBadgeIcon, MapPinIcon, CalendarIcon, PhoneIcon, EnvelopeIcon, GlobeAltIcon } from '@heroicons/react/24/solid';
+import { StarIcon, CheckBadgeIcon, MapPinIcon, CalendarIcon, PhoneIcon, EnvelopeIcon, GlobeAltIcon, BuildingOfficeIcon } from '@heroicons/react/24/solid';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import ButtonPrimary from '@/shared/ButtonPrimary';
 import { InstagramIcon, FacebookIcon, TwitterIcon, LinkedInIcon, TikTokIcon, YouTubeIcon, WebsiteIcon } from '@/components/Guimel/icons/SocialMediaIcons';
 import { useCreateReview } from './hooks/useCreateReview';
 import Avatar from '@/shared/Avatar';
+import PlaceholderCard from '@/components/Guimel/PlaceholderCard';
+import { usePlaceholders } from '@/components/Guimel/hooks/usePlaceholders';
 
 interface HosterDetailsClientProps {
   hosterLink: string;
@@ -22,6 +24,11 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
     variables: { link: hosterLink },
     fetchPolicy: "cache-and-network"
   });
+
+  const hoster = data?.user;
+  
+  const activityPlaceholders = usePlaceholders('activity', hoster?.activity?.length || 0, hoster?.activity?.length < 4 ? 3 : 6 );
+  const lodgingPlaceholders = usePlaceholders('lodging', hoster?.lodging?.length || 0, hoster?.lodging?.length < 4 ? 3 : 6  );
 
   const {
     rating,
@@ -72,11 +79,9 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
     );
   }
 
-  if (error || !data?.user) {
+  if (error || !hoster) {
     notFound();
   }
-
-  const hoster = data.user;
   const fullName = `${hoster.name} ${hoster.lastName} ${hoster.secondLastName || ''}`.trim();
   const displayName = `${hoster.name} ${hoster.lastName}`;
 
@@ -85,12 +90,10 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
-          {/* Left Sidebar - Hoster Details */}
           <div className="lg:col-span-1">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden sticky top-8">
               
-              {/* Profile Header */}
-              <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6 text-white text-center">
+              <div className="bg-gradient-to-r from-sky-600 to-blue-600 p-6 text-white text-center">
                 <div className="relative inline-block">
                 <Avatar
                     hasChecked={hoster.verified}
@@ -104,7 +107,6 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
                 </div>
                 
                 <h1 className="text-xl font-bold mt-4 mb-1">{displayName}</h1>
-                <p className="text-purple-100 text-sm mb-3">Anfitrión Verificado</p>
                 
                 {/* Rating */}
                 <div className="flex items-center justify-center space-x-1 mb-2">
@@ -271,8 +273,8 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
                 </div>
               </div>
 
-              {/* Add Review Section - Below Profile Details */}
-              <div className="border-t border-gray-200 dark:border-gray-700 p-6">
+          
+              <div id="review-section" className="border-t border-gray-200 dark:border-gray-700 p-6">
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Agregar Reseña</h3>
                 
                 <form 
@@ -337,11 +339,10 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
                     />
                   </div>
 
-                  {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={reviewLoading || rating === 0 || !review.trim()}
-                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {reviewLoading ? 'Enviando...' : 'Enviar Reseña'}
                   </button>
@@ -351,7 +352,7 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
                 <div className="mt-4 text-center">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     ¿No tienes cuenta? 
-                    <Link href="/registro" className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium ml-1">
+                    <Link href="/registro" className="text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 font-medium ml-1">
                       Regístrate
                     </Link>
                   </p>
@@ -360,13 +361,11 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
             </div>
           </div>
 
-          {/* Right Content - Activities, Lodgings, Reviews */}
           <div className="lg:col-span-3 space-y-8">
             
-            {/* Activities Section */}
-            {hoster.activity && hoster.activity.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Actividades</h2>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Actividades</h2>
+              {hoster.activity && hoster.activity.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {hoster.activity.map((activity: any) => (
                     <div key={activity.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
@@ -403,14 +402,30 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
                       </div>
                     </div>
                   ))}
+                  
+                  {activityPlaceholders.map((placeholder) => (
+                    <PlaceholderCard
+                      key={placeholder.key}
+                      type={placeholder.type}
+                      title={placeholder.title}
+                      description={placeholder.description}
+                    />
+                  ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
+                  <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CalendarIcon className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No hay actividades disponibles</h3>
+                  <p className="text-gray-600 dark:text-gray-400">Este anfitrión aún no ha publicado actividades.</p>
+                </div>
+              )}
+            </div>
 
-            {/* Lodgings Section */}
-            {hoster.lodging && hoster.lodging.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Hospedajes</h2>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Hospedajes</h2>
+              {hoster.lodging && hoster.lodging.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {hoster.lodging.map((lodging: any) => (
                     <div key={lodging.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
@@ -446,14 +461,30 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
                       </div>
                     </div>
                   ))}
+                  
+                  {lodgingPlaceholders.map((placeholder) => (
+                    <PlaceholderCard
+                      key={placeholder.key}
+                      type={placeholder.type}
+                      title={placeholder.title}
+                      description={placeholder.description}
+                    />
+                  ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
+                  <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <BuildingOfficeIcon className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No hay hospedajes disponibles</h3>
+                  <p className="text-gray-600 dark:text-gray-400">Este anfitrión aún no ha publicado hospedajes.</p>
+                </div>
+              )}
+            </div>
 
-            {/* Reviews Section */}
-            {hoster.reviews && hoster.reviews.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Reseñas</h2>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Reseñas</h2>
+              {hoster.reviews && hoster.reviews.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {hoster.reviews.map((review: any) => (
                     <div key={review.id} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -503,8 +534,28 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
+                  <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <StarIcon className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No hay reseñas disponibles</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6">Sé el primero en dejar una reseña sobre este anfitrión.</p>
+                  <button
+                    onClick={() => {
+                      const reviewSection = document.getElementById('review-section');
+                      if (reviewSection) {
+                        reviewSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white py-2 px-6 rounded-lg text-sm font-medium transition-all duration-300 inline-flex items-center gap-2"
+                  >
+                    <StarIcon className="w-4 h-4" />
+                    Agregar Reseña
+                  </button>
+                </div>
+              )}
+            </div>
 
           </div>
         </div>

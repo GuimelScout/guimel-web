@@ -5,9 +5,9 @@ import LocationSelector from "./LocationSelector";
 import LodgingSelector from "./LodgingSelector";
 import PriceBreakdown from "./PriceBreakdown";
 import RelatedActivities from "./RelatedActivities";
-import { CheckoutSidebarProps } from "../types";
+import { CheckoutSidebarProps, PaymentBreakdowns } from "../types";
 
-const CheckoutSidebar: React.FC<CheckoutSidebarProps> = ({
+const CheckoutSidebar: React.FC<CheckoutSidebarProps & { breakdown: PaymentBreakdowns }> = ({
   data,
   checkoutState,
   onLocationSelect,
@@ -15,6 +15,7 @@ const CheckoutSidebar: React.FC<CheckoutSidebarProps> = ({
   onLodgingSelect,
   onActivityToggle,
   getTotal,
+  breakdown,
 }) => {
   return (
     <div className="space-y-4">
@@ -51,6 +52,8 @@ const CheckoutSidebar: React.FC<CheckoutSidebarProps> = ({
           isLodging={checkoutState.isLodging}
           guestCount={checkoutState.guestAdultsInputValue}
           total={getTotal()}
+          paymentType={checkoutState.paymentType}
+          breakdown={breakdown}
         />
       </div>
 

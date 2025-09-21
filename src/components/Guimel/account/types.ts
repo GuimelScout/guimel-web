@@ -15,6 +15,7 @@ export interface BookingType {
   payment: PaymentType;
   gallery?: Array<GalleryImageType>;
   status: string;
+  payment_type: 'full_payment' | 'commission_only';
   start_date: string;
   end_date: string;
   guestsCount: number;
@@ -28,6 +29,7 @@ export const STATUS_BOOKING : { [key: string]: string } = {
   cancelled: "Cancelado",
   confirmed: "Confirmado",
   completed: "Completado",
+  reserved: "Reservado",
 }
 
 export const STATUS_BOOKING_COLORS : { [key: string]: TwMainColor } = {
@@ -36,6 +38,7 @@ export const STATUS_BOOKING_COLORS : { [key: string]: TwMainColor } = {
   cancelled: "red",
   confirmed: "green",
   completed: "green",
+  reserved: "cyan",
 }
 
 
