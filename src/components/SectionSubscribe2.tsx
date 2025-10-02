@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FC } from "react";
 import ButtonCircle from "@/shared/ButtonCircle";
 import rightImg from "@/images/SVG-subcribe2.png";
