@@ -2,14 +2,23 @@ import React, { FC } from "react";
 import ButtonCircle from "@/shared/ButtonCircle";
 import rightImg from "@/images/SVG-subcribe2.png";
 import Badge from "@/shared/Badge";
-import Input from "@/shared/Input";
+import ButtonPrimary from "@/shared/ButtonPrimary";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export interface SectionSubscribe2Props {
   className?: string;
 }
 
 const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
+  const router = useRouter();
+
+  const handleJoinScouts = () => {
+    // Create URL with predefined message
+    const message = encodeURIComponent("Me gustaría ser parte de los scouts");
+    router.push(`/contacto?message=${message}`);
+  };
+
   return (
     <div
       className={`nc-SectionSubscribe2 relative flex flex-col lg:flex-row lg:items-center ${className}`}
@@ -55,23 +64,14 @@ const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
             </span>
           </li> */}
         </ul>
-        <form className="mt-10 relative max-w-sm">
-          <Input
-            required
-            aria-required
-            placeholder="Escribe tu email"
-            type="email"
-            rounded="rounded-full"
-            sizeClass="h-12 px-5 py-3"
-          />
-          <ButtonCircle
-            type="submit"
-            className="absolute transform top-1/2 -translate-y-1/2 right-1.5"
-            size="w-10 h-10"
+        <div className="mt-10">
+          <ButtonPrimary 
+            onClick={handleJoinScouts}
+            className="px-8 py-3 text-lg"
           >
-            <i className="las la-arrow-right text-xl"></i>
-          </ButtonCircle>
-        </form>
+            ¡Quiero ser Scout! 🎯
+          </ButtonPrimary>
+        </div>
       </div>
       <div className="flex-grow">
         <Image alt="" src={rightImg} />

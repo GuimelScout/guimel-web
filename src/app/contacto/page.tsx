@@ -1,29 +1,51 @@
-import React, { FC } from "react";
+"use client";
+
+import React, { FC, useEffect, useRef } from "react";
 import SectionSubscribe2 from "@/components/SectionSubscribe2";
 import SocialsList from "@/shared/SocialsList";
 import Label from "@/components/Label";
 import Input from "@/shared/Input";
 import Textarea from "@/shared/Textarea";
 import ButtonPrimary from "@/shared/ButtonPrimary";
+import { useContactForm } from "@/components/Guimel/contact/hooks/useContactForm.hook";
+import { Toaster, toast } from 'sonner';
+import { useSearchParams } from 'next/navigation';
 
 export interface PageContactProps {}
 
 const info = [
   {
     title: "🗺 DIRECCIÓN",
-    desc: "Photo booth tattooed prism, portland taiyaki hoodie neutra typewriter",
+    desc: "Villas los Pinos 2942, Col. Lomas de San Rafael, CP 33640, Chihuahua, México",
   },
   {
     title: "💌 EMAIL",
-    desc: "nc.example@example.com",
+    desc: "contacto@guimelcommunity.mx",
   },
   {
     title: "☎ TELÉFONO",
-    desc: "000-123-456-7890",
+    desc: "+52 443 479 0466",
   },
 ];
 
 const PageContact: FC<PageContactProps> = ({}) => {
+  const { formData, isLoading, error, handleInputChange, handleSubmit } = useContactForm();
+  const searchParams = useSearchParams();
+  const hasShownToast = useRef(false);
+
+  // Handle predefined message from URL
+  useEffect(() => {
+    const message = searchParams.get('message');
+    if (message && !hasShownToast.current) {
+      handleInputChange('message', decodeURIComponent(message));
+      // Show welcome toast for scouts only once
+      toast.success('¡Genial! Nos encantaría que formes parte de los scouts, ahora completa el formulario', {
+        duration: 5000,
+      });
+      hasShownToast.current = true;
+    }
+  }, [searchParams, handleInputChange]);
+
   return (
     <div className={`nc-PageContact overflow-hidden`}>
       <div className="mb-24 lg:mb-32">
@@ -38,9 +60,25 @@ const PageContact: FC<PageContactProps> = ({}) => {
                   <h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">
                     {item.title}
                   </h3>
-                  <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
-                    {item.desc}
-                  </span>
+                  {item.title === "💌 EMAIL" ? (
+                    <a 
+                      href={`mailto:${item.desc}`}
+                      className="block mt-2 text-neutral-500 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                    >
+                      {item.desc}
+                    </a>
+                  ) : item.title === "☎ TELÉFONO" ? (
+                    <a 
+                      href={`tel:${item.desc.replace(/\s/g, '')}`}
+                      className="block mt-2 text-neutral-500 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                    >
+                      {item.desc}
+                    </a>
+                  ) : (
+                    <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
+                      {item.desc}
+                    </span>
+                  )}
                 </div>
               ))}
               <div>
@@ -51,32 +89,65 @@ const PageContact: FC<PageContactProps> = ({}) => {
               </div>
             </div>
             <div>
-              <form className="grid grid-cols-1 gap-6" action="#" method="post">
+              <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
+                {error && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                    {error}
+                  </div>
+                )}
+                
                 <label className="block">
                   <Label>Nombre</Label>
-
                   <Input
                     placeholder="Escribe aquí"
                     type="text"
                     className="mt-1"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    required
                   />
                 </label>
+                
                 <label className="block">
                   <Label>Email</Label>
-
                   <Input
                     type="email"
                     placeholder="example@guimel.com"
                     className="mt-1"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    required
                   />
                 </label>
+                
+                <label className="block">
+                  <Label>Teléfono</Label>
+                  <Input
+                    type="tel"
+                    placeholder="+52 123 456 7890"
+                    className="mt-1"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    required
+                  />
+                </label>
+                
                 <label className="block">
                   <Label>Mensaje</Label>
-
-                  <Textarea className="mt-1" placeholder="Escribe aquí" rows={6} />
+                  <Textarea 
+                    className="mt-1" 
+                    placeholder="Escribe aquí" 
+                    rows={6}
+                    value={formData.message}
+                    onChange={(e) => handleInputChange('message', e.target.value)}
+                    required
+                  />
                 </label>
+                
                 <div>
-                  <ButtonPrimary type="submit">Enviar</ButtonPrimary>
+                  <ButtonPrimary type="submit" disabled={isLoading}>
+                    {isLoading ? 'Enviando...' : 'Enviar'}
+                  </ButtonPrimary>
                 </div>
               </form>
             </div>
@@ -88,6 +159,8 @@ const PageContact: FC<PageContactProps> = ({}) => {
       <div className="container">
         <SectionSubscribe2 className="pb-24 lg:pb-32" />
       </div>
+      
+      <Toaster position="bottom-center" closeButton richColors />
     </div>
   );
 };
