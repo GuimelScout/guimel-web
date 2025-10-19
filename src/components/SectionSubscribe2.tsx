@@ -7,6 +7,7 @@ import Badge from "@/shared/Badge";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useScrollToForm } from "@/hooks/useScrollToForm";
 
 export interface SectionSubscribe2Props {
   className?: string;
@@ -14,11 +15,15 @@ export interface SectionSubscribe2Props {
 
 const SectionSubscribe2: FC<SectionSubscribe2Props> = ({ className = "" }) => {
   const router = useRouter();
+  const { scrollToForm } = useScrollToForm();
 
   const handleJoinScouts = () => {
-    // Create URL with predefined message
-    const message = encodeURIComponent("Me gustaría ser parte de los scouts");
-    router.push(`/contacto?message=${message}`);
+    if (window.location.pathname === '/contacto') {
+      scrollToForm();
+    } else {
+      const message = encodeURIComponent("Me gustaría ser parte de los scouts");
+      router.push(`/contacto?message=${message}` as any);
+    }
   };
 
   return (

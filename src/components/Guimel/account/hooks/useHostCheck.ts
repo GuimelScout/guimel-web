@@ -13,9 +13,6 @@ export const useHostCheck = () => {
   const user = authData?.authenticatedItem || contextUser;
   const loading = contextLoading || authLoading;
 
-  console.log("user");
-  console.log(user);
-
   const isHost = user?.role?.some((role: any) => role.name === 'hoster') || false;
   const isAdmin = user?.role?.some((role: any) => role.name === 'admin') || false;
   const hasHostAccess = isHost || isAdmin;

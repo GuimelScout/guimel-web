@@ -46,7 +46,7 @@ const RelatedActivities: React.FC<RelatedActivitiesProps> = ({
         </div>
       ) : (
         <p className="text-gray-400 text-center text-sm">
-          No hay actividades disponibles en esta ubicación.
+          No hay más actividades disponibles en esta ubicación.
         </p>
       )}
     </div>

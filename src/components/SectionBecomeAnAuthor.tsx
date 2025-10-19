@@ -1,8 +1,12 @@
+"use client";
+
 import React, { FC } from "react";
 import rightImgDemo from "@/images/BecomeAnAuthorImg.png";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import Logo from "@/shared/Logo";
 import Image from "next/image";
+import { useScrollToForm } from "@/hooks/useScrollToForm";
+import { useRouter } from "next/navigation";
 
 export interface SectionBecomeAnAuthorProps {
   className?: string;
@@ -13,6 +17,23 @@ const SectionBecomeAnAuthor: FC<SectionBecomeAnAuthorProps> = ({
   className = "",
   rightImg = rightImgDemo,
 }) => {
+  const router = useRouter();
+
+  const { scrollToForm } = useScrollToForm();
+
+
+  const handleJoinScouts = () => {
+    // Check if we're on the contact page
+    if (window.location.pathname === '/contacto') {
+      // If on contact page, scroll to the form
+      scrollToForm();
+    } else {
+      // If not on contact page, navigate to contact page with message
+      const message = encodeURIComponent("Me gustaría ser parte de los scouts");
+      router.push(`/contacto?message=${message}` as any);
+    }
+  };
+
   return (
     <div
       className={`nc-SectionBecomeAnAuthor relative flex flex-col lg:flex-row items-center  ${className}`}
@@ -29,7 +50,7 @@ const SectionBecomeAnAuthor: FC<SectionBecomeAnAuthorProps> = ({
         <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
           Únete a nuestra expedición exclusiva rumbo a Isla Cerralvo, también conocida como Isla Jacques Cousteau. Te llevamos a acampar en uno de los lugares más prístinos del Mar de Cortés, donde no llegan los tours ni el wifi, pero sí las historias que se quedan para siempre.
         </span>
-        <ButtonPrimary className="mt-6 sm:mt-11">
+        <ButtonPrimary onClick={handleJoinScouts} className="mt-6 sm:mt-11">
           Únete como Scout
         </ButtonPrimary>
       </div>

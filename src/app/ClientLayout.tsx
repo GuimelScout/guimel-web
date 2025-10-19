@@ -11,6 +11,7 @@ import ApolloWrapper from "@/utils/apolloWrapper";
 import { UserProvider } from "context/UserContext";
 import Footer from "@/components/Guimel/Footer";
 import { usePathname } from "next/navigation";
+import { useLenis } from "@/hooks/useLenis";
 
 export default function ClientLayout({
   children,
@@ -22,6 +23,9 @@ export default function ClientLayout({
 
   const pathname = usePathname();
   const isAuthPage = pathname.startsWith("/login") || pathname.startsWith("/signup");
+  
+  // Initialize Lenis smooth scrolling
+  useLenis();
 
   return (
     <ApolloWrapper>

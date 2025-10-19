@@ -23,7 +23,7 @@ const PageAbout: FC<PageAboutProps> = ({}) => {
           subHeading="Una comuna por nuestra gente y el medio ambiente."
         />
 
-        <SectionFounder />
+        {/* <SectionFounder /> */}
         <div className="relative py-16">
           <BackgroundSection />
           <SectionClientSay />

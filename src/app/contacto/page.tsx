@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import SectionSubscribe2 from "@/components/SectionSubscribe2";
 import SocialsList from "@/shared/SocialsList";
 import Label from "@/components/Label";
@@ -32,6 +32,7 @@ const PageContact: FC<PageContactProps> = ({}) => {
   const { formData, isLoading, error, handleInputChange, handleSubmit } = useContactForm();
   const searchParams = useSearchParams();
   const hasShownToast = useRef(false);
+  const [isFormHighlighted, setIsFormHighlighted] = useState(false);
 
   // Handle predefined message from URL
   useEffect(() => {
@@ -43,6 +44,12 @@ const PageContact: FC<PageContactProps> = ({}) => {
         duration: 5000,
       });
       hasShownToast.current = true;
+      
+      // Highlight the form briefly when coming from scouts section
+      setIsFormHighlighted(true);
+      setTimeout(() => {
+        setIsFormHighlighted(false);
+      }, 3000);
     }
   }, [searchParams, handleInputChange]);
 
@@ -89,7 +96,15 @@ const PageContact: FC<PageContactProps> = ({}) => {
               </div>
             </div>
             <div>
-              <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
+              <form 
+                id="contact-form" 
+                className={`grid grid-cols-1 gap-6 transition-all duration-1000 ${
+                  isFormHighlighted 
+                    ? 'ring-4 ring-blue-500 ring-opacity-50 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-xl shadow-lg' 
+                    : ''
+                }`} 
+                onSubmit={handleSubmit}
+              >
                 {error && (
                   <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
                     {error}
