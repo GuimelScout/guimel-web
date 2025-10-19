@@ -64,8 +64,6 @@ export const useCreateReview = ({ onSuccess }: UseCreateReviewProps = {}) => {
         user: { connect: { id: targetId } }
       };
 
-      console.log('Creating review with data:', reviewData);
-
       await createReview({
         variables: { data: reviewData }
       });
@@ -74,15 +72,12 @@ export const useCreateReview = ({ onSuccess }: UseCreateReviewProps = {}) => {
       setRating(0);
       setReview('');
       
-      // Call onSuccess callback if provided
       if (onSuccess) {
         onSuccess();
       }
       
-      // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
     } catch (err: any) {
-      console.error('Error creating review:', err);
       setError(err.message || 'Error al enviar la reseña');
     } finally {
       setIsLoading(false);

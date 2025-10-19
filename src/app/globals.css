@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Lenis smooth scrolling */
+@import 'lenis/dist/lenis.css';

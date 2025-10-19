@@ -25,7 +25,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
 
   const renderSliderGallery = () => {
     return (
-      <div className="relative w-full rounded-2xl overflow-hidden border-2 border-blue-100 shadow-lg">
+      <div className="relative w-full rounded-2xl overflow-hidden border-2 border-blue-100 dark:border-neutral-600 shadow-lg">
         <GallerySlider
           uniqueID={`ExperiencesCard_${name}`}
           ratioClass={ratioClass}
@@ -51,7 +51,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
     return (
       <div className={size === "default" ? "py-4 space-y-3 p-3" : "p-2 space-y-1"}>
         <div className="space-y-1">
-          <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-xs space-x-1">
+          <div className="flex items-center text-neutral-600 dark:text-neutral-300 text-xs space-x-1">
             {size === "default" && <MapPinIcon className="w-4 h-4" />}
             {size === "small" && <MapPinIcon className="w-3 h-3" />}
             <span className="line-clamp-1">{address}</span>
@@ -59,7 +59,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
 
           <div className="flex items-center space-x-2">
             <h2
-              className={` font-medium capitalize ${
+              className={` font-medium capitalize text-neutral-900 dark:text-neutral-100 ${
                 size === "default" ? "text-base" : "text-sm"
               }`}
             >
@@ -69,7 +69,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
         </div>
         <div className="border-b border-neutral-100 dark:border-neutral-800"></div>
         <div className="flex justify-between items-center">
-          <span className={size === "default" ? "text-base font-semibold" : "text-sm font-semibold"}>
+          <span className={`text-neutral-900 dark:text-neutral-100 ${size === "default" ? "text-base font-semibold" : "text-sm font-semibold"}`}>
             ${parseFloat(price).toFixed(2)}
             {` `}
             {size === "default" && (
@@ -90,7 +90,7 @@ const ActivityCard: FC<ActivityCardProps> = ({
   };
 
   return (
-    <div className={`nc-ExperiencesCard group relative bg-gradient-to-br from-blue-50 to-blue-100/30 rounded-2xl p-1 ${className}`}>
+    <div className={`nc-ExperiencesCard group relative bg-gradient-to-br from-blue-50 to-blue-100/30 dark:from-neutral-800 dark:to-neutral-700/50 rounded-2xl p-1 ${className}`}>
       {renderSliderGallery()}
      {/*  @ts-ignore */}
      <Link href={`actividad/${link}`}>{renderContent()}</Link>

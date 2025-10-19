@@ -25,7 +25,6 @@ export const usePayment = () => {
     checkoutState: CheckoutState,
     activityData: any
   ) => {
-
     if (!stripe || !elements) {
       return;
     }
@@ -58,6 +57,7 @@ export const usePayment = () => {
         stripeCustomerId = getUser.user.stripeCustomerId;
       } else {
         const password = generatePassword(formData.nameCard);
+        
         const resUser = await createUser({
           variables: {
             data: {
@@ -134,7 +134,7 @@ export const usePayment = () => {
         });
         paymentMethodID = res.data.createPaymentMethod.id;
         noDuplicatePaymentMethod = true;
-        } else {
+            } else {
         const { data: getPaymentMethod } = await client.query({
           query: GET_PAYMENT_METHOD,
           variables: {
@@ -148,15 +148,24 @@ export const usePayment = () => {
         noDuplicatePaymentMethod = false;
       }
 
+      // Filter out null/undefined activities before calculation
+      const validActivities = (checkoutState.activitiesSelected || []).filter(activity => 
+        activity !== null && 
+        activity !== undefined && 
+        activity.id && 
+        activity.price !== undefined &&
+        activity.price !== null
+      );
+      
       const breakdown = calculatePaymentBreakdowns(
-        checkoutState.activitiesSelected,
+        validActivities,
         checkoutState.lodginSelected,
         checkoutState.guestAdultsInputValue
       );
       const calculatedTotal = breakdown[checkoutState.paymentType].payNow.toFixed(2);
       
       const paymentData: PaymentData = {
-        activityIds: checkoutState.activitiesSelected.map(activity => activity.id),
+        activityIds: validActivities.map(activity => activity.id),
         lodgingId: checkoutState.lodginSelected?.id,
         locationId: checkoutState.locationSelected?.id,
         startDate: checkoutState.startDate ? dateFormat(checkoutState.startDate) || "" : "",
@@ -180,7 +189,7 @@ export const usePayment = () => {
         toast.success(response.data.makePayment.message);
         router.push(`/pay-done?booking=${response.data.makePayment.data.booking}` as any);
       } else {
-        setLoadingPayment(false);
+        setLoadingPayment(false); 
         toast.error(response.data.makePayment.message, {
           duration: Infinity
         });
