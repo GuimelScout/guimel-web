@@ -101,6 +101,7 @@ export interface Host {
   activityCount: number;
   lodgingCount: number;
   reviewsCount: number;
+  totalReviews:number;
   reviewStar:number;
   image: ImageType;
   role: Array<Role>;

@@ -3,17 +3,16 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { useQuery } from '@apollo/client';
-import { GET_HOSTER_DETAILS_QUERY } from './QueryHoster.queries';
+import { GET_HOSTER_DETAILS_QUERY, GET_HOSTER_REVIEWS } from './QueryHoster.queries';
 import ImageWithPlaceholder from '@/components/Guimel/ImageWithPlaceholder';
-import { StarIcon, CheckBadgeIcon, MapPinIcon, CalendarIcon, PhoneIcon, EnvelopeIcon, GlobeAltIcon, BuildingOfficeIcon } from '@heroicons/react/24/solid';
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
+import { StarIcon,  MapPinIcon, CalendarIcon, PhoneIcon, EnvelopeIcon, BuildingOfficeIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
-import ButtonPrimary from '@/shared/ButtonPrimary';
 import { InstagramIcon, FacebookIcon, TwitterIcon, LinkedInIcon, TikTokIcon, YouTubeIcon, WebsiteIcon } from '@/components/Guimel/icons/SocialMediaIcons';
 import { useCreateReview } from './hooks/useCreateReview';
 import Avatar from '@/shared/Avatar';
 import PlaceholderCard from '@/components/Guimel/PlaceholderCard';
 import { usePlaceholders } from '@/components/Guimel/hooks/usePlaceholders';
+import { RouteGuimel } from '@/routers/routes';
 
 interface HosterDetailsClientProps {
   hosterLink: string;
@@ -22,6 +21,20 @@ interface HosterDetailsClientProps {
 const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink }) => {
   const { data, loading, error, refetch } = useQuery(GET_HOSTER_DETAILS_QUERY, {
     variables: { link: hosterLink },
+    fetchPolicy: "cache-and-network"
+  });
+
+  const { data: reviewsData, loading: reviewsLoading, error: reviewsError } = useQuery(GET_HOSTER_REVIEWS, {
+    variables: {  where: {
+      OR: [
+        //@ts-ignore
+        { activity: { hostBy: { id: { equals: data?.user?.id } } } },
+        //@ts-ignore
+        { lodging: { hostBy: { id: { equals: data?.user?.id } } } },
+        //@ts-ignore
+        { user: { id: { equals: data?.user?.id } } }
+      ]
+    },},
     fetchPolicy: "cache-and-network"
   });
 
@@ -127,7 +140,7 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
                   </span>
                 </div>
                 <p className="text-xs text-purple-100">
-                  {hoster.reviewsCount || 0} reseñas
+                  {hoster.totalReviews || 0} reseñas
                 </p>
               </div>
 
@@ -484,26 +497,26 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
 
             <div>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Reseñas</h2>
-              {hoster.reviews && hoster.reviews.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {hoster.reviews.map((review: any) => (
+              {reviewsData?.reviews && reviewsData?.reviews.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                  {reviewsData.reviews.map((review: any) => (
                     <div key={review.id} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                       <div className="flex items-start space-x-4">
                         <div className="w-12 h-12 ">
                           <Avatar
-                            hasChecked={review.user.verified}
+                            hasChecked={review.createdBy?.verified}
                             sizeClass="h-12 w-12 text-lg"
                             radius="rounded-full"
-                            imgUrl={review.user.image?.url}
-                            userName={`${review.user.name} ${review.user.lastName}`}
+                            imgUrl={review.createdBy?.image?.url}
+                            userName={`${review.createdBy?.name} ${review.createdBy?.lastName}`}
                             containerClassName="ring-4 ring-gray-100 dark:ring-gray-700 group-hover:ring-purple-200 dark:group-hover:ring-purple-800 transition-all duration-300"
                             hasCheckedClass="w-5 h-5 -top-1 -right-1"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center space-x-2 mb-2">
+                          <div className="flex items-center space-x-2">
                             <h4 className="font-semibold text-gray-900 dark:text-white truncate">
-                              {review.user.name} {review.user.lastName}
+                               { (review.createdBy) ?  `${review.createdBy.name} ${review.createdBy.lastName}` : 'Invitado'}
                             </h4>
                             <div className="flex items-center flex-shrink-0">
                               {[...Array(5)].map((_, i) => (
@@ -517,8 +530,17 @@ const HosterDetailsClient: React.FC<HosterDetailsClientProps> = ({ hosterLink })
                             </div>
                           </div>
                           {(review.activity || review.lodging) && (
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 truncate">
-                              Sobre: <span className="font-medium">{review.activity?.name || review.lodging?.name}</span>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 truncate">
+                              <>
+                              <span className="text-neutral-500 dark:text-neutral-400 font-normal">
+                              {` reseña en `}
+                              </span>
+                              {review.activity ? (
+                                <a className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300" href={`${RouteGuimel.activity}/${review.activity?.link}`}>{review.activity?.name}</a>
+                              ) : (
+                                <a className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300" href={`${RouteGuimel.lodging}/${review.lodging?.link}`}>{review.lodging?.name}</a>
+                              )}
+                              </>
                             </p>
                           )}
                           <p className="text-gray-700 dark:text-gray-300 mb-2 line-clamp-3">{review.review}</p>

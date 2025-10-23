@@ -29,6 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ACTIVITY_QUERY } from "@/components/Guimel/activity/QueryActivity.queries";
 import { GET_REVIEWS, CREATE_REVIEW } from "@/components/Guimel/review/QueryReview.queries";
 import dateFormat from "@/utils/date-format-helper";
+import { RouteGuimel } from "@/routers/routes";
 
 const Location = ({ params }: { params: { link: string } }) => {
   const { link } = params;
@@ -177,7 +178,7 @@ const Location = ({ params }: { params: { link: string } }) => {
           <span className="ml-2.5 text-neutral-500 dark:text-neutral-400">
             Organizado por {" "}
             <span className="text-neutral-900 dark:text-neutral-200 font-medium">
-              {data?.activity.hostBy?.name} {data?.activity.hostBy?.lastName}
+              <a className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300" href={`${RouteGuimel.hoster}/${data?.activity.hostBy?.link}`}>{data?.activity.hostBy?.name} {data?.activity.hostBy?.lastName}</a>
             </span>
           </span>
         </div>
@@ -301,8 +302,8 @@ const Location = ({ params }: { params: { link: string } }) => {
             
           />
           <div>
-            <a className="block text-xl font-medium" href="##">
-              {data?.activity.hostBy?.name} {data?.activity.hostBy?.lastName} {data?.activity.hostBy?.secondLastName}
+            <a className="block text-xl font-medium" href={`${RouteGuimel.hoster}/${data?.activity.hostBy?.link}`}>
+              {data?.activity.hostBy?.name} {data?.activity.hostBy?.lastName}
             </a>
             <div className="mt-1.5 flex items-center text-sm text-neutral-500 dark:text-neutral-400">
               <StartRating reviewCount={data?.activity.hostBy?.reviewsCount} point={data?.activity.hostBy?.reviewStar} />

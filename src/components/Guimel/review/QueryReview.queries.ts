@@ -22,6 +22,14 @@ export const GET_REVIEWS = gql`
           url
         }
       }
+      createdBy {
+        name
+        lastName
+        verified
+        image {
+          url
+        }
+      }
       createdAt
     }
   }
