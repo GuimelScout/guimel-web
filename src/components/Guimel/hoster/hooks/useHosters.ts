@@ -11,7 +11,7 @@ export interface UseHostersOptions {
 
 export const useHosters = (options: UseHostersOptions = {}) => {
   const { 
-    sortBy = 'reviewStar', 
+    sortBy = 'totalReviews', 
     sortOrder = 'desc', 
     limit 
   } = options;
@@ -20,7 +20,7 @@ export const useHosters = (options: UseHostersOptions = {}) => {
     switch (sortBy) {
       case 'createdAt':
         return 'asc';
-      case 'reviewStar':
+      case 'totalReviews':
         return 'desc';
       case 'name':
         return 'asc';

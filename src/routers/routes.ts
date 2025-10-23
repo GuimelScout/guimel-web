@@ -16,4 +16,6 @@ export const RouteGuimel =  {
   client_bookings: "/reservas-de-clientes" as any,
   my_lodgings: "/mis-hospedajes" as any,
   my_activities: "/mis-actividades" as any,
+  
+  hoster: "/anfitrion" as any,
 }

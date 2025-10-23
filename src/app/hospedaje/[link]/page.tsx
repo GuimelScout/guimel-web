@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CREATE_REVIEW, GET_REVIEWS } from "@/components/Guimel/review/QueryReview.queries";
 import { LODGING_QUERY } from "@/components/Guimel/hospedaje/QueryHospedaje.queries";
+import { RouteGuimel } from "@/routers/routes";
 
 const Location = ({ params }: { params: { link: string } }) => {
   const { link } = params;
@@ -169,9 +170,7 @@ const Location = ({ params }: { params: { link: string } }) => {
         <Avatar hasChecked={data?.lodging.hostBy?.verified} sizeClass="h-10 w-10" radius="rounded-full" imgUrl={data?.lodging.hostBy?.image?.url ?? undefined}  />
           <span className="ml-2.5 text-neutral-500 dark:text-neutral-400">
             Organizado por {" "}
-            <span className="text-neutral-900 dark:text-neutral-200 font-medium">
-            {data?.lodging.hostBy?.name} {data?.lodging.hostBy?.lastName}
-            </span>
+            <a className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300" href={`${RouteGuimel.hoster}/${data?.lodging.hostBy?.link}`}>{data?.lodging.hostBy?.name} {data?.lodging.hostBy?.lastName}</a>
           </span>
         </div>
 
@@ -224,7 +223,7 @@ const Location = ({ params }: { params: { link: string } }) => {
             
           />
           <div>
-            <a className="block text-xl font-medium" href="##">
+            <a className="block text-xl font-medium" href={`${RouteGuimel.hoster}/${data?.lodging.hostBy?.link}`}>
               {data?.lodging.hostBy?.name} {data?.lodging.hostBy?.lastName} {data?.lodging.hostBy?.secondLastName}
             </a>
             <div className="mt-1.5 flex items-center text-sm text-neutral-500 dark:text-neutral-400">

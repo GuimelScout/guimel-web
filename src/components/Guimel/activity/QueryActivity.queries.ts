@@ -70,6 +70,7 @@ export const ACTIVITY_QUERY = gql`
         image {
           url
         }
+        link
         createdAt
       }
       lodgingCount

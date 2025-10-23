@@ -18,6 +18,7 @@ export const GET_HOSTERS_QUERY = gql`
       tiktok
       youtube
       website
+      totalReviews
       image {
         url
       }
@@ -66,6 +67,7 @@ export const GET_HOSTER_DETAILS_QUERY = gql`
       lodgingCount
       reviewsCount
       reviewStar
+      totalReviews
       activity {
         id
         name
@@ -115,6 +117,33 @@ export const GET_HOSTER_DETAILS_QUERY = gql`
       }
     }
   }
+`;
+
+export const GET_HOSTER_REVIEWS = gql`
+ query Reviews($where: ReviewWhereInput!) {
+  reviews(where: $where) {
+    review
+    rating
+    createdAt
+    createdBy {
+      id
+      verified
+      name
+      lastName
+      image {
+        url
+      }
+    }
+    activity {
+      name
+      link
+    }
+    lodging {
+      name
+      link
+    }
+  }
+}
 `;
 
 export const BOOKINGS_HOSTER_QUERY = gql`

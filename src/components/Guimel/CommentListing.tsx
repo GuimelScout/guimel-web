@@ -5,6 +5,7 @@ import { Host } from "@/data/types";
 
 interface ReviewType {
   user?: Host;
+  createdBy?: Host;
   createdAt: Date;
   review: string;
   rating: number;
@@ -28,18 +29,18 @@ const CommentListing: FC<CommentListingProps> = ({
     >
       <div className="pt-0.5">
         <Avatar
-          hasChecked={data?.user?.verified}
+          hasChecked={data?.createdBy?.verified}
           sizeClass="h-10 w-10 text-lg"
           radius="rounded-full"
-          userName={data?.user?.name ?? 'Invitado'}
-          imgUrl={data?.user?.image?.url ?? undefined}
+          userName={data?.createdBy?.name ?? 'Invitado'}
+          imgUrl={data?.createdBy?.image?.url ?? undefined}
         />
       </div>
       <div className="flex-grow">
         <div className="flex justify-between space-x-3">
           <div className="flex flex-col">
             <div className="text-sm font-semibold">
-              <span>{data.user?.name ?? "Invitado"} {data.user?.lastName ?? ""}</span>
+              <span>{data.createdBy?.name ?? "Invitado"} {data.createdBy?.lastName ?? ""}</span>
               {hasListingTitle && (
                 <>
                   <span className="text-neutral-500 dark:text-neutral-400 font-normal">

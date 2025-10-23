@@ -61,6 +61,7 @@ export const LODGING_QUERY = gql`
         reviewsCount
         reviewStar
         verified
+        link
         image {
           url
         }
