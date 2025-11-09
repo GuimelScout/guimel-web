@@ -61,8 +61,8 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
     });
   };
 
-  const handleDateChange = (startDate: Date | null, endDate: Date | null) => {
-    updateCheckoutState({ startDate, endDate });
+  const handleDateChange = (startDate: Date | null) => {
+    updateCheckoutState({ startDate });
   };
 
   const handleGuestsChange = (adults: number, children: number) => {
@@ -101,6 +101,7 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
     />
   );
 
+
   return (
     <div className={`nc-CheckOutPagePageMain ${className}`}>
       <main className="container mt-11 mb-24 lg:mb-32 flex flex-col-reverse lg:flex-row">
@@ -115,14 +116,9 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
             onPaymentTypeChange={handlePaymentTypeChange}
             breakdown={breakdown}
             startDate={checkoutState.startDate}
-            endDate={checkoutState.endDate}
             setStartDate={(date) => {
               const newDate = typeof date === 'function' ? date(checkoutState.startDate) : date;
-              handleDateChange(newDate, checkoutState.endDate);
-            }}
-            setEndDate={(date) => {
-              const newDate = typeof date === 'function' ? date(checkoutState.endDate) : date;
-              handleDateChange(checkoutState.startDate, newDate);
+              handleDateChange(newDate);
             }}
             guestAdultsInputValue={checkoutState.guestAdultsInputValue}
             setGuestAdultsInputValue={(value) => {

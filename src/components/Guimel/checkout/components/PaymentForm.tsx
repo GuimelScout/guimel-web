@@ -28,9 +28,7 @@ interface PaymentFormProps {
   breakdown: PaymentBreakdowns;
   // Props for date and guest controls (matching existing components)
   startDate: Date | null;
-  endDate: Date | null;
   setStartDate: Dispatch<SetStateAction<Date | null>>;
-  setEndDate: Dispatch<SetStateAction<Date | null>>;
   guestAdultsInputValue: number;
   setGuestAdultsInputValue: Dispatch<SetStateAction<number>>;
   guestChildrenInputValue: number;
@@ -48,9 +46,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   onPaymentTypeChange,
   breakdown,
   startDate,
-  endDate,
   setStartDate,
-  setEndDate,
   guestAdultsInputValue,
   setGuestAdultsInputValue,
   guestChildrenInputValue,
@@ -75,8 +71,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
             className="flex-1 z-[11]" 
             startDate={startDate} 
             setStartDate={setStartDate} 
-            endDate={endDate} 
-            setEndDate={setEndDate}
             dayType={activity?.type_day ?? null}
             availableDays={activity?.available_days ?? null} 
           />

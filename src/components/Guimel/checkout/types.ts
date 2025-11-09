@@ -11,7 +11,6 @@ export interface CheckoutFormData {
 
 export interface CheckoutState {
   startDate: Date | null;
-  endDate: Date | null;
   guestAdultsInputValue: number;
   guestChildrenInputValue: number;
   isLodging: boolean;
@@ -26,7 +25,6 @@ export interface CheckoutParams {
   activity: string;
   guestsCount: string;
   startD: string;
-  endD: string;
 }
 
 export interface PaymentData {
@@ -34,7 +32,6 @@ export interface PaymentData {
   lodgingId?: string;
   locationId?: string;
   startDate: string;
-  endDate: string;
   guestsCount: string;
   nameCard: string;
   email: string;
@@ -71,7 +68,7 @@ export interface CheckoutMainProps {
 
 export interface CheckOutPagePageMainProps {
   className?: string;
-  params: { activity: string, guestsCount: string, startD: string, endD: string }
+  params: { activity: string, guestsCount: string, startD: string }
 }
 
 export interface PaymentBreakdown {
