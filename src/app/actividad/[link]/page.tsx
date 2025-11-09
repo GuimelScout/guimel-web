@@ -223,7 +223,7 @@ const Location = ({ params }: { params: { link: string } }) => {
         </div>
       
         <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
-          <StayDatesRangeInput className="flex-1 z-[11]" startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} dayType={data?.activity.type_day ?? null} availableDays={data?.activity.available_days ?? null} />
+          <StayDatesRangeInput className="flex-1 z-[11]" startDate={startDate} setStartDate={setStartDate} dayType={data?.activity.type_day ?? null} availableDays={data?.activity.available_days ?? null} />
           <GuestsInput className="flex-1" guestAdultsInputValue={guestAdultsInputValue} setGuestAdultsInputValue={setGuestAdultsInputValue} guestChildrenInputValue={guestChildrenInputValue} setGuestChildrenInputValue={setGuestChildrenInputValue} />
         </form>
 
@@ -244,7 +244,7 @@ const Location = ({ params }: { params: { link: string } }) => {
         </div>
 
         {/* SUBMIT */}
-        <ButtonPrimary href={`/checkout?activity=${link}&guestsCount=${totalGuests}&startDate=${dateFormat(startDate)}&endDate=${dateFormat(endDate)}`}>Reservar</ButtonPrimary>
+        <ButtonPrimary href={`/checkout?activity=${link}&guestsCount=${totalGuests}&startDate=${dateFormat(startDate)}`}>Reservar</ButtonPrimary>
       </div>
     );
   };

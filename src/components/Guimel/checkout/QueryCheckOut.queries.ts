@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export const MAKE_PAYMENT = gql`
-  mutation MakePayment($activityIds: [String!]!, $startDate: CalendarDay!, $endDate: CalendarDay!, $guestsCount: String!, $nameCard: String!, $email: String!, $notes: String!, $lodgingId: String, $locationId: String, $paymentMethodId: String!, $total: String!, $noDuplicatePaymentMethod: Boolean!, $paymentType: String!) {
-    makePayment(activityIds: $activityIds, startDate: $startDate, endDate: $endDate, guestsCount: $guestsCount, nameCard: $nameCard, email: $email, notes: $notes, lodgingId: $lodgingId, locationId: $locationId, paymentMethodId: $paymentMethodId, total: $total, noDuplicatePaymentMethod: $noDuplicatePaymentMethod, paymentType: $paymentType) {
+  mutation MakePayment($activityIds: [String!]!, $startDate: CalendarDay!, $guestsCount: String!, $nameCard: String!, $email: String!, $notes: String!, $lodgingId: String, $locationId: String, $paymentMethodId: String!, $total: String!, $noDuplicatePaymentMethod: Boolean!, $paymentType: String!) {
+    makePayment(activityIds: $activityIds, startDate: $startDate, guestsCount: $guestsCount, nameCard: $nameCard, email: $email, notes: $notes, lodgingId: $lodgingId, locationId: $locationId, paymentMethodId: $paymentMethodId, total: $total, noDuplicatePaymentMethod: $noDuplicatePaymentMethod, paymentType: $paymentType) {
       message
       success
       data

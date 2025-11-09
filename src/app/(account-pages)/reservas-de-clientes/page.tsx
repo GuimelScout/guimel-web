@@ -265,9 +265,9 @@ const BookingCard = ({ booking }: { booking: BookingType }) => {
         <div className="flex items-center gap-2">
           <CalendarIcon className="w-4 h-4 text-gray-400" />
           <div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">Fechas</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">Fecha</div>
             <div className="text-sm font-medium text-gray-900 dark:text-white">
-              {new Date(booking.start_date).toLocaleDateString()} - {new Date(booking.end_date).toLocaleDateString()}
+              {new Date(booking.start_date).toLocaleDateString()}
             </div>
           </div>
         </div>

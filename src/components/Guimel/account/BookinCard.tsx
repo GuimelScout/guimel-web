@@ -45,7 +45,7 @@ const BookingCard: FC<BookingCardProps> = ({
               Reserva #{code}
             </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              {formatDateSpanish(parseLocalDateString(start_date), true)} - {formatDateSpanish(parseLocalDateString(end_date))}
+              {formatDateSpanish(parseLocalDateString(start_date), true)}
             </p>
           </div>
         </div>
@@ -212,9 +212,9 @@ const BookingCard: FC<BookingCardProps> = ({
           <div className="flex items-center gap-3">
             <CalendarIcon className="w-5 h-5 text-gray-400" />
             <div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Fechas Reservadas</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Fecha Reservada</p>
               <p className="text-sm font-medium text-gray-900 dark:text-white">
-                {formatDateSpanish(parseLocalDateString(start_date), true)} - {formatDateSpanish(parseLocalDateString(end_date))}
+                {formatDateSpanish(parseLocalDateString(start_date), true)}
               </p>
             </div>
           </div>

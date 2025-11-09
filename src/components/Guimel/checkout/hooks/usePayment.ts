@@ -169,7 +169,6 @@ export const usePayment = () => {
         lodgingId: checkoutState.lodginSelected?.id,
         locationId: checkoutState.locationSelected?.id,
         startDate: checkoutState.startDate ? dateFormat(checkoutState.startDate) || "" : "",
-        endDate: checkoutState.endDate ? dateFormat(checkoutState.endDate) || "" : "",
         guestsCount: (checkoutState.guestAdultsInputValue + checkoutState.guestChildrenInputValue).toString(),
         nameCard: userName,
         email: formData.email,

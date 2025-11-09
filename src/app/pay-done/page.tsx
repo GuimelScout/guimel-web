@@ -121,9 +121,9 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
             <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
               <CalendarIcon className="w-8 h-8 text-blue-600" />
               <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Fechas</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Fecha</p>
                 <p className="font-semibold text-gray-900 dark:text-white">
-                  {formatDateSpanish(parseLocalDateString(data.booking.start_date), true)} - {formatDateSpanish(parseLocalDateString(data.booking.end_date))}
+                  {formatDateSpanish(parseLocalDateString(data.booking.start_date), true)}
                 </p>
               </div>
             </div>
@@ -319,6 +319,14 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
             </ButtonSecondary>
           </Link>
         </div>
+
+        {!user && (
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Los datos de acceso se han enviado a tu correo electrónico.
+          </p>
+        </div>
+        )}
       </div>
     );
   };

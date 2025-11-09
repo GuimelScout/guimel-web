@@ -6,11 +6,10 @@ import { CheckoutState, CheckoutParams, PaymentBreakdowns } from "../types";
 import { calculateTotal, calculateTotalWithCurrency, calculatePaymentBreakdowns } from "../utils/calculateTotal";
 
 export const useCheckout = (params: CheckoutParams) => {
-  const { startD, endD, guestsCount, activity } = params;
+  const { startD, guestsCount, activity } = params;
 
   const [checkoutState, setCheckoutState] = useState<CheckoutState>({
     startDate: null,
-    endDate: null,
     guestAdultsInputValue: Number(guestsCount),
     guestChildrenInputValue: 0,
     isLodging: false,
@@ -53,10 +52,12 @@ export const useCheckout = (params: CheckoutParams) => {
   useEffect(() => {
     setCheckoutState(prev => ({
       ...prev,
-      startDate: startD ? new Date(startD) : null,
-      endDate: endD ? new Date(endD) : null,
+      startDate: startD ? (() => {
+        const [year, month, day] = startD.split('-').map(Number);
+        return new Date(year, month - 1, day);
+      })() : null,
     }));
-  }, [startD, endD]);
+  }, [startD]);
 
   useEffect(() => {
     if (data?.activity) {

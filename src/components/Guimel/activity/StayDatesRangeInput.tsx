@@ -14,8 +14,6 @@ export interface StayDatesRangeInputProps {
   className?: string;
   startDate: Date | null;
   setStartDate: Dispatch<SetStateAction<Date | null>>;
-  endDate: Date | null;
-  setEndDate: Dispatch<SetStateAction<Date | null>>;
   dayType?: string | null;
   specificDate?: Date | null;
   customStartDate?: Date | null;
@@ -27,8 +25,6 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
   className = "flex-1",
   startDate,
   setStartDate,
-  endDate,
-  setEndDate,
   dayType,
   specificDate,
   customStartDate,
@@ -36,10 +32,9 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
   availableDays
 }) => {
 
-  const onChangeDate = (dates: [Date | null, Date | null]) => {
-    const [start, end] = dates;
+  const onChangeDate = (dates: [Date | null]) => {
+    const [start] = dates;
     setStartDate(start);
-    setEndDate(end);
   }; 
 
   const renderInput = () => {
@@ -55,18 +50,11 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
                 .toLocaleDateString("es-MX", { month: "short", day: "2-digit" })
                 .replace(".", "")
                 .replace(/^(\d+)-(\w)/, (_, day, month) => `${day}-${month.toUpperCase()}`)
-            : "Añadir fechas"}
-          {endDate
-            ? " - " +
-              endDate
-                .toLocaleDateString("es-MX", { month: "short", day: "2-digit" })
-                .replace(".", "")
-                .replace(/^(\d+)-(\w)/, (_, day, month) => `${day}-${month.toUpperCase()}`)
-            : ""}
+            : "Añadir fecha"}
         </span>
 
           <span className="block mt-1 text-sm text-neutral-400 leading-none font-light">
-            {"Llegada - Salida"}
+            {"Llegada"}
           </span>
         </div>
       </>
@@ -84,7 +72,7 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
           >
             {renderInput()}
             {startDate && open && (
-              <ClearDataButton onClick={() => onChangeDate([null, null])} />
+              <ClearDataButton onClick={() => onChangeDate([null])} />
             )}
           </Popover.Button>
 
@@ -101,10 +89,8 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
               <div className="overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5 bg-white dark:bg-neutral-800 p-8">
                 <DatePicker
                   selected={startDate}
-                  onChange={onChangeDate}
+                  onChange={(date) => onChangeDate([date])}
                   startDate={startDate}
-                  endDate={endDate}
-                  selectsRange 
                   monthsShown={2}
                   showPopperArrow={false}
                   inline

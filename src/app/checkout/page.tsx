@@ -12,7 +12,6 @@ const page = ({
     activity: string;
     guestsCount: string;
     startDate: string;
-    endDate: string;
   };
 }) => {
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PULISHABLE_KEY ?? "");
@@ -22,7 +21,6 @@ const page = ({
     activity: searchParams.activity,
     guestsCount: searchParams.guestsCount,
     startD: searchParams.startDate,
-    endD: searchParams.endDate,
   }} />
   </Elements>;
 };
