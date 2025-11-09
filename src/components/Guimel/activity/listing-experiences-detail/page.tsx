@@ -395,7 +395,7 @@ const ListingExperiencesDetailPage: FC<
 
         {/* FORM */}
         <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
-          <StayDatesRangeInput className="flex-1 z-[11]" startDate={startDate} setStartDate={setStartDate}  endDate={endDate} setEndDate={setEndDate}/>
+          <StayDatesRangeInput className="flex-1 z-[11]" startDate={startDate} setStartDate={setStartDate} />
           <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
           {/* <GuestsInput className="flex-1" /> */}
         </form>

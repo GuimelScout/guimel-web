@@ -65,7 +65,6 @@ const ModalReserveMobile: FC<ModalReserveMobileProps> = ({
                           activity: "",
                           guestsCount: "",
                           startD: "",
-                          endD: ""
                         }} />
                       </div>
                     </div>
