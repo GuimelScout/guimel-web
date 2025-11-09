@@ -16,6 +16,11 @@ export interface StayDatesRangeInputProps {
   setStartDate: Dispatch<SetStateAction<Date | null>>;
   endDate: Date | null;
   setEndDate: Dispatch<SetStateAction<Date | null>>;
+  dayType?: string | null;
+  specificDate?: Date | null;
+  customStartDate?: Date | null;
+  customEndDate?: Date | null;
+  availableDays?: Array<{ day: string }> | null;
 }
 
 const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
@@ -23,14 +28,19 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
   startDate,
   setStartDate,
   endDate,
-  setEndDate
+  setEndDate,
+  dayType,
+  specificDate,
+  customStartDate,
+  customEndDate,
+  availableDays
 }) => {
 
   const onChangeDate = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-  };
+  }; 
 
   const renderInput = () => {
     return (
@@ -94,12 +104,14 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
                   onChange={onChangeDate}
                   startDate={startDate}
                   endDate={endDate}
-                  selectsRange
+                  selectsRange 
                   monthsShown={2}
                   showPopperArrow={false}
                   inline
                   locale='es'
                   minDate={new Date()}
+                  calendarStartDay={0}
+                  filterDate={(date) => filterDate(date, dayType ?? null, specificDate ?? null, customStartDate ?? null, customEndDate ?? null, availableDays ?? null)}
                   renderCustomHeader={(p) => (
                     <DatePickerCustomHeaderTwoMonth {...p} />
                   )}
@@ -114,6 +126,45 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
       )}
     </Popover>
   );
+};
+
+const filterDate = (
+  date: Date, 
+  dayType: string | null, 
+  specificDate: Date | null, 
+  customStartDate: Date | null, 
+  customEndDate: Date | null, 
+  availableDays: Array<{ day: string }> | null
+) => {
+  if (!dayType) {
+    return true;
+  }
+  switch (dayType) {
+    case 'weekdays':
+      return date.getDay() >= 1 && date.getDay() <= 5;
+    case 'weekends':
+      return date.getDay() === 0 || date.getDay() === 6;
+    case 'one_day':
+      return availableDays && availableDays.length > 0 
+          ? availableDays.some(day => {
+              const dateString = date.toISOString().split('T')[0];
+              return day.day === dateString;
+            })
+          : true;
+    case 'date_range':
+      return customStartDate && customEndDate 
+        ? date >= customStartDate && date <= customEndDate 
+        : true;
+    case 'some_days':
+      return availableDays && availableDays.length > 0 
+          ? availableDays.some(day => {
+              const dateString = date.toISOString().split('T')[0];
+              return day.day === dateString;
+            })
+          : true;
+    default:
+      return true;
+  }
 };
 
 export default StayDatesRangeInput;
