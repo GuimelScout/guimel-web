@@ -93,6 +93,10 @@ export const ACTIVITY_QUERY = gql`
           url
         }
       }
+      type_day
+      available_days {
+        day
+      }
     }
   }
 `;

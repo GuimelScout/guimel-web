@@ -36,9 +36,17 @@ export interface ActivityType {
   lodgingCount?: number;
   location?: Array<LocationType>;
   bookingCount?: number;
+  type_day?: string;
+  available_days?: Array<{ day: string }>;
 }
 
-
+export const DAY_TYPE: { [key: string]: string } = {
+  'weekdays': "Solo entre semana",
+  'one_day': "Solo un día",
+  'weekends': "Solo fines de semana",
+  'date_range': "Solo dentro de estos días:",
+  'some_days': "Solo en estos días:",
+};
 
 export interface PaymentType{
   id: string;

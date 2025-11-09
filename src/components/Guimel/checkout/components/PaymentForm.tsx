@@ -15,6 +15,7 @@ import { CheckoutFormData, PaymentBreakdowns } from "../types";
 import PaymentTypeSelector from "./PaymentTypeSelector";
 import StayDatesRangeInput from "../../../Guimel/activity/StayDatesRangeInput";
 import GuestsInput from "../../../Guimel/activity/GuestsInput";
+import { ActivityType } from "@/data/types";
 
 interface PaymentFormProps {
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
@@ -34,6 +35,7 @@ interface PaymentFormProps {
   setGuestAdultsInputValue: Dispatch<SetStateAction<number>>;
   guestChildrenInputValue: number;
   setGuestChildrenInputValue: Dispatch<SetStateAction<number>>;
+  activity: ActivityType | null;
 }
 
 const PaymentForm: React.FC<PaymentFormProps> = ({
@@ -53,6 +55,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   setGuestAdultsInputValue,
   guestChildrenInputValue,
   setGuestChildrenInputValue,
+  activity
 }) => {
   const { isDarkMode } = useThemeMode();
 
@@ -74,6 +77,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
             setStartDate={setStartDate} 
             endDate={endDate} 
             setEndDate={setEndDate}
+            dayType={activity?.type_day ?? null}
+            availableDays={activity?.available_days ?? null} 
           />
           <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
           <GuestsInput 

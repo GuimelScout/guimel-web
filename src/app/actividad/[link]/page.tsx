@@ -6,7 +6,7 @@ import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/solid";
 import { Route } from "next";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ActivityDataType, GalleryImageType } from "@/data/types";
+import { ActivityDataType, DAY_TYPE, GalleryImageType } from "@/data/types";
 import StartRating from "@/components/StartRating";
 import Badge from "@/shared/Badge";
 import LikeSaveBtns from "@/components/LikeSaveBtns";
@@ -198,6 +198,10 @@ const Location = ({ params }: { params: { link: string } }) => {
             <i className="las la-language text-2xl"></i>
             <span className="">Español</span>
           </div>
+          <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 text-center sm:text-left sm:space-x-3 ">
+            <i className="las la-calendar text-2xl"></i>
+            <span className="">Disponibilidad: <span className="font-bold" >{DAY_TYPE[data?.activity.type_day ?? '']}</span></span>
+          </div>
         </div>
       </div>
     );
@@ -217,10 +221,9 @@ const Location = ({ params }: { params: { link: string } }) => {
           </span>
           <StartRating reviewCount={data?.activity.reviewCount} point={data?.activity.reviewStar} />
         </div>
-
+      
         <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
-          <StayDatesRangeInput className="flex-1 z-[11]" startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}/>
-          <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
+          <StayDatesRangeInput className="flex-1 z-[11]" startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} dayType={data?.activity.type_day ?? null} availableDays={data?.activity.available_days ?? null} />
           <GuestsInput className="flex-1" guestAdultsInputValue={guestAdultsInputValue} setGuestAdultsInputValue={setGuestAdultsInputValue} guestChildrenInputValue={guestChildrenInputValue} setGuestChildrenInputValue={setGuestChildrenInputValue} />
         </form>
 

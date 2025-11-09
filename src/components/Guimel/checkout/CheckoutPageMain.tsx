@@ -1,9 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useUser } from "context/UserContext";
 import { Toaster } from 'sonner';
-import StayDatesRangeInput from "../../Guimel/activity/StayDatesRangeInput";
-import GuestsInput from "../../Guimel/activity/GuestsInput";
-import NcModal from "@/shared/NcModal";
 import { useCheckout } from "./hooks/useCheckout";
 import { useCheckoutForm } from "./hooks/useCheckoutForm";
 import { usePayment } from "./hooks/usePayment";
@@ -137,6 +134,7 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
               const newValue = typeof value === 'function' ? value(checkoutState.guestChildrenInputValue) : value;
               handleGuestsChange(checkoutState.guestAdultsInputValue, newValue);
             }}
+            activity={data?.activity ?? null}
           />
         </div>
         
