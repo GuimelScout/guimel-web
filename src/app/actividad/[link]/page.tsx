@@ -1,10 +1,8 @@
 "use client"; 
 import ListingImageGallery from "@/components/listing-image-gallery/ListingImageGallery";
-import Skeleton from "@/shared/Skeleton";
 import { FetchResult, useMutation, useQuery } from "@apollo/client";
 import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/solid";
 import { Route } from "next";
-import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ActivityDataType, DAY_TYPE, GalleryImageType } from "@/data/types";
 import StartRating from "@/components/StartRating";
@@ -30,6 +28,7 @@ import { ACTIVITY_QUERY } from "@/components/Guimel/activity/QueryActivity.queri
 import { GET_REVIEWS, CREATE_REVIEW } from "@/components/Guimel/review/QueryReview.queries";
 import dateFormat from "@/utils/date-format-helper";
 import { RouteGuimel } from "@/routers/routes";
+import SkeletonLocation from "@/shared/SkeletonLocation";
 
 const Location = ({ params }: { params: { link: string } }) => {
   const { link } = params;
@@ -520,7 +519,7 @@ const Location = ({ params }: { params: { link: string } }) => {
   return (
     <div className="container relative space-y-12 mt-24 mb-24 lg:space-y-28 lg:mb-28">
       { (loading) ? 
-      <Skeleton /> : 
+      <SkeletonLocation /> : 
       <div>
         <header className="rounded-md sm:rounded-xl">
           {(!data?.activity.image || !data?.activity.image.url) && gallery.length === 0 ? (
