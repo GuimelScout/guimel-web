@@ -62,6 +62,13 @@ export const LOCATION_QUERY = gql`
         }
       }
     }
+    type
+    services {
+      id
+      name
+      description
+    }
+    technicalSheetUrl
   }
 }
 `;

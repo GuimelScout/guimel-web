@@ -14,6 +14,15 @@ export interface LocationType {
   gallery?: Array<GalleryImageType>; 
   activity?: Array<ActivityType>;
   lodging?: Array<LodgingType>;
+  type: string;
+  services?: Array<LocationService>;
+  technicalSheetUrl?: string;
+}
+
+export interface LocationService {
+  id:string;
+  name: string;
+  description: string;
 }
 
 export interface ActivityType {

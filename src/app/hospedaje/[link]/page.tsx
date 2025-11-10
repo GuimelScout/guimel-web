@@ -1,6 +1,6 @@
 "use client"; 
 import ListingImageGallery from "@/components/listing-image-gallery/ListingImageGallery";
-import Skeleton from "@/shared/Skeleton";
+import Skeleton from "@/shared/SkeletonLocation";
 import { FetchResult, useMutation, useQuery } from "@apollo/client";
 import { ArrowRightIcon, Squares2X2Icon } from "@heroicons/react/24/solid";
 import { Route } from "next";
@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CREATE_REVIEW, GET_REVIEWS } from "@/components/Guimel/review/QueryReview.queries";
 import { LODGING_QUERY } from "@/components/Guimel/hospedaje/QueryHospedaje.queries";
 import { RouteGuimel } from "@/routers/routes";
+import SkeletonLocation from "@/shared/SkeletonLocation";
 
 const Location = ({ params }: { params: { link: string } }) => {
   const { link } = params;
@@ -591,7 +592,7 @@ const Location = ({ params }: { params: { link: string } }) => {
   return (
     <div className="container relative space-y-12 mt-24 mb-24 lg:space-y-28 lg:mb-28">
       { (loading) ? 
-      <Skeleton /> : 
+      <SkeletonLocation /> : 
       <div>
         <header className="rounded-md sm:rounded-xl">
           {(!data?.lodging.logo || !data?.lodging.logo.url) && gallery.length === 0 ? (
