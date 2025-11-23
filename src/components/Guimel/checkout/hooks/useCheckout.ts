@@ -86,16 +86,21 @@ export const useCheckout = (params: CheckoutParams) => {
   }, [startD]);
 
   useEffect(() => {
-    if (activityData?.activity) {
+    if (activityData && activityData?.activity) {
       setCheckoutState(prev => {
-        if (!prev.activitiesSelected.some(a => a.id === activityData.activity.id)) {
+        if (
+          !prev.activitiesSelected.some(a => a.id === activityData!.activity?.id)
+        ) {
           const newState = {
             ...prev,
-            activitiesSelected: [activityData.activity],
+            activitiesSelected: [activityData!.activity],
           };
 
-          if (activityData.activity.location && activityData.activity.location.length > 0) {
-            newState.locationSelected = activityData.activity.location[0] || null;
+          if (
+            Array.isArray(activityData!.activity.location) &&
+            activityData!.activity.location.length > 0
+          ) {
+            newState.locationSelected = activityData!.activity.location[0] || null;
             setTimeout(() => refetch(), 0);
           }
 
@@ -104,16 +109,16 @@ export const useCheckout = (params: CheckoutParams) => {
         return prev;
       });
     }
-    if (lodgingData?.lodging) {
+    if (lodgingData && lodgingData?.lodging) {
       setCheckoutState(prev => {
         if (!prev.isLodging) {
           const newState = {
             ...prev,
-            lodginSelected: lodgingData.lodging,
+            lodginSelected: lodgingData!.lodging,
           };
 
-          if (lodgingData.lodging.location && lodgingData.lodging.location.length > 0) {
-            newState.locationSelected = lodgingData.lodging.location[0] || null;
+          if (lodgingData!.lodging.location && lodgingData!.lodging.location.length > 0) {
+            newState.locationSelected = lodgingData!.lodging.location[0] || null;
             setTimeout(() => refetch(), 0);
           }
 
