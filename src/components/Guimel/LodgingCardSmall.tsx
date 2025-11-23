@@ -1,34 +1,34 @@
 import Link from "next/link";
 import { RouteGuimel } from "@/routers/routes";
-import { ActivityType } from "@/data/types";
+import { LodgingType } from "@/data/types";
 import ExternalLinkIcon from "./icons/ExternalLinkIcon";
 import ImageWithPlaceholder from "./ImageWithPlaceholder";
 
-interface ActivityCardSmallProps {
-  activity: ActivityType;
+interface LodgingCardSmallProps {
+  lodging: LodgingType;
   showAddBtn: boolean;
   selected: boolean;
   onClick: () => void;
 }
 
-const ActivityCardSmall: React.FC<ActivityCardSmallProps> = ({
-  activity,
+const LodgingCardSmall: React.FC<LodgingCardSmallProps> = ({
+  lodging,
   showAddBtn,
   selected,
   onClick,
 }) => (
   <div
-    key={activity.id}
+    key={lodging.id}
     className={`flex flex-row sm:flex-row sm:items-center p-2 rounded-xl transition
-      ${selected ? "bg-gray-100 dark:bg-gray-800" : "hover:bg-blue-50 dark:hover:bg-blue-800/20"}
+      ${selected ? "bg-gray-100 dark:bg-gray-800" : "hover:bg-orange-50 dark:hover:bg-orange-800/20"}
     `}
   >
-    {/* Imagen */}
+    {/* Logo */}
     <div className="flex-shrink-0 w-full sm:w-20">
       <div className="aspect-w-2 aspect-h-1 sm:aspect-h-2 rounded-2xl overflow-hidden">
         <ImageWithPlaceholder
-          image={activity?.image}
-          alt={activity?.name || "Actividad"}
+          image={lodging?.logo}
+          alt={lodging?.name || "Hospedaje"}
           className="object-cover w-full h-full"
           fill
           sizes="200px"
@@ -42,14 +42,14 @@ const ActivityCardSmall: React.FC<ActivityCardSmallProps> = ({
     <div className="flex-1 py-2 sm:px-3 space-y-1">
       <div>
         <span className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-1">
-          {activity?.address.substring(0, 30)}
+          {lodging?.address.substring(0, 30)}
         </span>
         <div className="flex flex-row space-x-2 items-center">
           <span className="text-base font-medium mt-1 block">
-            {activity?.name}
+            {lodging?.name}
           </span>
           <Link
-            href={`${RouteGuimel.activity}/${activity.link}` as any}
+            href={`${RouteGuimel.lodging}/${lodging.link}` as any}
             target="_blank"
           >
             <ExternalLinkIcon className="text-blue-700 h-4" />
@@ -61,7 +61,7 @@ const ActivityCardSmall: React.FC<ActivityCardSmallProps> = ({
 
       <div className="flex items-center justify-between">
         <span className="text-sm text-green-600">
-          ${parseFloat(activity?.price || "0.00").toFixed(2)}/persona
+          ${parseFloat(lodging?.price || "0.00").toFixed(2)}/noche
         </span>
 
         {showAddBtn && (
@@ -79,4 +79,5 @@ const ActivityCardSmall: React.FC<ActivityCardSmallProps> = ({
   </div>
 );
 
-export default ActivityCardSmall;
+export default LodgingCardSmall;
+

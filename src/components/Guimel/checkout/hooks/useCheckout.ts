@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
-import { ActivityDataType, ActivitiesDataType} from "@/data/types";
+import { ActivityDataType, ActivitiesDataType, LodgingDataType} from "@/data/types";
 import { ACTIVITIES_QUERY, ACTIVITY_QUERY } from "@/components/Guimel/activity/QueryActivity.queries";
 import { CheckoutState, CheckoutParams, PaymentBreakdowns } from "../types";
 import { calculateTotal, calculateTotalWithCurrency, calculatePaymentBreakdowns } from "../utils/calculateTotal";
+import { LODGING_QUERY } from "../../hospedaje/QueryHospedaje.queries";
 
 export const useCheckout = (params: CheckoutParams) => {
-  const { startD, guestsCount, activity } = params;
+  const { startD, guestsCount, activity, lodging } = params;
 
   const [checkoutState, setCheckoutState] = useState<CheckoutState>({
     startDate: null,
@@ -26,9 +27,25 @@ export const useCheckout = (params: CheckoutParams) => {
     commission_only: { payNow: 0, payAtProperty: 0 }
   });
 
-  const { data } = useQuery<ActivityDataType>(ACTIVITY_QUERY, {
-    variables: { where: { link: activity } },
-  });
+  let activityData: ActivityDataType | undefined;
+  let lodgingData: LodgingDataType | undefined;
+
+  if(activity) {
+  
+    const { data: activityDataQuery } = useQuery<ActivityDataType>(ACTIVITY_QUERY, {
+      variables: { where: { link: activity } },
+    });
+
+    activityData = activityDataQuery;
+  
+  } else if(lodging) {
+  
+    const { data: lodgingDataQuery } = useQuery<LodgingDataType>(LODGING_QUERY, {
+      variables: { where: { link: lodging } },
+    });
+    lodgingData = lodgingDataQuery;
+  
+  }
 
   const { data: activitiesRelated, loading: loadingActivitiesRelated, refetch } = useQuery<ActivitiesDataType>(ACTIVITIES_QUERY, {
     variables: {
@@ -40,9 +57,18 @@ export const useCheckout = (params: CheckoutParams) => {
             }
           }
         },
-        id: {
-          not: { equals: data?.activity.id }
-        }
+        ...(activityData ? {
+          id: {
+            not: { equals: activityData?.activity.id }
+          }
+        } : {}),
+        ...(lodgingData ? {
+          lodging: {
+            some: {
+              id: { equals: lodgingData?.lodging.id }
+            }
+          }
+        } : {}),
       }
     },
     fetchPolicy: "no-cache",
@@ -60,16 +86,16 @@ export const useCheckout = (params: CheckoutParams) => {
   }, [startD]);
 
   useEffect(() => {
-    if (data?.activity) {
+    if (activityData?.activity) {
       setCheckoutState(prev => {
-        if (!prev.activitiesSelected.some(a => a.id === data.activity.id)) {
+        if (!prev.activitiesSelected.some(a => a.id === activityData.activity.id)) {
           const newState = {
             ...prev,
-            activitiesSelected: [data.activity],
+            activitiesSelected: [activityData.activity],
           };
 
-          if (data.activity.location && data.activity.location.length > 0) {
-            newState.locationSelected = data.activity.location[0] || null;
+          if (activityData.activity.location && activityData.activity.location.length > 0) {
+            newState.locationSelected = activityData.activity.location[0] || null;
             setTimeout(() => refetch(), 0);
           }
 
@@ -78,7 +104,26 @@ export const useCheckout = (params: CheckoutParams) => {
         return prev;
       });
     }
-  }, [data?.activity, refetch]);
+    if (lodgingData?.lodging) {
+      setCheckoutState(prev => {
+        if (!prev.isLodging) {
+          const newState = {
+            ...prev,
+            lodginSelected: lodgingData.lodging,
+          };
+
+          if (lodgingData.lodging.location && lodgingData.lodging.location.length > 0) {
+            newState.locationSelected = lodgingData.lodging.location[0] || null;
+            setTimeout(() => refetch(), 0);
+          }
+
+          return newState;
+        }
+        return prev;
+      });
+    }
+
+  }, [activityData?.activity, refetch, lodgingData?.lodging]);
 
   useEffect(() => {
     if (checkoutState.locationSelected?.id) {
@@ -148,7 +193,8 @@ export const useCheckout = (params: CheckoutParams) => {
   return {
     checkoutState,
     updateCheckoutState,
-    data,
+    activityData,
+    lodgingData,
     activitiesRelated,
     loadingActivitiesRelated,
     refetch,

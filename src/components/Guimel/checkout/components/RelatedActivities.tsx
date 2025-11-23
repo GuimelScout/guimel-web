@@ -1,11 +1,12 @@
 import React from "react";
-import { ActivityType, LocationType } from "@/data/types";
+import { ActivityType, LocationType, LodgingType } from "@/data/types";
 import ActivityCardSmall from "@/components/Guimel/ActivityCardSmall";
 import Loading from "@/components/Guimel/Loading";
 
 interface RelatedActivitiesProps {
   location: LocationType | null;
   activities: ActivityType[];
+  lodging: LodgingType | undefined;
   selectedActivities: ActivityType[];
   loading: boolean;
   onActivityToggle: (activity: ActivityType) => void;
@@ -14,6 +15,7 @@ interface RelatedActivitiesProps {
 const RelatedActivities: React.FC<RelatedActivitiesProps> = ({
   location,
   activities,
+  lodging,
   selectedActivities,
   loading,
   onActivityToggle,
@@ -22,14 +24,10 @@ const RelatedActivities: React.FC<RelatedActivitiesProps> = ({
 
   return (
     <div className="w-full flex flex-col sm:rounded-2xl lg:border border-neutral-200 dark:border-neutral-700 space-y-6 sm:space-y-8 px-0 sm:p-6 xl:p-8">
-      <h3 className="text-l font-semibold text-center">
-        Agrega más actividades a tu experiencia en
+     <h3 className="text-l font-semibold text-center">
+        { lodging ? `Agrega actividades a tu hospedaje` : 'Agrega más actividades a tu experiencia en' }
       </h3>
-      
-      <h4 className="text-2xl font-semibold text-center text-blue-700">
-        {location.name}
-      </h4>
-      
+   
       {loading ? (
         <Loading />
       ) : activities.length > 0 ? (
@@ -46,7 +44,8 @@ const RelatedActivities: React.FC<RelatedActivitiesProps> = ({
         </div>
       ) : (
         <p className="text-gray-400 text-center text-sm">
-          No hay más actividades disponibles en esta ubicación.
+          { lodging ? 'No hay actividades disponibles para este hospedaje.' 
+          : 'No hay más actividades disponibles en esta ubicación.' } 
         </p>
       )}
     </div>

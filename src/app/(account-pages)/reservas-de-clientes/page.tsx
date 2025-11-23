@@ -110,33 +110,38 @@ const BookingCard = ({ booking }: { booking: BookingType }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
       <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-4">
-          {primaryActivity?.image?.url ? (
-            <img
-              src={primaryActivity.image.url}
-              alt={primaryActivity.name}
-              className="w-16 h-16 object-cover rounded-xl border border-gray-200 dark:border-gray-600"
-            />
-          ) : (
-            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-700 rounded-xl flex items-center justify-center">
-              <MapPinIcon className="w-8 h-8 text-blue-400" />
+        {( primaryActivity && primaryActivity.name ) ? (
+          <div className="flex items-center gap-4">
+            {primaryActivity?.image?.url ? (
+              <img
+                src={primaryActivity.image.url}
+                alt={primaryActivity.name}
+                className="w-16 h-16 object-cover rounded-xl border border-gray-200 dark:border-gray-600"
+              />
+            ) : (
+              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-700 rounded-xl flex items-center justify-center">
+                <MapPinIcon className="w-8 h-8 text-blue-400" />
+              </div>
+            )}
+            <div>
+              <h3 className="font-semibold text-lg text-blue-900 dark:text-white">
+                {primaryActivity?.name || 'Actividades'}
+              </h3>
+              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <MapPinIcon className="w-4 h-4" />
+                <span>
+                  {activities.length > 1 
+                    ? `${activities.length} Actividades` 
+                    : 'Actividad'
+                  }
+                </span>
+              </div>
             </div>
-          )}
-          <div>
-            <h3 className="font-semibold text-lg text-blue-900 dark:text-white">
-              {primaryActivity?.name || 'Actividades'}
-            </h3>
-            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-              <MapPinIcon className="w-4 h-4" />
-              <span>
-                {activities.length > 1 
-                  ? `${activities.length} Actividades` 
-                  : 'Actividad'
-                }
-              </span>
-            </div>
-          </div>
-        </div>
+          </div>) :  
+          <div className="w-16 h-16 bg-blue-100 dark:bg-blue-700 rounded-xl flex items-center justify-center">
+            <MapPinIcon className="w-8 h-8 text-blue-400" />
+          </div>}
+
         <div className="text-right">
           <div className="text-sm text-gray-500 dark:text-gray-400">Código</div>
           <div className="font-mono text-sm font-medium text-gray-900 dark:text-white">
@@ -304,6 +309,17 @@ const BookingCard = ({ booking }: { booking: BookingType }) => {
           </a>
         )}
       </div>
+
+    {/* Bookin notes */}
+    {booking.payment?.notes && (
+      <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+        <div className="flex items-center gap-2 mb-1">
+          <ExclamationTriangleIcon className="w-4 h-4 text-yellow-400" />
+          <span className="text-sm font-semibold text-yellow-800 dark:text-yellow-200">Notas de la reserva</span>
+        </div>
+        <div className="text-sm text-yellow-900 dark:text-yellow-100 whitespace-pre-wrap">{booking.payment.notes}</div>
+      </div>
+    )}
     </div>
   );
 };

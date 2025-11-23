@@ -13,7 +13,7 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
   params
 }) => {
   const { user } = useUser();
-  const { checkoutState, updateCheckoutState, data, activitiesRelated, loadingActivitiesRelated, getTotal, breakdown } = useCheckout(params);
+  const { checkoutState, updateCheckoutState, activityData, lodgingData, activitiesRelated, loadingActivitiesRelated, getTotal, breakdown } = useCheckout(params);
   const form = useCheckoutForm(user);
   const { processPayment, loadingPayment } = usePayment();
 
@@ -31,9 +31,9 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
   }, [user, form]);
 
   const handleLocationSelect = (location: any) => {
-    if (data?.activity) {
+    if (activityData?.activity) {
       updateCheckoutState({
-        activitiesSelected: [data.activity],
+        activitiesSelected: [activityData.activity],
         locationSelected: location,
       });
     }
@@ -81,13 +81,14 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
       e.preventDefault();
     }
     const formData = form.getValues();
-    await processPayment(formData, checkoutState, data);
+    await processPayment(formData, checkoutState);
   };
 
   const renderSidebar = () => (
     <CheckoutSidebar
       data={{
-        activity: data?.activity,
+        activity: activityData?.activity,
+        lodging: lodgingData?.lodging,
         activitiesRelated: activitiesRelated?.activities || [],
         loadingActivitiesRelated,
       }}
@@ -130,7 +131,8 @@ const CheckoutPageMain: FC<CheckOutPagePageMainProps> = ({
               const newValue = typeof value === 'function' ? value(checkoutState.guestChildrenInputValue) : value;
               handleGuestsChange(checkoutState.guestAdultsInputValue, newValue);
             }}
-            activity={data?.activity ?? null}
+            activity={activityData?.activity ?? null}
+            lodging={lodgingData?.lodging ?? null}
           />
         </div>
         

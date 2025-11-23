@@ -67,6 +67,19 @@ export const LODGING_QUERY = gql`
         }
         createdAt
       }
+      location {
+        id
+        name
+        image {
+          url
+        }
+      }
+      type_day
+      available_days {
+        day
+      }
+      commission_type
+      commission_value
     }
   }
 `;

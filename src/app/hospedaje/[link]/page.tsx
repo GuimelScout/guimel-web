@@ -25,6 +25,10 @@ import { CREATE_REVIEW, GET_REVIEWS } from "@/components/Guimel/review/QueryRevi
 import { LODGING_QUERY } from "@/components/Guimel/hospedaje/QueryHospedaje.queries";
 import { RouteGuimel } from "@/routers/routes";
 import SkeletonLocation from "@/shared/SkeletonLocation";
+import StayDatesRangeInput from "@/components/Guimel/activity/StayDatesRangeInput";
+import GuestsInput from "@/components/Guimel/activity/GuestsInput";
+import ButtonPrimary from "@/shared/ButtonPrimary";
+import dateFormat from "@/utils/date-format-helper";
 
 const Location = ({ params }: { params: { link: string } }) => {
   const { link } = params;
@@ -209,6 +213,26 @@ const Location = ({ params }: { params: { link: string } }) => {
           </span>
           <StartRating reviewCount={data?.lodging.reviewCount} point={data?.lodging.reviewStar} />
         </div>
+
+        <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl ">
+           <StayDatesRangeInput className="flex-1 z-[11]" startDate={startDate} setStartDate={setStartDate} dayType={data?.lodging.type_day ?? null} availableDays={data?.lodging.available_days ?? null} /> 
+          <GuestsInput className="flex-1" guestAdultsInputValue={guestAdultsInputValue} setGuestAdultsInputValue={setGuestAdultsInputValue} guestChildrenInputValue={guestChildrenInputValue} setGuestChildrenInputValue={setGuestChildrenInputValue} />
+        </form>
+
+        <div className="flex flex-col space-y-4">
+          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+            <span>${parseFloat(data?.lodging.price || "0.00").toFixed(2)} x {totalGuests} personas</span>
+            <span>${parseFloat(data?.lodging.price || "0.00") * totalGuests}</span>
+          </div>
+          <div className="border-b border-neutral-200 dark:border-neutral-700"></div>
+          <div className="flex justify-between font-semibold">
+            <span>Total</span>
+            <span>${parseFloat(data?.lodging.price || "0.00") * totalGuests}</span>
+          </div>
+        </div>
+
+        {/* SUBMIT */}
+        <ButtonPrimary href={`/checkout?lodging=${link}&guestsCount=${totalGuests}&startDate=${dateFormat(startDate)}`}>Reservar</ButtonPrimary>
 
         <h2 className="text-2xl font-semibold">Información del anfitrión</h2>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>

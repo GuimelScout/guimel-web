@@ -15,9 +15,16 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <span className="text-md text-neutral-500">
-        Selecciona la ubicación de tu preferencia:
-      </span>
+      {locations.length > 1 && (
+        <span className="text-md text-neutral-500">
+          Selecciona la ubicación de tu preferencia:
+        </span>
+      )}
+      {locations.length == 1 && (
+        <span className="text-md text-neutral-500">
+          Ubicación:
+        </span>
+      )}
       <div className="grid grid-cols-2 gap-1">
         {locations.map((location) => (
           <OptionButton

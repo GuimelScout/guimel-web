@@ -11,10 +11,10 @@ export const calculateStripeFee = (amount: number): number => {
 };
 
 /**
- * Calculate commission for an activity or lodging (including Stripe fees)
- * @param price - Base price per guest
+ * Calculate base commission for an activity or lodging (without Stripe fees)
+ * @param price - Base price
  * @param commission - Commission data
- * @returns Commission amount including Stripe fees per guest, rounded to 2 decimal places
+ * @returns Commission amount (without Stripe fees), rounded to 2 decimal places
  */
 export const calculateCommission = (price: number, commission: CommissionData): number => {
   // Ensure commission.value is a valid number
@@ -27,13 +27,35 @@ export const calculateCommission = (price: number, commission: CommissionData): 
     baseCommission = commissionValue;
   }
   
-  // Add Stripe fee to the commission (calculated on price + baseCommission)
-  const stripeFee = calculateStripeFee(price + baseCommission);
-  return Math.round((baseCommission + stripeFee) * 100) / 100;
+  return Math.round(baseCommission * 100) / 100;
 };
 
 /**
  * Calculate payment breakdown for both payment types
+ * 
+ * TOTAL CALCULATION FORMULA:
+ * The total is calculated using the following formula:
+ *   ((price + commission) * guests) + stripeFee
+ * 
+ * Where:
+ * - price: Base price per person
+ * - commission: Commission calculated per person (can be percentage or fixed)
+ * - guests: Number of guests
+ * - stripeFee: Stripe fee calculated on ((price + commission) * guests)
+ * 
+ * IMPORTANT: The stripeFee is calculated on the subtotal ((price + commission) * guests),
+ * not on the base price only.
+ * 
+ * For each activity/lodging:
+ * 1. Calculate commission per person: calculateCommission(pricePerGuest, commission)
+ * 2. Calculate subtotal: (pricePerGuest + commissionPerGuest) * guests
+ * 3. Calculate stripeFee on the subtotal: calculateStripeFee(subtotal)
+ * 4. Final total is: subtotal + stripeFee
+ * 
+ * Payment types:
+ * - full_payment: Includes base price + commission + stripeFee (everything paid now)
+ * - commission_only: Only commission + stripeFee (paid now), base price is paid at property
+ * 
  * @param activitiesSelected - Array of selected activities
  * @param lodginSelected - Selected lodging (can be null)
  * @param guestAdultsInputValue - Number of adult guests
@@ -49,28 +71,37 @@ export const calculatePaymentBreakdowns = (
   let payAtPropertyTotal = 0;
 
   // Calculate for activities
-  activitiesSelected.forEach(activity => {
-    const pricePerGuest = parseFloat(activity.price || "0.00");
-    const basePrice = pricePerGuest * guestAdultsInputValue;
-    
-    // Get commission data from database
-    const commission: CommissionData = {
-      type: activity.commission_type || 'fixed',
-      value: Number(activity.commission_value) || 15 // Convert string to number, default 15 fixed if not specified
-    };
-    
-    // Calculate commission on the total base price, not per guest
-    const totalCommissionAmount = calculateCommission(basePrice, commission);
-    
-    fullPaymentTotal += basePrice + totalCommissionAmount;
-    commissionOnlyTotal += totalCommissionAmount;
-    payAtPropertyTotal += basePrice;
-  });
+  if (activitiesSelected.length > 0) {
+    activitiesSelected.forEach(activity => {
+      const pricePerGuest = parseFloat(activity.price || "0.00");
+      
+      // Get commission data from database
+      const commission: CommissionData = {
+        type: activity.commission_type || 'fixed',
+        value: Number(activity.commission_value) || 15 // Convert string to number, default 15 fixed if not specified
+      };
+      
+      // Calculate commission per guest (base commission)
+      const commissionPerGuest = calculateCommission(pricePerGuest, commission);
+      
+      // Calculate: (price + commission) * guests
+      const subtotal = (pricePerGuest + commissionPerGuest) * guestAdultsInputValue;
+      
+      // Calculate Stripe fee on the subtotal
+      const stripeFee = calculateStripeFee(subtotal);
+      
+      // Final total: ((price + commission) * guests) + stripeFee
+      const finalTotal = subtotal + stripeFee;
+      
+      fullPaymentTotal += finalTotal;
+      commissionOnlyTotal += (commissionPerGuest * guestAdultsInputValue) + stripeFee;
+      payAtPropertyTotal += pricePerGuest * guestAdultsInputValue;
+    });
+  }
 
   // Calculate for lodging if exists
   if (lodginSelected) {
     const pricePerGuest = parseFloat(lodginSelected.price || "0.00");
-    const basePrice = pricePerGuest * guestAdultsInputValue;
     
     // Get commission data for lodging from database
     const commission: CommissionData = {
@@ -78,12 +109,21 @@ export const calculatePaymentBreakdowns = (
       value: Number(lodginSelected.commission_value) || 10 // Convert string to number, default 10% if not specified
     };
     
-    // Calculate commission on the total base price, not per guest
-    const totalCommissionAmount = calculateCommission(basePrice, commission);
+    // Calculate commission per guest (base commission)
+    const commissionPerGuest = calculateCommission(pricePerGuest, commission);
     
-    fullPaymentTotal += basePrice + totalCommissionAmount;
-    commissionOnlyTotal += totalCommissionAmount;
-    payAtPropertyTotal += basePrice;
+    // Calculate: (price + commission) * guests
+    const subtotal = (pricePerGuest + commissionPerGuest) * guestAdultsInputValue;
+    
+    // Calculate Stripe fee on the subtotal
+    const stripeFee = calculateStripeFee(subtotal);
+    
+    // Final total: ((price + commission) * guests) + stripeFee
+    const finalTotal = subtotal + stripeFee;
+    
+    fullPaymentTotal += finalTotal;
+    commissionOnlyTotal += (commissionPerGuest * guestAdultsInputValue) + stripeFee;
+    payAtPropertyTotal += pricePerGuest * guestAdultsInputValue;
   }
 
   return {

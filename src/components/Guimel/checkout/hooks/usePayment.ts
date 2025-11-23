@@ -22,8 +22,7 @@ export const usePayment = () => {
 
   const processPayment = async (
     formData: CheckoutFormData,
-    checkoutState: CheckoutState,
-    activityData: any
+    checkoutState: CheckoutState
   ) => {
     if (!stripe || !elements) {
       return;
@@ -165,7 +164,7 @@ export const usePayment = () => {
       const calculatedTotal = breakdown[checkoutState.paymentType].payNow.toFixed(2);
       
       const paymentData: PaymentData = {
-        activityIds: validActivities.map(activity => activity.id),
+        activityIds: (validActivities.length > 0) ? validActivities.map(activity => activity.id) : [],
         lodgingId: checkoutState.lodginSelected?.id,
         locationId: checkoutState.locationSelected?.id,
         startDate: checkoutState.startDate ? dateFormat(checkoutState.startDate) || "" : "",
