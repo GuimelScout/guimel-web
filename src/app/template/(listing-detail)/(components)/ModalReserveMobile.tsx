@@ -62,6 +62,7 @@ const ModalReserveMobile: FC<ModalReserveMobileProps> = ({
                     <div className="flex-1 pt-12 py-1 flex flex-col ">
                       <div className="flex-1 bg-white dark:bg-neutral-900">
                         <CheckOutPagePageMain params={{
+                          lodging: "",
                           activity: "",
                           guestsCount: "",
                           startD: "",
