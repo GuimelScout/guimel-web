@@ -1,4 +1,4 @@
-import { ActivityType, LocationType, LodgingType } from "@/data/types";
+import { ActivityType, LocationType, LodgingDataType, LodgingType } from "@/data/types";
 
 export interface CheckoutFormData {
   nameCard: string;
@@ -22,7 +22,8 @@ export interface CheckoutState {
 }
 
 export interface CheckoutParams {
-  activity: string;
+  activity: string | null;
+  lodging: string | null;
   guestsCount: string;
   startD: string;
 }
@@ -44,7 +45,8 @@ export interface PaymentData {
 
 export interface CheckoutSidebarProps {
   data: {
-    activity: any;
+    activity: ActivityType | undefined;
+    lodging: LodgingType | undefined;
     activitiesRelated: any;
     loadingActivitiesRelated: boolean;
   };
@@ -68,7 +70,7 @@ export interface CheckoutMainProps {
 
 export interface CheckOutPagePageMainProps {
   className?: string;
-  params: { activity: string, guestsCount: string, startD: string }
+  params: { activity: string | null, lodging: string | null, guestsCount: string, startD: string }
 }
 
 export interface PaymentBreakdown {

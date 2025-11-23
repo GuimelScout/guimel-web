@@ -9,6 +9,7 @@ import { calculateCommission, calculateStripeFee } from "../utils/calculateTotal
 
 interface PriceBreakdownProps {
   activities: ActivityType[];
+  lodging: LodgingType | undefined;
   selectedLodging: LodgingType | null;
   isLodging: boolean;
   guestCount: number;
@@ -19,6 +20,7 @@ interface PriceBreakdownProps {
 
 const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   activities,
+  lodging,
   selectedLodging,
   isLodging,
   guestCount,
@@ -35,71 +37,106 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
     <div className="flex flex-col space-y-4">
       <h3 className="text-2xl font-semibold">Detalles del precio</h3>
       
-      {activities.map((activity) => {
-        const basePrice = parseFloat(activity.price || "0.00") * guestCount;
-        const commission = getCommissionData(activity);
-        const commissionAmount = calculateCommission(basePrice, commission); 
-        
-        const safeCommissionAmount = Number(commissionAmount) || 0;
-        const safeCommissionValue = Number(commission.value) || 0;
-        
-        return (
-          <div key={activity.id} className="space-y-2">
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <div className="flex flex-col">
-                <span className="font-medium">{activity.name}</span>
-                <small className="text-xs text-neutral-500">
-                  ${parseFloat(activity.price || "0.00").toFixed(2)} x {guestCount} personas
-                </small>
-              </div>
-              <span>${basePrice.toFixed(2)}</span>
-            </div>
-            
-            <div className="ml-4 space-y-1 text-sm">
-              <div className="flex justify-between text-neutral-500">
-                <span>Tarifa de confirmación: </span>
-                <span>${safeCommissionAmount.toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-
-      {isLodging && selectedLodging && (
+      {( activities.length > 0) && (
         <div className="space-y-2">
-          <div className="flex flex-row items-center justify-start gap-2">
-            <Heading level={6} className="font-bold" desc={selectedLodging.name}>Hospedaje</Heading> 
-            <Link
-              href={`${RouteGuimel.lodging}/${selectedLodging.link}` as any}
-              target="_blank"
-              className="text-xs"
-            >
-              <ExternalLinkIcon className="text-blue-700 h-4" />
-            </Link>
+          <Heading level={6} className="font-bold" desc={''}> { (activities.length > 1) ? "Actividades:" : "Actividad:"} </Heading> 
+          {activities.map((activity) => {
+            const pricePerGuest = parseFloat(activity.price || "0.00");
+            const basePrice = pricePerGuest * guestCount;
+            const commission = getCommissionData(activity);
+            
+            // Calculate commission per guest (base commission)
+            const commissionPerGuest = calculateCommission(pricePerGuest, commission);
+            
+            // Calculate: (price + commission) * guests
+            const subtotal = (pricePerGuest + commissionPerGuest) * guestCount;
+            
+            // Calculate Stripe fee on the subtotal
+            const stripeFee = calculateStripeFee(subtotal);
+            
+            // Tarifa de confirmación: (commission * guests) + stripeFee
+            const confirmationFee = (commissionPerGuest * guestCount) + stripeFee;
+            
+            return (
+              <div key={activity.id}>
+                  <div className="flex flex-col">
+                    <div className="flex flex-row items-center justify-start gap-2">  
+                      <span className="block font-normal text-base sm:text-lg dark:text-neutral-100">{activity.name}</span>
+                      <Link
+                        href={`${RouteGuimel.activity}/${activity.link}` as any}
+                        target="_blank"
+                        className="text-xs"
+                      >
+                        <ExternalLinkIcon className="text-blue-700 h-4" />
+                      </Link>
+                    </div>
+                    <div className="flex flex-row items-center justify-between">
+                      <small className="text-xs text-neutral-500">
+                        ${pricePerGuest.toFixed(2)} x {guestCount} personas
+                      </small>
+                      <span>${basePrice.toFixed(2)}</span>
+                    </div>
+                  </div>
+                
+                <div className="ml-4 space-y-1 text-sm">
+                  <div className="flex justify-between text-neutral-500">
+                    <span>Tarifa de confirmación: </span>
+                    <span>${confirmationFee.toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+
+      {(isLodging || lodging) && (selectedLodging || lodging) && (
+        <div>
+          <div className="space-y-2">
+            <Heading level={6} className="font-bold" desc={''}>Hospedaje:</Heading>
+            <div className="flex flex-row items-center justify-start gap-2">  
+              <span className="block font-normal text-base sm:text-lg dark:text-neutral-100">{selectedLodging?.name || lodging?.name}</span>
+              <Link
+                href={`${RouteGuimel.lodging}/${selectedLodging?.link || lodging?.link}` as any}
+                target="_blank"
+                className="text-xs"
+                >
+                <ExternalLinkIcon className="text-blue-700 h-4" />
+              </Link>
+            </div>
           </div>
-          
           <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
             <div className="flex flex-col">
-              <span>
-                ${parseFloat(selectedLodging?.price || "0.00").toFixed(2)} x {guestCount} personas
+              <span className="text-xs text-neutral-500">
+                ${parseFloat(selectedLodging?.price || lodging?.price || "0.00").toFixed(2)} x {guestCount} personas
               </span>
             </div>
-            <span>${(parseFloat(selectedLodging?.price || "0.00") * guestCount).toFixed(2)}</span>
+            <span>${(parseFloat(selectedLodging?.price || lodging?.price || "0.00") * guestCount).toFixed(2)}</span>
           </div>
           
           {(() => {
-            const basePrice = parseFloat(selectedLodging?.price || "0.00") * guestCount;
-            const commission = getCommissionData(selectedLodging);
-            const commissionAmount = calculateCommission(basePrice, commission); 
+            const pricePerGuest = parseFloat(selectedLodging?.price || lodging?.price || "0.00");
+            const basePrice = pricePerGuest * guestCount;
+            const commission = getCommissionData(selectedLodging || lodging);
             
-            const safeCommissionAmount = Number(commissionAmount) || 0;
-            const safeCommissionValue = Number(commission.value) || 0;
+            // Calculate commission per guest (base commission)
+            const commissionPerGuest = calculateCommission(pricePerGuest, commission);
+            
+            // Calculate: (price + commission) * guests
+            const subtotal = (pricePerGuest + commissionPerGuest) * guestCount;
+            
+            // Calculate Stripe fee on the subtotal
+            const stripeFee = calculateStripeFee(subtotal);
+            
+            // Tarifa de confirmación: (commission * guests) + stripeFee
+            const confirmationFee = (commissionPerGuest * guestCount) + stripeFee;
             
             return (
               <div className="ml-4 space-y-1 text-sm">
                 <div className="flex justify-between text-neutral-500">
                   <span>Tarifa de confirmación: </span>
-                  <span>${safeCommissionAmount.toFixed(2)}</span>
+                  <span>${confirmationFee.toFixed(2)}</span>
                 </div>
               </div>
             );

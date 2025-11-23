@@ -45,7 +45,7 @@ const LodgingSelector: React.FC<LodgingSelectorProps> = ({
       </div>
 
       {isLodging && (
-        <div>
+        <div className="space-y-2">
           <small className="text-sm text-neutral-500">
             Selecciona un hospedaje:
           </small>
@@ -54,6 +54,7 @@ const LodgingSelector: React.FC<LodgingSelectorProps> = ({
               <OptionButton
                 key={lodging.id}
                 selected={selectedLodging === lodging}
+                color="orange"
                 onClick={() => {
                   if (selectedLodging === null || selectedLodging !== lodging) {
                     onLodgingSelect(lodging);

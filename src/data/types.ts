@@ -85,6 +85,7 @@ export interface LodgingType {
   link: string;
   address:string;
   price: string;
+  description: string;
   commission_type?: 'fixed' | 'percentage';
   commission_value?: number;
   reviewCount: number;
@@ -97,6 +98,8 @@ export interface LodgingType {
   paymentCount?: number;
   activityCount?: number;
   location?: Array<LocationType>;
+  type_day?: string;
+  available_days?: Array<{ day: string }>;
 }
 
 export interface Host {
@@ -169,20 +172,6 @@ export type Element = {
 };
 
 export type Node = Element | Text;
-
-export interface LodgingType {
-  name: string;
-  description: string;
-  address:string;
-  link: string;
-  price: string;
-  commission_type?: 'fixed' | 'percentage';
-  commission_value?: number;
-  reviewCount: number;
-  reviewStar : number;
-  logo: ImageType;
-  gallery?: Array<GalleryImageType>; 
-}
 
 export interface GalleryImageType {
   id: string;

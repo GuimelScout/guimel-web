@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "context/UserContext";
 import { useQuery } from "@apollo/client";
 import { BOOKINGS_QUERY } from "@/components/Guimel/account/QueryAccount.queries";
-import SkeletonLoader from "@/shared/Guimel/SkeletonLoader";
 import BookingCard from "@/components/Guimel/account/BookinCard";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import { RouteGuimel } from "@/routers/routes";
@@ -13,10 +12,6 @@ import { useRouter } from "next/navigation";
 import { 
   CalendarIcon, 
   ClockIcon, 
-  CurrencyDollarIcon, 
-  UserGroupIcon,
-  FunnelIcon,
-  XMarkIcon,
   MagnifyingGlassIcon,
   DocumentTextIcon
 } from "@heroicons/react/24/outline";

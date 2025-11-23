@@ -15,7 +15,9 @@ import { CheckoutFormData, PaymentBreakdowns } from "../types";
 import PaymentTypeSelector from "./PaymentTypeSelector";
 import StayDatesRangeInput from "../../../Guimel/activity/StayDatesRangeInput";
 import GuestsInput from "../../../Guimel/activity/GuestsInput";
-import { ActivityType } from "@/data/types";
+import { ActivityType, LodgingType } from "@/data/types";
+import ActivityCardSmall from "../../ActivityCardSmall";
+import LodgingCardSmall from "../../LodgingCardSmall";
 
 interface PaymentFormProps {
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
@@ -34,6 +36,7 @@ interface PaymentFormProps {
   guestChildrenInputValue: number;
   setGuestChildrenInputValue: Dispatch<SetStateAction<number>>;
   activity: ActivityType | null;
+  lodging: LodgingType | null;
 }
 
 const PaymentForm: React.FC<PaymentFormProps> = ({
@@ -51,7 +54,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
   setGuestAdultsInputValue,
   guestChildrenInputValue,
   setGuestChildrenInputValue,
-  activity
+  activity,
+  lodging
 }) => {
   const { isDarkMode } = useThemeMode();
 
@@ -65,24 +69,48 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
       
       <div className="space-y-6">
         <h3 className="text-lg font-semibold">Detalles de tu reservación</h3>
-        
-        <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl">
-          <StayDatesRangeInput 
-            className="flex-1 z-[11]" 
-            startDate={startDate} 
-            setStartDate={setStartDate} 
-            dayType={activity?.type_day ?? null}
-            availableDays={activity?.available_days ?? null} 
-          />
-          <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
-          <GuestsInput 
-            className="flex-1" 
-            guestAdultsInputValue={guestAdultsInputValue} 
-            setGuestAdultsInputValue={setGuestAdultsInputValue} 
-            guestChildrenInputValue={guestChildrenInputValue} 
-            setGuestChildrenInputValue={setGuestChildrenInputValue} 
-          />
-        </form>
+
+        <div className="flex flex-row gap-4 items-center justify-center">
+          {(activity) && (
+            <div className="space-y-2 flex-2 flex justify-center">
+              <ActivityCardSmall
+                activity={activity}
+                showAddBtn={false}
+                selected={false}
+                onClick={() => {}}
+              />
+            </div>
+          )}
+
+          {lodging && (
+            <div className="space-y-2 flex-2 flex justify-center">
+              <LodgingCardSmall
+                lodging={lodging}
+                showAddBtn={false}
+                selected={false}
+                onClick={() => {}}
+              />
+            </div>
+          )}
+          
+          <form className="flex flex-col border border-neutral-200 dark:border-neutral-700 rounded-3xl flex-1">
+            <StayDatesRangeInput 
+              className="flex-1 z-[11]" 
+              startDate={startDate} 
+              setStartDate={setStartDate} 
+              dayType={(activity?.type_day ?? lodging?.type_day) ?? null}
+              availableDays={(activity?.available_days ?? lodging?.available_days) ?? null} 
+            />
+            <div className="w-full border-b border-neutral-200 dark:border-neutral-700"></div>
+            <GuestsInput 
+              className="flex-1" 
+              guestAdultsInputValue={guestAdultsInputValue} 
+              setGuestAdultsInputValue={setGuestAdultsInputValue} 
+              guestChildrenInputValue={guestChildrenInputValue} 
+              setGuestChildrenInputValue={setGuestChildrenInputValue} 
+            />
+          </form>
+        </div>
       </div>
       
       <div className="border-b border-neutral-200 dark:border-neutral-700"></div>

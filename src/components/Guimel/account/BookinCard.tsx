@@ -142,15 +142,16 @@ const BookingCard: FC<BookingCardProps> = ({
                 </span>
               </div>
             </div>
-            {lodging.logo && (
-              <div className="ml-3 w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
-                <img 
-                  src={lodging.logo.url} 
-                  alt={lodging.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
+            <div className="ml-3 w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+              <ImageWithPlaceholder
+                image={lodging.logo}
+                alt={lodging.name}
+                className="w-full h-full object-cover"
+                width={64}
+                height={64}
+                placeholderText=""
+              />
+            </div>
           </div>
         </div>
       </div>

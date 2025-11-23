@@ -74,74 +74,8 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
           </div>
         </div>
 
-        {/* Activities Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-            <CalendarIcon className="w-6 h-6 mr-3 text-blue-600" />
-            Actividades Reservadas
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data.booking.activity?.map((activity) => (
-              <div key={activity.id} className="group bg-gray-50 dark:bg-gray-700 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-                <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden">
-                  <ImageWithPlaceholder
-                    image={activity.image}
-                    alt={activity.name}
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    useCardPlaceholder={true}
-                    placeholderType="activity"
-                  />
-                </div>
-                
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  {activity.name}
-                </h3>
-                
-                <div className="flex items-center text-gray-600 dark:text-gray-300 mb-3">
-                  <MapPin className="w-4 h-4 mr-2 text-blue-500" />
-                  <span className="text-sm truncate">{activity.address}</span>
-                </div>
-                
-                <StartRating point={activity.reviewStar} reviewCount={activity.reviewCount} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Trip Details */}
-        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            Detalles del Viaje
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
-              <CalendarIcon className="w-8 h-8 text-blue-600" />
-              <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Fecha</p>
-                <p className="font-semibold text-gray-900 dark:text-white">
-                  {formatDateSpanish(parseLocalDateString(data.booking.start_date), true)}
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
-              <UserGroupIcon className="w-8 h-8 text-green-600" />
-              <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Scouts</p>
-                <p className="font-semibold text-gray-900 dark:text-white">
-                  {data.booking.guestsCount} personas
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Lodging Section */}
-        {data.booking.lodging && (
+          {/* Lodging Section */}
+          {data.booking.lodging && (
           <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
               <MapPin className="w-6 h-6 mr-3 text-orange-600" />
@@ -177,6 +111,76 @@ const PayPage: FC<PayPageProps> = ({ searchParams }) => {
             </div>
           </div>
         )}
+
+        {/* Activities Section */}
+        {(data.booking.activity?.length || 0) > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <CalendarIcon className="w-6 h-6 mr-3 text-blue-600" />
+            Actividades Reservadas
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.booking.activity?.map((activity) => (
+              <div key={activity.id} className="group bg-gray-50 dark:bg-gray-700 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden">
+                  <ImageWithPlaceholder
+                    image={activity.image}
+                    alt={activity.name}
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    useCardPlaceholder={true}
+                    placeholderType="activity"
+                  />
+                </div>
+                
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  {activity.name}
+                </h3>
+                
+                <div className="flex items-center text-gray-600 dark:text-gray-300 mb-3">
+                  <MapPin className="w-4 h-4 mr-2 text-blue-500" />
+                  <span className="text-sm truncate">{activity.address}</span>
+                </div>
+                
+                <StartRating point={activity.reviewStar} reviewCount={activity.reviewCount} />
+              </div>
+            ))}
+          </div>
+        </div>
+        )}
+
+        {/* Trip Details */}
+        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            Detalles del Viaje
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+              <CalendarIcon className="w-8 h-8 text-blue-600" />
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Fecha</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  {formatDateSpanish(parseLocalDateString(data.booking.start_date), true)}
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+              <UserGroupIcon className="w-8 h-8 text-green-600" />
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Scouts</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  {data.booking.guestsCount} personas
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
 
         {/* Payment Details */}
         <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">

@@ -9,7 +9,8 @@ const page = ({
   searchParams,
 }: {
   searchParams: {
-    activity: string;
+    activity: string | null;
+    lodging: string | null;
     guestsCount: string;
     startDate: string;
   };
@@ -18,7 +19,8 @@ const page = ({
 
   return <Elements stripe={stripePromise}>
     <CheckOutPagePageMain params={{
-    activity: searchParams.activity,
+    activity: searchParams.activity ?? null,
+    lodging: searchParams.lodging ?? null,
     guestsCount: searchParams.guestsCount,
     startD: searchParams.startDate,
   }} />
